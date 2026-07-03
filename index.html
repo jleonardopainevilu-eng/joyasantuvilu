@@ -1077,7 +1077,7 @@ function driveImageUrl(url) {
   url = clean(url);
   if (!url) return "";
   const id = driveFileId(url);
-  if (id) return `https://drive.google.com/uc?export=view&id=${id}`;
+  if (id) return `https://lh3.googleusercontent.com/d/${id}`;
   return url;
 }
 function driveImageFallback(url) {
@@ -1085,9 +1085,17 @@ function driveImageFallback(url) {
   return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w800` : "";
 }
 function retryImage(img) {
-  const fallback = img.dataset.fallback;
-  if (fallback && img.src !== fallback) {
-    img.src = fallback;
+  const tried = img.dataset.tried || "";
+  const id = img.dataset.driveid;
+  // Intentar fallbacks en orden
+  const fallbacks = [
+    img.dataset.fallback,
+    id ? `https://drive.google.com/thumbnail?id=${id}&sz=w800` : "",
+    id ? `https://drive.google.com/uc?export=view&id=${id}` : ""
+  ].filter(u => u && u !== tried && u !== img.src);
+  if (fallbacks.length) {
+    img.dataset.tried = img.src;
+    img.src = fallbacks[0];
     return;
   }
   img.hidden = true;
@@ -1189,7 +1197,7 @@ function imageBlock(p) {
   const hasImg = Boolean(p.img);
   return `
     <button class="zoom-btn" type="button" onclick="openImageModal(${p.id})" aria-label="Ampliar imagen de ${esc(p.name)}" ${hasImg ? "" : "disabled"}>
-      ${hasImg ? `<img class="card-img" src="${esc(p.img)}" data-fallback="${esc(p.imgFallback || "")}" alt="${esc(p.name)}" loading="eager" decoding="async" fetchpriority="high" referrerpolicy="no-referrer" onerror="retryImage(this)">` : ""}
+      ${hasImg ? `<img class="card-img" src="${esc(p.img)}" data-fallback="${esc(p.imgFallback || "")}" data-driveid="${esc(driveFileId(p.imgOriginal || ""))}" alt="${esc(p.name)}" loading="eager" decoding="async" fetchpriority="high" referrerpolicy="no-referrer" onerror="retryImage(this)">` : ""}
       <div class="image-placeholder" ${hasImg ? "hidden" : ""}>Foto desde Sheets</div>
     </button>`;
 }
