@@ -1067,12 +1067,31 @@ function parseCSV(text) {
   return rows;
 }
 
-function driveImageUrl(url) {
+function driveFileId(url) {
   url = clean(url);
   if (!url) return "";
   const driveMatch = url.match(/\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/) || url.match(/open\?id=([^&]+)/);
-  if (driveMatch && driveMatch[1]) return `https://drive.google.com/thumbnail?id=${encodeURIComponent(driveMatch[1])}&sz=w1200`;
+  return driveMatch && driveMatch[1] ? driveMatch[1] : "";
+}
+function driveImageUrl(url) {
+  url = clean(url);
+  if (!url) return "";
+  const id = driveFileId(url);
+  if (id) return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1200`;
   return url;
+}
+function driveImageFallback(url) {
+  const id = driveFileId(url);
+  return id ? `https://lh3.googleusercontent.com/d/${encodeURIComponent(id)}=w1200` : "";
+}
+function retryImage(img) {
+  const fallback = img.dataset.fallback;
+  if (fallback && img.src !== fallback) {
+    img.src = fallback;
+    return;
+  }
+  img.hidden = true;
+  if (img.nextElementSibling) img.nextElementSibling.hidden = false;
 }
 function parsePrice(v) {
   return Number(String(v ?? "").replace(/[^0-9]/g, "")) || 0;
@@ -1113,7 +1132,9 @@ async function loadProducts() {
         price: parsePrice(getField(o, ["precio", "price", "valor"])),
         stock: parseStock(getField(o, ["stock", "cantidad"]), estado),
         estado,
+        imgOriginal: getField(o, ["foto_url", "foto", "imagen", "image", "url_imagen"]),
         img: driveImageUrl(getField(o, ["foto_url", "foto", "imagen", "image", "url_imagen"])),
+        imgFallback: driveImageFallback(getField(o, ["foto_url", "foto", "imagen", "image", "url_imagen"])),
         desc: getField(o, ["descripcion", "desc", "detalle"]),
         materials: getField(o, ["materiales", "piedras", "material"]),
         measure: getField(o, ["medida", "medidas", "largo"]),
@@ -1130,6 +1151,22 @@ async function loadProducts() {
   renderFilters();
   renderGrid();
   renderReels();
+}
+
+function preloadVisibleImages(list = filteredProducts()) {
+  list.slice(0, 16).forEach(p => {
+    if (!p.img) return;
+    const img = new Image();
+    img.referrerPolicy = "no-referrer";
+    img.src = p.img;
+    if (p.imgFallback) {
+      img.onerror = () => {
+        const fallback = new Image();
+        fallback.referrerPolicy = "no-referrer";
+        fallback.src = p.imgFallback;
+      };
+    }
+  });
 }
 
 function renderFilters() {
@@ -1152,7 +1189,7 @@ function imageBlock(p) {
   const hasImg = Boolean(p.img);
   return `
     <button class="zoom-btn" type="button" onclick="openImageModal(${p.id})" aria-label="Ampliar imagen de ${esc(p.name)}" ${hasImg ? "" : "disabled"}>
-      ${hasImg ? `<img class="card-img" src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">` : ""}
+      ${hasImg ? `<img class="card-img" src="${esc(p.img)}" data-fallback="${esc(p.imgFallback || "")}" alt="${esc(p.name)}" loading="eager" decoding="async" fetchpriority="high" referrerpolicy="no-referrer" onerror="retryImage(this)">` : ""}
       <div class="image-placeholder" ${hasImg ? "hidden" : ""}>Foto desde Sheets</div>
     </button>`;
 }
@@ -1186,6 +1223,7 @@ function renderGrid() {
         </div>
       </article>`;
   }).join("");
+  preloadVisibleImages(list);
 }
 
 function filterCat(cat) {
