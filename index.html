@@ -1077,12 +1077,12 @@ function driveImageUrl(url) {
   url = clean(url);
   if (!url) return "";
   const id = driveFileId(url);
-  if (id) return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1200`;
+  if (id) return `https://drive.google.com/uc?export=view&id=${id}`;
   return url;
 }
 function driveImageFallback(url) {
   const id = driveFileId(url);
-  return id ? `https://lh3.googleusercontent.com/d/${encodeURIComponent(id)}=w1200` : "";
+  return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w800` : "";
 }
 function retryImage(img) {
   const fallback = img.dataset.fallback;
