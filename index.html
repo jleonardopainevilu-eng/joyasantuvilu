@@ -78,6 +78,16 @@ a { color: inherit; }
   font-size: 1.35rem;
   background: var(--paper);
 }
+.brand-logo-img {
+  width: 52px;
+  height: 52px;
+  display: block;
+  object-fit: contain;
+  border: 1px solid rgba(184, 148, 63, 0.55);
+  border-radius: 50%;
+  background: var(--paper);
+  padding: 4px;
+}
 .brand-name {
   display: block;
   font-family: "Cormorant Garamond", serif;
@@ -144,6 +154,17 @@ a { color: inherit; }
 }
 .hero-inner {
   width: min(940px, 100%);
+}
+.hero-logo {
+  width: clamp(96px, 14vw, 132px);
+  height: clamp(96px, 14vw, 132px);
+  display: block;
+  object-fit: contain;
+  border-radius: 50%;
+  background: var(--paper);
+  padding: 8px;
+  margin: 0 0 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
 }
 .eyebrow {
   margin: 0 0 18px;
@@ -837,6 +858,8 @@ a { color: inherit; }
 @media (max-width: 760px) {
   .topbar { font-size: 0.62rem; }
   .header { min-height: 64px; }
+  .brand-logo-img { width: 44px; height: 44px; }
+  .hero-logo { margin-bottom: 18px; }
   .brand-sub, .nav a { display: none; }
   .nav { gap: 8px; }
   .hero { min-height: 590px; align-items: center; }
@@ -860,7 +883,7 @@ a { color: inherit; }
 
 <header class="header">
   <a class="brand" href="#inicio" aria-label="Inicio Joyas Antuvilu">
-    <span class="brand-mark">A</span>
+    <img class="brand-logo-img" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="52" height="52" />
     <span>
       <span class="brand-name">Joyas Antuvilu</span>
       <span class="brand-sub">Fuerza natural</span>
@@ -879,6 +902,7 @@ a { color: inherit; }
 <main id="inicio">
   <section class="hero">
     <div class="hero-inner">
+      <img class="hero-logo" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="132" height="132" />
       <p class="eyebrow">Piedras naturales | Hecho a mano</p>
       <h1>Joyas con fuerza natural</h1>
       <p>Pulseras y collares creados en el sur de Chile, pensados como piezas de energia, identidad y regalo con sentido.</p>
@@ -1004,7 +1028,7 @@ a { color: inherit; }
 
 <footer class="footer">
   <div class="brand">
-    <span class="brand-mark">A</span>
+    <img class="brand-logo-img" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="52" height="52" />
     <span class="brand-name">Joyas Antuvilu</span>
   </div>
   <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">@joyasantuvilu</a>
