@@ -308,6 +308,7 @@ a { color: inherit; }
   background: linear-gradient(135deg, #f2eadf, #fffdf8);
 }
 .zoom-btn {
+  display: block;
   width: 100%;
   height: 100%;
   border: 0;
@@ -315,6 +316,7 @@ a { color: inherit; }
   background: transparent;
   cursor: zoom-in;
   position: relative;
+  overflow: hidden;
 }
 .zoom-btn::after {
   content: "";
@@ -331,6 +333,8 @@ a { color: inherit; }
 }
 .zoom-btn:hover::after { opacity: 1; }
 .card-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -352,6 +356,7 @@ a { color: inherit; }
   text-align: center;
   background: radial-gradient(circle, rgba(216,184,107,0.12), transparent 62%), var(--sand);
 }
+.image-placeholder[hidden] { display: none !important; }
 .badge {
   position: absolute;
   top: 12px;
@@ -1067,35 +1072,55 @@ function parseCSV(text) {
   return rows;
 }
 
+function extractImageUrl(value) {
+  const text = clean(value).replace(/&amp;/g, "&");
+  if (!text) return "";
+  const formula = text.match(/=\s*IMAGE\s*\(\s*["']([^"']+)["']/i);
+  if (formula && formula[1]) return formula[1].trim();
+  const htmlSrc = text.match(/src\s*=\s*["']([^"']+)["']/i);
+  if (htmlSrc && htmlSrc[1]) return htmlSrc[1].trim();
+  const url = text.match(/https?:\/\/[^\s"'<>),]+/i);
+  return url && url[0] ? url[0].trim() : text;
+}
 function driveFileId(url) {
-  url = clean(url);
+  url = extractImageUrl(url);
   if (!url) return "";
-  const driveMatch = url.match(/\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/) || url.match(/open\?id=([^&]+)/);
+  const driveMatch = url.match(/\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/) || url.match(/open\?id=([^&]+)/) || url.match(/\/d\/([^/?=]+)/);
   return driveMatch && driveMatch[1] ? driveMatch[1] : "";
 }
 function driveImageUrl(url) {
-  url = clean(url);
+  url = extractImageUrl(url);
   if (!url) return "";
   const id = driveFileId(url);
-  if (id) return `https://lh3.googleusercontent.com/d/${id}`;
+  if (id) return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1200`;
   return url;
 }
 function driveImageFallback(url) {
   const id = driveFileId(url);
-  return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w800` : "";
+  return id ? `https://lh3.googleusercontent.com/d/${encodeURIComponent(id)}=w1200` : "";
+}
+function imageSources(url) {
+  const original = extractImageUrl(url);
+  const id = driveFileId(original);
+  const sources = id ? [
+    `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1200`,
+    `https://lh3.googleusercontent.com/d/${encodeURIComponent(id)}=w1200`,
+    `https://drive.google.com/uc?export=view&id=${encodeURIComponent(id)}`,
+    original
+  ] : [original];
+  return [...new Set(sources.filter(Boolean))];
 }
 function retryImage(img) {
-  const tried = img.dataset.tried || "";
-  const id = img.dataset.driveid;
-  // Intentar fallbacks en orden
-  const fallbacks = [
-    img.dataset.fallback,
-    id ? `https://drive.google.com/thumbnail?id=${id}&sz=w800` : "",
-    id ? `https://drive.google.com/uc?export=view&id=${id}` : ""
-  ].filter(u => u && u !== tried && u !== img.src);
-  if (fallbacks.length) {
-    img.dataset.tried = img.src;
-    img.src = fallbacks[0];
+  let sources = [];
+  try {
+    sources = JSON.parse(decodeURIComponent(img.dataset.sources || "%5B%5D"));
+  } catch (_) {
+    sources = [];
+  }
+  const next = sources.shift();
+  if (next) {
+    img.dataset.sources = encodeURIComponent(JSON.stringify(sources));
+    img.src = next;
     return;
   }
   img.hidden = true;
@@ -1141,6 +1166,7 @@ async function loadProducts() {
         stock: parseStock(getField(o, ["stock", "cantidad"]), estado),
         estado,
         imgOriginal: getField(o, ["foto_url", "foto", "imagen", "image", "url_imagen"]),
+        imgSources: imageSources(getField(o, ["foto_url", "foto", "imagen", "image", "url_imagen"])),
         img: driveImageUrl(getField(o, ["foto_url", "foto", "imagen", "image", "url_imagen"])),
         imgFallback: driveImageFallback(getField(o, ["foto_url", "foto", "imagen", "image", "url_imagen"])),
         desc: getField(o, ["descripcion", "desc", "detalle"]),
@@ -1163,17 +1189,11 @@ async function loadProducts() {
 
 function preloadVisibleImages(list = filteredProducts()) {
   list.slice(0, 16).forEach(p => {
-    if (!p.img) return;
+    const src = Array.isArray(p.imgSources) && p.imgSources[0] ? p.imgSources[0] : p.img;
+    if (!src) return;
     const img = new Image();
     img.referrerPolicy = "no-referrer";
-    img.src = p.img;
-    if (p.imgFallback) {
-      img.onerror = () => {
-        const fallback = new Image();
-        fallback.referrerPolicy = "no-referrer";
-        fallback.src = p.imgFallback;
-      };
-    }
+    img.src = src;
   });
 }
 
@@ -1194,10 +1214,13 @@ function filteredProducts() {
 }
 
 function imageBlock(p) {
-  const hasImg = Boolean(p.img);
+  const sources = Array.isArray(p.imgSources) && p.imgSources.length ? p.imgSources : (p.img ? [p.img] : []);
+  const first = sources[0] || "";
+  const rest = sources.slice(1);
+  const hasImg = Boolean(first);
   return `
     <button class="zoom-btn" type="button" onclick="openImageModal(${p.id})" aria-label="Ampliar imagen de ${esc(p.name)}" ${hasImg ? "" : "disabled"}>
-      ${hasImg ? `<img class="card-img" src="${esc(p.img)}" data-fallback="${esc(p.imgFallback || "")}" data-driveid="${esc(driveFileId(p.imgOriginal || ""))}" alt="${esc(p.name)}" loading="eager" decoding="async" fetchpriority="high" referrerpolicy="no-referrer" onerror="retryImage(this)">` : ""}
+      ${hasImg ? `<img class="card-img" src="${esc(first)}" data-sources="${esc(encodeURIComponent(JSON.stringify(rest)))}" alt="${esc(p.name)}" loading="eager" decoding="async" fetchpriority="high" referrerpolicy="no-referrer" onerror="retryImage(this)">` : ""}
       <div class="image-placeholder" ${hasImg ? "hidden" : ""}>Foto desde Sheets</div>
     </button>`;
 }
@@ -1288,7 +1311,7 @@ function openImageModal(id) {
   const p = PRODUCTS.find(x => Number(x.id) === Number(id));
   if (!p || !p.img) return;
   modalCurrentId = Number(id);
-  $("imageModalImg").src = p.img;
+  $("imageModalImg").src = (Array.isArray(p.imgSources) && p.imgSources[0]) ? p.imgSources[0] : p.img;
   $("imageModalImg").alt = "Imagen ampliada de " + p.name;
   $("imageModalCaption").textContent = p.name;
   $("imageModalPrice").textContent = p.price > 0 ? fmt(p.price) : "";
