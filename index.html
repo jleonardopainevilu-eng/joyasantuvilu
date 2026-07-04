@@ -1254,6 +1254,21 @@ const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT_W_pweHUh-P
 const STORE_EMAIL = "joyasantuvilu@gmail.com";
 const INSTAGRAM_URL = "https://www.instagram.com/joyasantuvilu";
 
+const STATIC_REELS = [
+  {
+    title: "Piedras en luz natural",
+    desc: "Detalle real de las piezas Antuvilu.",
+    url: "assets/videos/antuvilu-reel-01.mp4",
+    thumb: "assets/videos/antuvilu-reel-01.jpg"
+  },
+  {
+    title: "Brillo y movimiento",
+    desc: "Texturas, color y presencia de cada joya.",
+    url: "assets/videos/antuvilu-reel-02.mp4",
+    thumb: "assets/videos/antuvilu-reel-02.jpg"
+  }
+];
+
 const REEL_EXAMPLES = [
   {title: "Proceso de armado", desc: "Muestra manos, piedras y cierre de acero.", url: INSTAGRAM_URL},
   {title: "Brillo en luz natural", desc: "Video corto girando la pieza al sol.", url: INSTAGRAM_URL},
@@ -1549,18 +1564,19 @@ function renderReels() {
     url: p.video,
     thumb: p.videoThumb || p.img
   }));
+  const reels = realReels.length ? realReels : STATIC_REELS;
   const section = document.getElementById("inspiracion");
   const navReels = document.querySelector(".nav a[href='#inspiracion']");
-  if (!realReels.length) {
+  if (!reels.length) {
     if (section) section.style.display = "none";
     if (navReels) navReels.style.display = "none";
     return;
   }
   if (section) section.style.display = "";
   if (navReels) navReels.style.display = "";
-  $("reelTrack").innerHTML = realReels.map(r => {
+  $("reelTrack").innerHTML = reels.map(r => {
     const media = r.thumb ? `<img src="${esc(r.thumb)}" alt="${esc(r.title)}" loading="lazy">` : "";
-    const video = isDirectVideo(r.url) ? `<video src="${esc(r.url)}" ${r.thumb ? `poster="${esc(r.thumb)}"` : ""} controls playsinline preload="metadata"></video>` : media;
+    const video = isDirectVideo(r.url) ? `<video src="${esc(r.url)}" ${r.thumb ? `poster="${esc(r.thumb)}"` : ""} autoplay muted loop playsinline preload="metadata"></video>` : media;
     return `
       <a class="reel-card" href="${esc(r.url || INSTAGRAM_URL)}" target="_blank" rel="noopener">
         ${video}
