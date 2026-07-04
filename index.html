@@ -15,10 +15,10 @@
   --brown: #76513a;
   --gold: #b8943f;
   --gold-2: #d8b86b;
-  --cream: #fbf7f0;
+  --cream: #fcf8f1;
   --paper: #fffdf8;
   --sand: #eee4d6;
-  --sage: #263f2a;
+  --sage: #203b2a;
   --muted: #817064;
   --line: rgba(75, 45, 32, 0.14);
   --shadow: 0 18px 48px rgba(40, 24, 17, 0.12);
@@ -35,6 +35,10 @@ body {
 button, input, textarea, select { font: inherit; }
 button { cursor: pointer; }
 a { color: inherit; }
+:focus-visible {
+  outline: 3px solid rgba(216, 184, 107, 0.72);
+  outline-offset: 3px;
+}
 
 .topbar {
   background: var(--sage);
@@ -210,6 +214,20 @@ a { color: inherit; }
 }
 .btn-primary { background: var(--gold-2); color: var(--ink); }
 .btn-ghost { border: 1px solid rgba(255, 253, 248, 0.4); color: var(--paper); }
+.btn-primary,
+.cart-btn,
+.add-btn,
+.confirm-btn,
+.email-btn {
+  box-shadow: 0 10px 24px rgba(184, 148, 63, 0.16);
+}
+.btn-primary:hover,
+.cart-btn:hover,
+.add-btn:hover,
+.confirm-btn:hover,
+.email-btn:hover {
+  filter: brightness(1.04);
+}
 
 .trust {
   display: grid;
@@ -233,6 +251,139 @@ a { color: inherit; }
   margin-top: 5px;
   color: var(--muted);
   font-size: 0.82rem;
+}
+
+.collections {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.collection-card {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 72% 22%, rgba(216, 184, 107, 0.26), transparent 28%),
+    linear-gradient(145deg, #fffdf8, #eee4d6);
+  color: var(--ink);
+  text-align: left;
+}
+.collection-card::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 92px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(184, 148, 63, 0.55);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, rgba(216, 184, 107, 0.28), transparent 54%),
+    rgba(255, 253, 248, 0.46);
+}
+.collection-card.dark {
+  background:
+    radial-gradient(circle at 70% 20%, rgba(216, 184, 107, 0.28), transparent 30%),
+    linear-gradient(145deg, #1c110c, #263f2a 68%);
+  color: var(--paper);
+}
+.collection-card button {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.collection-content {
+  position: relative;
+  z-index: 1;
+}
+.collection-content span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.collection-card.dark .collection-content span { color: var(--gold-2); }
+.collection-content strong {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.65rem;
+  line-height: 1.05;
+}
+.collection-content small {
+  display: block;
+  max-width: 220px;
+  margin-top: 10px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.collection-card.dark .collection-content small {
+  color: rgba(255, 253, 248, 0.74);
+}
+.collection-card:hover,
+.mini-product:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+.collection-card,
+.mini-product {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.featured-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.mini-product {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  text-decoration: none;
+}
+.mini-img {
+  width: 92px;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 6px;
+  background: var(--sand);
+}
+.mini-info {
+  min-width: 0;
+}
+.mini-info strong {
+  display: block;
+  overflow: hidden;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  line-height: 1.05;
+  text-overflow: ellipsis;
+}
+.mini-info span {
+  display: block;
+  margin-top: 6px;
+  color: var(--gold);
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .section {
@@ -865,6 +1016,11 @@ a { color: inherit; }
   .hero { min-height: 590px; align-items: center; }
   .trust { grid-template-columns: repeat(2, 1fr); }
   .trust-item { border-bottom: 1px solid var(--line); }
+  .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .collection-card { min-height: 178px; padding: 14px; }
+  .collection-content strong { font-size: 1.3rem; }
+  .collection-content small { display: none; }
+  .featured-row { grid-template-columns: 1fr; }
   .tools { grid-template-columns: 1fr; }
   .section-head { display: block; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -879,7 +1035,7 @@ a { color: inherit; }
 </style>
 </head>
 <body>
-<div class="topbar">Piezas unicas hechas a mano | Sur de Chile | Envio a todo el pais</div>
+<div class="topbar">Stock actualizado desde catalogo | Piezas hechas a mano | Envio a todo Chile</div>
 
 <header class="header">
   <a class="brand" href="#inicio" aria-label="Inicio Joyas Antuvilu">
@@ -890,6 +1046,7 @@ a { color: inherit; }
     </span>
   </a>
   <nav class="nav" aria-label="Navegacion principal">
+    <a href="#colecciones">Colecciones</a>
     <a href="#catalogo">Catalogo</a>
     <a href="#inspiracion">Reels</a>
     <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Instagram</a>
@@ -914,10 +1071,65 @@ a { color: inherit; }
   </section>
 
   <section class="trust" aria-label="Beneficios de compra">
-    <div class="trust-item"><strong>Stock real</strong><span>Solo vendemos lo que tenemos disponible.</span></div>
-    <div class="trust-item"><strong>Hecho a mano</strong><span>Cada pieza es unica, elaborada en el sur de Chile.</span></div>
-    <div class="trust-item"><strong>Despacho</strong><span>Envio a todo Chile o retiro por coordinar.</span></div>
-    <div class="trust-item"><strong>Pedido simple</strong><span>Elige tu joya y coordina el pago por correo.</span></div>
+    <div class="trust-item"><strong>Stock real</strong><span>Catalogo conectado a Google Sheets.</span></div>
+    <div class="trust-item"><strong>Fotos claras</strong><span>Imagenes completas, sin cortes en producto.</span></div>
+    <div class="trust-item"><strong>Hecho a mano</strong><span>Piezas unicas creadas en el sur de Chile.</span></div>
+    <div class="trust-item"><strong>Pedido simple</strong><span>Agrega al carrito y coordina por correo.</span></div>
+  </section>
+
+  <section class="section collections" id="colecciones">
+    <div class="section-head">
+      <div>
+        <p class="section-kicker">Compra por coleccion</p>
+        <h2 class="section-title">Encuentra la energia de tu pieza</h2>
+        <p class="section-copy">Una entrada mas rapida al catalogo: pulseras, collares y regalos con piedras naturales seleccionadas a mano.</p>
+      </div>
+    </div>
+    <div class="collection-grid">
+      <article class="collection-card dark">
+        <button type="button" onclick="selectCollection('pulseras')" aria-label="Ver pulseras"></button>
+        <div class="collection-content">
+          <span>Coleccion</span>
+          <strong>Pulseras</strong>
+          <small>Piedras naturales para uso diario, intencion y regalo.</small>
+        </div>
+      </article>
+      <article class="collection-card">
+        <button type="button" onclick="selectCollection('collares')" aria-label="Ver collares"></button>
+        <div class="collection-content">
+          <span>Coleccion</span>
+          <strong>Collares</strong>
+          <small>Piezas protagonistas con fuerza visual y significado.</small>
+        </div>
+      </article>
+      <article class="collection-card">
+        <button type="button" onclick="selectCollection('todos')" aria-label="Ver regalos"></button>
+        <div class="collection-content">
+          <span>Seleccion</span>
+          <strong>Regalos con sentido</strong>
+          <small>Joyas listas para sorprender con una historia propia.</small>
+        </div>
+      </article>
+      <article class="collection-card dark">
+        <button type="button" onclick="selectCollection('todos')" aria-label="Ver catalogo completo"></button>
+        <div class="collection-content">
+          <span>Catalogo</span>
+          <strong>Todas las piezas</strong>
+          <small>Explora el stock completo conectado a Google Sheets.</small>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="destacados">
+    <div class="section-head">
+      <div>
+        <p class="section-kicker">Mas buscadas</p>
+        <h2 class="section-title">Piezas destacadas</h2>
+      </div>
+      <a class="btn-primary" href="#catalogo">Ver todo</a>
+    </div>
+    <div class="featured-row" id="featuredRow"></div>
   </section>
 
   <section class="section" id="catalogo">
@@ -1207,6 +1419,7 @@ async function loadProducts() {
     $("grid").innerHTML = '<div class="empty">No se pudo cargar Google Sheets. Revisa que la planilla este publicada como CSV.</div>';
   }
   renderFilters();
+  renderFeatured();
   renderGrid();
   renderReels();
 }
@@ -1281,10 +1494,40 @@ function renderGrid() {
   preloadVisibleImages(list);
 }
 
+function renderFeatured() {
+  const target = $("featuredRow");
+  if (!target) return;
+  const picks = PRODUCTS.filter(p => Number(p.stock) > 0).slice(0, 4);
+  if (!picks.length) {
+    target.innerHTML = '<div class="empty">Los destacados apareceran cuando cargue el catalogo.</div>';
+    return;
+  }
+  target.innerHTML = picks.map(p => {
+    const src = (Array.isArray(p.imgSources) && p.imgSources[0]) ? p.imgSources[0] : p.img;
+    return `
+      <a class="mini-product" href="#catalogo" onclick="selectCollection('${esc(p.cat)}')">
+        ${src ? `<img class="mini-img" src="${esc(src)}" alt="${esc(p.name)}" loading="eager" decoding="async" referrerpolicy="no-referrer">` : `<div class="mini-img"></div>`}
+        <span class="mini-info">
+          <strong>${esc(p.name)}</strong>
+          <span>${fmt(p.price)}</span>
+        </span>
+      </a>`;
+  }).join("");
+}
+
 function filterCat(cat) {
   currentFilter = cat;
   renderFilters();
   renderGrid();
+}
+
+function selectCollection(cat) {
+  currentFilter = cat || "todos";
+  const search = $("searchInput");
+  if (search) search.value = "";
+  renderFilters();
+  renderGrid();
+  document.getElementById("catalogo")?.scrollIntoView({behavior: "smooth", block: "start"});
 }
 
 function collectReels() {
