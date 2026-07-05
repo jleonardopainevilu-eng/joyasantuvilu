@@ -146,8 +146,6 @@ a { color: inherit; }
 }
 
 .hero {
-  position: relative;
-  overflow: hidden;
   min-height: min(760px, calc(100vh - 118px));
   display: grid;
   align-items: end;
@@ -158,26 +156,6 @@ a { color: inherit; }
     linear-gradient(135deg, #1c110c, #263f2a 62%, #1e2f20);
   color: var(--paper);
 }
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(1.5px 1.5px at 12% 22%, rgba(216,184,107,0.55) 0%, transparent 100%),
-    radial-gradient(1px 1px at 28% 62%, rgba(216,184,107,0.35) 0%, transparent 100%),
-    radial-gradient(2px 2px at 48% 18%, rgba(216,184,107,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 63% 74%, rgba(216,184,107,0.3) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 82% 38%, rgba(216,184,107,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 91% 68%, rgba(216,184,107,0.3) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 35% 88%, rgba(216,184,107,0.35) 0%, transparent 100%);
-  animation: driftglow 14s ease-in-out infinite;
-}
-@keyframes driftglow {
-  0%, 100% { opacity: 0.7; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(-6px); }
-}
-.hero-inner { position: relative; z-index: 1; }
 .hero-inner {
   width: min(940px, 100%);
 }
@@ -651,7 +629,6 @@ a { color: inherit; }
   line-height: 1.75;
 }
 .story-panel {
-  position: relative;
   min-height: 360px;
   background:
     radial-gradient(circle at 50% 44%, rgba(216, 184, 107, 0.34), transparent 32%),
@@ -660,32 +637,7 @@ a { color: inherit; }
   place-items: center;
   padding: 28px;
 }
-.story-orbit {
-  position: absolute;
-  width: min(400px, 88vw);
-  aspect-ratio: 1;
-  border: 1px solid rgba(216, 184, 107, 0.16);
-  border-radius: 50%;
-  animation: orbitspin 40s linear infinite;
-}
-.story-orbit::before {
-  content: "";
-  position: absolute;
-  top: -3px;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  background: var(--gold-2);
-  border-radius: 50%;
-  box-shadow: 0 0 12px 2px rgba(216,184,107,0.6);
-}
-@keyframes orbitspin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
 .story-circle {
-  position: relative;
-  z-index: 1;
   width: min(330px, 76vw);
   aspect-ratio: 1;
   border: 1px solid rgba(216, 184, 107, 0.7);
@@ -1080,21 +1032,6 @@ a { color: inherit; }
   .story-band { grid-template-columns: 1fr; }
   .reel-track { grid-auto-columns: minmax(210px, 76vw); }
 }
-
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.reveal.in {
-  opacity: 1;
-  transform: translateY(0);
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
-  .hero::before { animation: none; }
-  .story-orbit { animation: none; }
-}
 </style>
 </head>
 <body>
@@ -1102,7 +1039,7 @@ a { color: inherit; }
 
 <header class="header">
   <a class="brand" href="#inicio" aria-label="Inicio Joyas Antuvilu">
-    <img class="brand-logo-img" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="52" height="52" onerror="this.outerHTML='<span class=\'brand-mark\'>A</span>'" />
+    <img class="brand-logo-img" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="52" height="52" />
     <span>
       <span class="brand-name">Joyas Antuvilu</span>
       <span class="brand-sub">Fuerza natural</span>
@@ -1122,7 +1059,7 @@ a { color: inherit; }
 <main id="inicio">
   <section class="hero">
     <div class="hero-inner">
-      <img class="hero-logo" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="132" height="132" onerror="this.style.display='none'" />
+      <img class="hero-logo" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="132" height="132" />
       <p class="eyebrow">Piedras naturales | Hecho a mano</p>
       <h1>Joyas con fuerza natural</h1>
       <p>Pulseras y collares creados en el sur de Chile, pensados como piezas de energia, identidad y regalo con sentido.</p>
@@ -1134,7 +1071,7 @@ a { color: inherit; }
   </section>
 
   <section class="trust" aria-label="Beneficios de compra">
-    <div class="trust-item"><strong>Stock real</strong><span>Solo publicamos piezas con disponibilidad confirmada.</span></div>
+    <div class="trust-item"><strong>Stock real</strong><span>Catalogo conectado a Google Sheets.</span></div>
     <div class="trust-item"><strong>Fotos claras</strong><span>Imagenes completas, sin cortes en producto.</span></div>
     <div class="trust-item"><strong>Hecho a mano</strong><span>Piezas unicas creadas en el sur de Chile.</span></div>
     <div class="trust-item"><strong>Pedido simple</strong><span>Agrega al carrito y coordina por correo.</span></div>
@@ -1149,7 +1086,7 @@ a { color: inherit; }
       </div>
     </div>
     <div class="collection-grid">
-      <article class="collection-card dark reveal">
+      <article class="collection-card dark">
         <button type="button" onclick="selectCollection('pulseras')" aria-label="Ver pulseras"></button>
         <div class="collection-content">
           <span>Coleccion</span>
@@ -1157,7 +1094,7 @@ a { color: inherit; }
           <small>Piedras naturales para uso diario, intencion y regalo.</small>
         </div>
       </article>
-      <article class="collection-card reveal">
+      <article class="collection-card">
         <button type="button" onclick="selectCollection('collares')" aria-label="Ver collares"></button>
         <div class="collection-content">
           <span>Coleccion</span>
@@ -1165,7 +1102,7 @@ a { color: inherit; }
           <small>Piezas protagonistas con fuerza visual y significado.</small>
         </div>
       </article>
-      <article class="collection-card reveal">
+      <article class="collection-card">
         <button type="button" onclick="selectCollection('todos')" aria-label="Ver regalos"></button>
         <div class="collection-content">
           <span>Seleccion</span>
@@ -1173,7 +1110,7 @@ a { color: inherit; }
           <small>Joyas listas para sorprender con una historia propia.</small>
         </div>
       </article>
-      <article class="collection-card dark reveal">
+      <article class="collection-card dark">
         <button type="button" onclick="selectCollection('todos')" aria-label="Ver catalogo completo"></button>
         <div class="collection-content">
           <span>Catalogo</span>
@@ -1208,19 +1145,18 @@ a { color: inherit; }
       <div class="filters" id="filters"></div>
     </div>
     <div class="grid" id="grid">
-      <div class="loading">Cargando catalogo...</div>
+      <div class="loading">Cargando productos desde Google Sheets...</div>
     </div>
   </section>
 
   <section class="story-band">
-    <div class="story-copy reveal">
+    <div class="story-copy">
       <p class="section-kicker">Origen y proceso</p>
       <h2 class="section-title">Cada piedra tiene una historia que contar.</h2>
       <p>Creadas en el sur de Chile con piedras naturales seleccionadas a mano. Cada pulsera y collar nace como una pieza unica: con su propia energia, su propio color, su propio relato. Sigenos en Instagram para ver el proceso de cerca.</p>
       <a class="btn-primary" href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Ver en Instagram</a>
     </div>
     <div class="story-panel" aria-hidden="true">
-      <div class="story-orbit"></div>
       <div class="story-circle">Piedras<br />con historia</div>
     </div>
   </section>
@@ -1304,7 +1240,7 @@ a { color: inherit; }
 
 <footer class="footer">
   <div class="brand">
-    <img class="brand-logo-img" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="52" height="52" onerror="this.outerHTML='<span class=\'brand-mark\'>A</span>'" />
+    <img class="brand-logo-img" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="52" height="52" />
     <span class="brand-name">Joyas Antuvilu</span>
   </div>
   <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">@joyasantuvilu</a>
@@ -1317,6 +1253,28 @@ a { color: inherit; }
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT_W_pweHUh-PBGF0LF5cV1NLR3lCm6JpNQ9JR-EBOmeg4mjjb4fvNE-R1fSqsQPMTTv947jMXSzx-V/pub?gid=1737483267&single=true&output=csv";
 const STORE_EMAIL = "joyasantuvilu@gmail.com";
 const INSTAGRAM_URL = "https://www.instagram.com/joyasantuvilu";
+
+const STATIC_REELS = [
+  {
+    title: "Piedras en luz natural",
+    desc: "Detalle real de las piezas Antuvilu.",
+    url: "assets/videos/antuvilu-reel-01.mp4",
+    thumb: "assets/videos/antuvilu-reel-01.jpg"
+  },
+  {
+    title: "Brillo y movimiento",
+    desc: "Texturas, color y presencia de cada joya.",
+    url: "assets/videos/antuvilu-reel-02.mp4",
+    thumb: "assets/videos/antuvilu-reel-02.jpg"
+  }
+];
+
+const REEL_EXAMPLES = [
+  {title: "Proceso de armado", desc: "Muestra manos, piedras y cierre de acero.", url: INSTAGRAM_URL},
+  {title: "Brillo en luz natural", desc: "Video corto girando la pieza al sol.", url: INSTAGRAM_URL},
+  {title: "Como combinar", desc: "Collar o pulsera puesta en outfit simple.", url: INSTAGRAM_URL},
+  {title: "Empaque listo", desc: "Cierre del paquete antes del despacho.", url: INSTAGRAM_URL}
+];
 
 let PRODUCTS = [];
 let currentFilter = "todos";
@@ -1473,7 +1431,7 @@ async function loadProducts() {
   } catch (err) {
     console.warn(err);
     PRODUCTS = [];
-    $("grid").innerHTML = '<div class="empty">No pudimos cargar el catalogo en este momento.<br>Intenta recargar la pagina en unos minutos.</div>';
+    $("grid").innerHTML = '<div class="empty">No se pudo cargar Google Sheets. Revisa que la planilla este publicada como CSV.</div>';
   }
   renderFilters();
   renderFeatured();
@@ -1515,7 +1473,7 @@ function imageBlock(p) {
   return `
     <button class="zoom-btn" type="button" onclick="openImageModal(${p.id})" aria-label="Ampliar imagen de ${esc(p.name)}" ${hasImg ? "" : "disabled"}>
       ${hasImg ? `<img class="card-img" src="${esc(first)}" data-sources="${esc(encodeURIComponent(JSON.stringify(rest)))}" alt="${esc(p.name)}" loading="eager" decoding="async" fetchpriority="high" referrerpolicy="no-referrer" onerror="retryImage(this)">` : ""}
-      <div class="image-placeholder" ${hasImg ? "hidden" : ""}>Sin foto disponible</div>
+      <div class="image-placeholder" ${hasImg ? "hidden" : ""}>Foto desde Sheets</div>
     </button>`;
 }
 
@@ -1531,7 +1489,7 @@ function renderGrid() {
     const low = Number(p.stock) > 0 && Number(p.stock) <= 3;
     const badge = sold ? '<span class="badge sold">Agotado</span>' : low ? `<span class="badge">Ultimas ${p.stock}</span>` : "";
     return `
-      <article class="card reveal">
+      <article class="card">
         <div class="card-media">
           ${imageBlock(p)}
           ${badge}
@@ -1562,7 +1520,7 @@ function renderFeatured() {
   target.innerHTML = picks.map(p => {
     const src = (Array.isArray(p.imgSources) && p.imgSources[0]) ? p.imgSources[0] : p.img;
     return `
-      <a class="mini-product reveal" href="#catalogo" onclick="selectCollection('${esc(p.cat)}')">
+      <a class="mini-product" href="#catalogo" onclick="selectCollection('${esc(p.cat)}')">
         ${src ? `<img class="mini-img" src="${esc(src)}" alt="${esc(p.name)}" loading="eager" decoding="async" referrerpolicy="no-referrer">` : `<div class="mini-img"></div>`}
         <span class="mini-info">
           <strong>${esc(p.name)}</strong>
@@ -1587,6 +1545,15 @@ function selectCollection(cat) {
   document.getElementById("catalogo")?.scrollIntoView({behavior: "smooth", block: "start"});
 }
 
+function collectReels() {
+  const reels = PRODUCTS.filter(p => p.video).map(p => ({
+    title: p.videoTitle || p.name,
+    desc: p.cat ? label(p.cat) : "Ver pieza en movimiento",
+    url: p.video,
+    thumb: p.videoThumb || p.img
+  }));
+  return reels.length ? reels : REEL_EXAMPLES;
+}
 function isDirectVideo(url) {
   return /\.(mp4|webm|ogg)(\?|#|$)/i.test(url);
 }
@@ -1597,18 +1564,19 @@ function renderReels() {
     url: p.video,
     thumb: p.videoThumb || p.img
   }));
+  const reels = realReels.length ? realReels : STATIC_REELS;
   const section = document.getElementById("inspiracion");
   const navReels = document.querySelector(".nav a[href='#inspiracion']");
-  if (!realReels.length) {
+  if (!reels.length) {
     if (section) section.style.display = "none";
     if (navReels) navReels.style.display = "none";
     return;
   }
   if (section) section.style.display = "";
   if (navReels) navReels.style.display = "";
-  $("reelTrack").innerHTML = realReels.map(r => {
+  $("reelTrack").innerHTML = reels.map(r => {
     const media = r.thumb ? `<img src="${esc(r.thumb)}" alt="${esc(r.title)}" loading="lazy">` : "";
-    const video = isDirectVideo(r.url) ? `<video src="${esc(r.url)}" ${r.thumb ? `poster="${esc(r.thumb)}"` : ""} controls playsinline preload="metadata"></video>` : media;
+    const video = isDirectVideo(r.url) ? `<video src="${esc(r.url)}" ${r.thumb ? `poster="${esc(r.thumb)}"` : ""} autoplay muted loop playsinline preload="metadata"></video>` : media;
     return `
       <a class="reel-card" href="${esc(r.url || INSTAGRAM_URL)}" target="_blank" rel="noopener">
         ${video}
@@ -1778,23 +1746,6 @@ $("imageModal").addEventListener("touchend", e => {
 
 updateCart();
 loadProducts();
-
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("in");
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, {threshold: 0.12, rootMargin: "0px 0px -40px 0px"});
-
-function observeReveals() {
-  document.querySelectorAll(".reveal:not(.in)").forEach(el => revealObserver.observe(el));
-}
-observeReveals();
-const gridObserver = new MutationObserver(observeReveals);
-gridObserver.observe($("grid"), {childList: true});
-if ($("featuredRow")) gridObserver.observe($("featuredRow"), {childList: true});
 </script>
 </body>
 </html>
