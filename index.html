@@ -1159,7 +1159,7 @@ a { color: inherit; }
 }
 .image-modal-img {
   max-width: 100%;
-  max-height: 78dvh;
+  max-height: min(58dvh, 620px);
   justify-self: center;
   object-fit: contain;
   background: var(--paper);
@@ -1212,6 +1212,74 @@ a { color: inherit; }
   font-weight: 600;
   letter-spacing: 0.05em;
   margin-top: 2px;
+}
+.product-detail {
+  width: min(640px, 100%);
+  justify-self: center;
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid rgba(216, 184, 107, 0.26);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(216,184,107,0.14), transparent 32%),
+    rgba(255, 253, 248, 0.94);
+  color: var(--ink);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.18);
+}
+.detail-kicker {
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.detail-desc {
+  color: var(--soil);
+  font-size: 0.95rem;
+  line-height: 1.62;
+}
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 9px;
+  border-top: 1px solid rgba(75,45,32,0.1);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.detail-row strong {
+  color: var(--soil);
+  font-weight: 600;
+  text-align: right;
+}
+.modal-add-btn {
+  position: relative;
+  overflow: hidden;
+  width: min(320px, 100%);
+  min-height: 46px;
+  justify-self: center;
+  border: 1px solid rgba(216, 184, 107, 0.38);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e5c878, #b8943f);
+  color: var(--ink);
+  box-shadow:
+    0 16px 30px rgba(184, 148, 63, 0.24),
+    inset 0 -2px 0 rgba(40, 24, 17, 0.18),
+    inset 0 1px 0 rgba(255, 253, 248, 0.55);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.modal-add-btn::after {
+  content: " →";
+}
+.modal-add-btn:disabled {
+  background: #d8d0c5;
+  color: #8d8278;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .footer {
@@ -1358,6 +1426,27 @@ a { color: inherit; }
   .cart-foot { padding: 16px 16px 22px; }
   .modal-overlay, .image-modal { padding: 10px; }
   .modal { width: 100%; border-radius: 8px; }
+  .image-modal {
+    align-items: start;
+    overflow: auto;
+    padding-top: 56px;
+  }
+  .image-modal-img { max-height: 42dvh; }
+  .image-modal-box { gap: 10px; }
+  .product-detail {
+    padding: 14px;
+    gap: 8px;
+  }
+  .detail-row {
+    display: grid;
+    gap: 3px;
+  }
+  .detail-row strong { text-align: left; }
+  .img-nav {
+    width: 38px;
+    height: 38px;
+    font-size: 1.55rem;
+  }
   .fab-stack { right: 12px; bottom: 12px; }
 }
 
@@ -1544,6 +1633,8 @@ a { color: inherit; }
     <img class="image-modal-img" id="imageModalImg" src="" alt="Imagen ampliada del producto" />
     <div class="image-caption" id="imageModalCaption"></div>
     <div class="image-modal-price" id="imageModalPrice"></div>
+    <div class="product-detail" id="imageModalDetail"></div>
+    <button class="modal-add-btn" id="imageModalAdd" type="button" onclick="addCartFromModal()">Elegir pieza</button>
   </div>
   <button class="img-nav img-next" type="button" onclick="event.stopPropagation(); navigateModal(1)" aria-label="Siguiente">&#8250;</button>
 </div>
@@ -1926,6 +2017,25 @@ function closeReelModal() {
 
 let modalCurrentId = null;
 
+function productStockLabel(p) {
+  const stock = Number(p?.stock);
+  if (stock === 0) return "Agotado";
+  if (stock === 99) return "Disponible";
+  if (stock <= 3) return "Ultimas " + stock;
+  return stock + " disponibles";
+}
+
+function productDetailHtml(p) {
+  const parts = [
+    `<div class="detail-kicker">${esc(label(p.cat || "pieza"))}</div>`,
+    `<div class="detail-desc">${esc(p.desc || "Pieza artesanal de Joyas Antuvilu, seleccionada a mano por su color, energia y presencia.")}</div>`,
+    p.materials ? `<div class="detail-row"><span>Piedras / materiales</span><strong>${esc(p.materials)}</strong></div>` : "",
+    p.measure ? `<div class="detail-row"><span>Medida</span><strong>${esc(p.measure)}</strong></div>` : "",
+    `<div class="detail-row"><span>Disponibilidad</span><strong>${esc(productStockLabel(p))}</strong></div>`
+  ].filter(Boolean);
+  return parts.join("");
+}
+
 function openImageModal(id) {
   const p = PRODUCTS.find(x => Number(x.id) === Number(id));
   if (!p || !p.img) return;
@@ -1934,6 +2044,11 @@ function openImageModal(id) {
   $("imageModalImg").alt = "Imagen ampliada de " + p.name;
   $("imageModalCaption").textContent = p.name;
   $("imageModalPrice").textContent = p.price > 0 ? fmt(p.price) : "";
+  $("imageModalDetail").innerHTML = productDetailHtml(p);
+  const add = $("imageModalAdd");
+  const sold = Number(p.stock) === 0;
+  add.disabled = sold;
+  add.textContent = sold ? "Agotado" : "Elegir pieza";
   $("imageModal").classList.add("open");
   document.body.style.overflow = "hidden";
   // Mostrar/ocultar flechas según cantidad de productos con imagen
@@ -1952,8 +2067,13 @@ function navigateModal(dir) {
 function closeImageModal() {
   $("imageModal").classList.remove("open");
   $("imageModalImg").src = "";
+  $("imageModalDetail").innerHTML = "";
   document.body.style.overflow = "";
   modalCurrentId = null;
+}
+
+function addCartFromModal() {
+  if (modalCurrentId != null) addCart(modalCurrentId);
 }
 
 function addCart(id) {
