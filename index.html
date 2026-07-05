@@ -38,11 +38,25 @@ body {
   font-family: "Jost", system-ui, sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 12% 8%, rgba(216, 184, 107, 0.18), transparent 28%),
-    radial-gradient(circle at 88% 18%, rgba(32, 59, 42, 0.12), transparent 34%),
-    radial-gradient(circle at 18% 82%, rgba(118, 81, 58, 0.08), transparent 30%),
-    linear-gradient(180deg, #fcf8f1 0%, #f6ecde 46%, #fcf8f1 100%);
+    radial-gradient(circle at 12% 6%, rgba(216, 184, 107, 0.22), transparent 24%),
+    radial-gradient(circle at 88% 16%, rgba(32, 59, 42, 0.16), transparent 34%),
+    linear-gradient(135deg, #fffaf1 0%, #f2e5d4 44%, #fffdf8 100%);
   background-attachment: fixed;
+  position: relative;
+  isolation: isolate;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(255, 253, 248, 0.72), transparent 46%),
+    radial-gradient(circle at 18% 28%, rgba(216, 184, 107, 0.12), transparent 22%),
+    radial-gradient(circle at 78% 72%, rgba(32, 59, 42, 0.09), transparent 26%),
+    repeating-radial-gradient(circle at 18% 16%, rgba(40, 24, 17, 0.026) 0 1px, transparent 1px 8px);
+  opacity: 0.95;
 }
 button, input, textarea, select { font: inherit; }
 button { cursor: pointer; }
@@ -134,6 +148,8 @@ a { color: inherit; }
   color: var(--soil);
 }
 .cart-btn {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -161,7 +177,7 @@ a { color: inherit; }
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: min(760px, calc(100vh - 118px));
+  min-height: min(620px, calc(100vh - 118px));
   display: grid;
   align-items: end;
   padding: clamp(54px, 8vw, 90px) clamp(18px, 5vw, 64px);
@@ -236,6 +252,8 @@ a { color: inherit; }
   margin-top: 28px;
 }
 .btn-primary, .btn-ghost {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -249,6 +267,19 @@ a { color: inherit; }
   text-transform: uppercase;
   transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease, background 0.18s ease;
 }
+.btn-primary::before,
+.add-btn::before,
+.confirm-btn::before,
+.cart-whatsapp::before,
+.cart-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px 1px auto;
+  height: 45%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255,255,255,0));
+  pointer-events: none;
+}
 .btn-primary::after {
   content: "→";
   margin-left: 10px;
@@ -259,12 +290,18 @@ a { color: inherit; }
   border: 1px solid rgba(255, 253, 248, 0.38);
   background: linear-gradient(135deg, #e5c878, #b8943f);
   color: var(--ink);
+  text-shadow: 0 1px 0 rgba(255, 253, 248, 0.4);
+  box-shadow:
+    0 16px 30px rgba(184, 148, 63, 0.24),
+    inset 0 -2px 0 rgba(40, 24, 17, 0.18),
+    inset 0 1px 0 rgba(255, 253, 248, 0.55);
 }
 .btn-ghost {
   border: 1px solid rgba(216, 184, 107, 0.48);
   background: rgba(255, 253, 248, 0.08);
   color: var(--paper);
   backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 14px 30px rgba(20, 13, 8, 0.18);
 }
 .btn-primary,
 .cart-btn,
@@ -442,7 +479,7 @@ a { color: inherit; }
 
 .section {
   position: relative;
-  padding: clamp(42px, 7vw, 76px) clamp(16px, 4vw, 48px);
+  padding: clamp(32px, 5vw, 58px) clamp(16px, 4vw, 48px);
 }
 .section::before {
   content: "";
@@ -476,6 +513,19 @@ a { color: inherit; }
   font-size: clamp(2rem, 5vw, 3.3rem);
   font-weight: 500;
 }
+
+#catalogo {
+  margin-top: 0;
+}
+#catalogo::before {
+  inset: 10px clamp(10px, 3vw, 28px);
+  border: 1px solid rgba(184, 148, 63, 0.12);
+  background:
+    radial-gradient(circle at 88% 8%, rgba(216, 184, 107, 0.18), transparent 26%),
+    radial-gradient(circle at 4% 90%, rgba(32, 59, 42, 0.08), transparent 26%),
+    linear-gradient(180deg, rgba(255,253,248,0.55), rgba(238,228,214,0.34));
+  box-shadow: 0 22px 60px rgba(40, 24, 17, 0.06);
+}
 .section-copy {
   max-width: 540px;
   margin: 8px 0 0;
@@ -489,6 +539,8 @@ a { color: inherit; }
   gap: 14px;
   align-items: center;
   margin-bottom: 22px;
+  position: relative;
+  z-index: 4;
 }
 .search {
   width: 100%;
@@ -506,19 +558,23 @@ a { color: inherit; }
   gap: 8px;
 }
 .filter-btn {
-  border: 1px solid var(--line);
+  box-shadow: 0 8px 18px rgba(40, 24, 17, 0.04), inset 0 1px 0 rgba(255,255,255,0.7);
+  border: 1px solid rgba(184, 148, 63, 0.22);
   border-radius: 999px;
-  padding: 10px 14px;
-  background: rgba(255, 253, 248, 0.88);
+  min-height: 42px;
+  padding: 10px 15px;
+  background:
+    linear-gradient(180deg, rgba(255,253,248,0.96), rgba(238,228,214,0.74));
   color: var(--soil);
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .filter-btn.active {
-  background: var(--ink);
+  background: linear-gradient(135deg, #281811, #203b2a);
   color: var(--gold-2);
-  border-color: var(--ink);
+  border-color: rgba(216, 184, 107, 0.42);
+  box-shadow: 0 12px 24px rgba(40,24,17,0.12), inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
 .grid {
@@ -697,6 +753,8 @@ a { color: inherit; }
   font-weight: 600;
 }
 .add-btn {
+  position: relative;
+  overflow: hidden;
   border: 1px solid rgba(216, 184, 107, 0.36);
   border-radius: 999px;
   min-height: 42px;
@@ -707,6 +765,10 @@ a { color: inherit; }
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+.add-btn::after {
+  content: " →";
+  font-size: 0.9rem;
 }
 .add-btn:disabled {
   background: #d8d0c5;
@@ -981,6 +1043,8 @@ a { color: inherit; }
   font-size: 1.65rem;
 }
 .confirm-btn, .email-btn {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   border: 1px solid rgba(255, 253, 248, 0.42);
   border-radius: 999px;
@@ -993,6 +1057,8 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 .cart-whatsapp {
+  position: relative;
+  overflow: hidden;
   display: none;
   align-items: center;
   justify-content: center;
@@ -1209,11 +1275,26 @@ a { color: inherit; }
   .hero {
     min-height: auto;
     align-items: center;
-    padding: 54px 18px 58px;
+    padding: 34px 16px 38px;
   }
-  .hero h1 { font-size: clamp(2.7rem, 15vw, 4.25rem); }
+  .hero-logo {
+    width: 82px;
+    height: 82px;
+    padding: 6px;
+    margin-bottom: 14px;
+  }
+  .eyebrow {
+    margin-bottom: 12px;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+  }
+  .hero h1 {
+    max-width: 360px;
+    font-size: clamp(2.45rem, 13vw, 3.65rem);
+    line-height: 0.94;
+  }
   .hero p { font-size: 0.98rem; line-height: 1.55; }
-  .hero-actions { gap: 10px; }
+  .hero-actions { gap: 10px; margin-top: 22px; }
   .btn-primary, .btn-ghost {
     min-height: 48px;
     padding: 0 18px;
@@ -1224,14 +1305,21 @@ a { color: inherit; }
   .trust-item { padding: 14px 12px; border-bottom: 1px solid var(--line); }
   .trust strong { font-size: 0.66rem; letter-spacing: 0.12em; }
   .trust span { font-size: 0.76rem; }
-  .section { padding: 38px 12px; }
+  .section { padding: 30px 12px; }
   .section::before { inset: 10px 8px; border-radius: 14px; }
-  .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .collection-card { min-height: 178px; padding: 14px; }
-  .collection-content strong { font-size: 1.3rem; }
-  .collection-content small { display: none; }
-  .featured-row { grid-template-columns: 1fr; }
-  .tools { grid-template-columns: 1fr; }
+  #catalogo { padding-top: 28px; }
+  #catalogo::before { inset: 6px 6px; }
+  .tools {
+    grid-template-columns: 1fr;
+    position: sticky;
+    top: 62px;
+    z-index: 40;
+    margin: 0 -4px 16px;
+    padding: 9px 4px 8px;
+    border-bottom: 1px solid rgba(184, 148, 63, 0.14);
+    background: rgba(252, 248, 241, 0.88);
+    backdrop-filter: blur(12px);
+  }
   .section-head { display: block; }
   .section-title { font-size: clamp(1.85rem, 9vw, 2.45rem); }
   .filters {
@@ -1239,7 +1327,12 @@ a { color: inherit; }
     overflow-x: auto;
     padding-bottom: 4px;
   }
-  .filter-btn { flex: 0 0 auto; min-height: 42px; }
+  .filter-btn {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 9px 13px;
+    font-size: 0.66rem;
+  }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .card-body { padding: 12px; }
   .card-name { font-size: 1.1rem; }
@@ -1255,7 +1348,6 @@ a { color: inherit; }
   }
   .like-btn { width: 36px; height: 36px; top: 8px; left: 8px; }
   .badge { top: 8px; right: 8px; font-size: 0.56rem; }
-  .story-band { grid-template-columns: 1fr; }
   .reel-track { grid-auto-columns: minmax(210px, 76vw); }
   .cart {
     width: 100vw;
@@ -1330,8 +1422,7 @@ a { color: inherit; }
       <span class="brand-sub">Fuerza natural</span>
     </span>
   </a>
-  <nav class="nav" aria-label="Navegacion principal">
-    <a href="#colecciones">Colecciones</a>
+  <nav class="nav" aria-label="Navegación principal">
     <a href="#catalogo">Catálogo</a>
     <a href="#inspiracion">Reels</a>
     <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Instagram</a>
@@ -1357,72 +1448,17 @@ a { color: inherit; }
 
   <section class="trust" aria-label="Beneficios de compra">
     <div class="trust-item"><strong>Stock real</strong><span>Solo publicamos piezas con disponibilidad confirmada.</span></div>
-    <div class="trust-item"><strong>Fotos claras</strong><span>Imagenes completas, sin cortes en producto.</span></div>
+    <div class="trust-item"><strong>Fotos claras</strong><span>Imágenes completas, sin cortes en producto.</span></div>
     <div class="trust-item"><strong>Hecho a mano</strong><span>Piezas únicas creadas en el sur de Chile.</span></div>
     <div class="trust-item"><strong>Pedido simple</strong><span>Agrega al carrito y coordina por correo.</span></div>
-  </section>
-
-  <section class="section collections" id="colecciones">
-    <div class="section-head">
-      <div>
-        <p class="section-kicker">Compra por coleccion</p>
-        <h2 class="section-title">Encuentra la energía de tu pieza</h2>
-        <p class="section-copy">Una entrada más rápida al catálogo: pulseras, collares y regalos con piedras naturales seleccionadas a mano.</p>
-      </div>
-    </div>
-    <div class="collection-grid">
-      <article class="collection-card dark reveal">
-        <button type="button" onclick="selectCollection('pulseras')" aria-label="Ver pulseras"></button>
-        <div class="collection-content">
-          <span>Colección</span>
-          <strong>Pulseras</strong>
-          <small>Piedras naturales para uso diario, intencion y regalo.</small>
-        </div>
-      </article>
-      <article class="collection-card reveal">
-        <button type="button" onclick="selectCollection('collares')" aria-label="Ver collares"></button>
-        <div class="collection-content">
-          <span>Colección</span>
-          <strong>Collares</strong>
-          <small>Piezas protagonistas con fuerza visual y significado.</small>
-        </div>
-      </article>
-      <article class="collection-card reveal">
-        <button type="button" onclick="selectCollection('todos')" aria-label="Ver regalos"></button>
-        <div class="collection-content">
-          <span>Seleccion</span>
-          <strong>Regalos con sentido</strong>
-          <small>Joyas listas para sorprender con una historia propia.</small>
-        </div>
-      </article>
-      <article class="collection-card dark reveal">
-        <button type="button" onclick="selectCollection('todos')" aria-label="Ver catálogo completo"></button>
-        <div class="collection-content">
-          <span>Catálogo</span>
-          <strong>Todas las piezas</strong>
-          <small>Explora el stock completo conectado a Google Sheets.</small>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <section class="section" id="destacados">
-    <div class="section-head">
-      <div>
-        <p class="section-kicker">Mas buscadas</p>
-        <h2 class="section-title">Piezas destacadas</h2>
-      </div>
-      <a class="btn-primary" href="#catalogo">Ver todo</a>
-    </div>
-    <div class="featured-row" id="featuredRow"></div>
   </section>
 
   <section class="section" id="catalogo">
     <div class="section-head">
       <div>
-        <p class="section-kicker">Colección disponible</p>
+        <p class="section-kicker">Catálogo vivo</p>
         <h2 class="section-title">Elige tu joya</h2>
-        <p class="section-copy">Pulseras y collares de piedras naturales, cada pieza única hecha a mano. Stock actualizado en tiempo real.</p>
+        <p class="section-copy">Filtra por tipo, busca por piedra y elige una pieza disponible sin recorrer una página eterna.</p>
       </div>
     </div>
     <div class="tools">
@@ -1434,25 +1470,12 @@ a { color: inherit; }
     </div>
   </section>
 
-  <section class="story-band">
-    <div class="story-copy reveal">
-      <p class="section-kicker">Origen y proceso</p>
-      <h2 class="section-title">Cada piedra tiene una historia que contar.</h2>
-      <p>Creadas en el sur de Chile con piedras naturales seleccionadas a mano. Cada pulsera y collar nace como una pieza única: con su propia energía, su propio color, su propio relato. Síguenos en Instagram para ver el proceso de cerca.</p>
-      <a class="btn-primary" href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Ver en Instagram</a>
-    </div>
-    <div class="story-panel" aria-hidden="true">
-      <div class="story-orbit"></div>
-      <div class="story-circle">Piedras<br />con historia</div>
-    </div>
-  </section>
-
   <section class="section reels" id="inspiracion" style="display:none">
     <div class="section-head">
       <div>
         <p class="section-kicker">Instagram y reels</p>
         <h2 class="section-title">Piezas en movimiento</h2>
-        <p class="section-copy">Mira como lucen las joyas en videos reales: el brillo de las piedras, el proceso artesanal y como combinarlas en el dia a dia.</p>
+        <p class="section-copy">Mira cómo lucen las joyas en videos reales: el brillo de las piedras, el proceso artesanal y cómo combinarlas en el día a día.</p>
       </div>
     </div>
     <div class="reel-track" id="reelTrack"></div>
@@ -1700,7 +1723,7 @@ async function loadProducts() {
     const res = await fetch(url, {cache: "no-store"});
     if (!res.ok) throw new Error("No se pudo leer Google Sheets");
     const rows = parseCSV(await res.text());
-    if (rows.length < 2) throw new Error("La planilla esta vacia");
+    if (rows.length < 2) throw new Error("La planilla está vacía");
     const headers = rows[0].map(key);
     PRODUCTS = rows.slice(1).map((r, i) => {
       const o = {};
@@ -1732,7 +1755,6 @@ async function loadProducts() {
     $("grid").innerHTML = '<div class="empty">No pudimos cargar el catálogo en este momento.<br>Intenta recargar la página en unos minutos.</div>';
   }
   renderFilters();
-  renderFeatured();
   renderGrid();
   renderReels();
 }
@@ -1804,7 +1826,7 @@ function renderGrid() {
   const list = filteredProducts();
   if (!PRODUCTS.length) return;
   if (!list.length) {
-    $("grid").innerHTML = '<div class="empty">No hay productos para esta busqueda.</div>';
+    $("grid").innerHTML = '<div class="empty">No hay productos para esta búsqueda.</div>';
     return;
   }
   $("grid").innerHTML = list.map(p => {
@@ -1830,27 +1852,6 @@ function renderGrid() {
       </article>`;
   }).join("");
   preloadVisibleImages(list);
-}
-
-function renderFeatured() {
-  const target = $("featuredRow");
-  if (!target) return;
-  const picks = PRODUCTS.filter(p => Number(p.stock) > 0).slice(0, 4);
-  if (!picks.length) {
-    target.innerHTML = '<div class="empty">Los destacados aparecerán cuando cargue el catálogo.</div>';
-    return;
-  }
-  target.innerHTML = picks.map(p => {
-    const src = (Array.isArray(p.imgSources) && p.imgSources[0]) ? p.imgSources[0] : p.img;
-    return `
-      <a class="mini-product reveal" href="#catalogo" onclick="selectCollection('${esc(p.cat)}')">
-        ${src ? `<img class="mini-img" src="${esc(src)}" alt="${esc(p.name)}" loading="eager" decoding="async" referrerpolicy="no-referrer">` : `<div class="mini-img"></div>`}
-        <span class="mini-info">
-          <strong>${esc(p.name)}</strong>
-          <span>${fmt(p.price)}</span>
-        </span>
-      </a>`;
-  }).join("");
 }
 
 function filterCat(cat) {
@@ -2115,7 +2116,6 @@ function observeReveals() {
 observeReveals();
 const gridObserver = new MutationObserver(observeReveals);
 gridObserver.observe($("grid"), {childList: true});
-if ($("featuredRow")) gridObserver.observe($("featuredRow"), {childList: true});
 
 // Botón flotante de WhatsApp: se oculta solo si no hay número configurado
 if (WHATSAPP_NUMBER) {
