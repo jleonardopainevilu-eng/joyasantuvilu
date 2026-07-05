@@ -4,7 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Joyas Antuvilu | Joyas con fuerza natural</title>
-<meta name="description" content="Joyas Antuvilu: pulseras y collares de piedras naturales, piezas unicas hechas a mano. Catalogo conectado a Google Sheets." />
+<meta name="description" content="Joyas Antuvilu: pulseras y collares de piedras naturales, piezas únicas hechas a mano. Catálogo conectado a Google Sheets." />
+<link rel="canonical" href="https://www.joyasantuvilu.cl/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Joyas Antuvilu | Joyas con fuerza natural" />
+<meta property="og:description" content="Pulseras y collares de piedras naturales, piezas únicas hechas a mano en el sur de Chile." />
+<meta property="og:url" content="https://www.joyasantuvilu.cl/" />
+<meta property="og:image" content="https://www.joyasantuvilu.cl/assets/logo-antuvilu.png" />
+<meta name="theme-color" content="#203b2a" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -30,7 +37,12 @@ body {
   margin: 0;
   font-family: "Jost", system-ui, sans-serif;
   color: var(--ink);
-  background: var(--cream);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(216, 184, 107, 0.18), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(32, 59, 42, 0.12), transparent 34%),
+    radial-gradient(circle at 18% 82%, rgba(118, 81, 58, 0.08), transparent 30%),
+    linear-gradient(180deg, #fcf8f1 0%, #f6ecde 46%, #fcf8f1 100%);
+  background-attachment: fixed;
 }
 button, input, textarea, select { font: inherit; }
 button { cursor: pointer; }
@@ -60,9 +72,10 @@ a { color: inherit; }
   gap: 18px;
   min-height: 72px;
   padding: 12px clamp(16px, 4vw, 48px);
-  background: rgba(251, 247, 240, 0.94);
+  background: rgba(252, 248, 241, 0.92);
   border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(40, 24, 17, 0.05);
+  backdrop-filter: blur(14px);
 }
 .brand {
   display: flex;
@@ -124,10 +137,10 @@ a { color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 0;
+  border: 1px solid rgba(216, 184, 107, 0.45);
   border-radius: 999px;
   padding: 10px 16px;
-  background: var(--ink);
+  background: linear-gradient(135deg, #281811, #203b2a);
   color: var(--gold-2);
   font-size: 0.72rem;
   font-weight: 700;
@@ -153,9 +166,10 @@ a { color: inherit; }
   align-items: end;
   padding: clamp(54px, 8vw, 90px) clamp(18px, 5vw, 64px);
   background:
-    linear-gradient(90deg, rgba(20, 13, 8, 0.78), rgba(38, 63, 42, 0.58)),
-    radial-gradient(circle at 78% 26%, rgba(216, 184, 107, 0.18), transparent 34%),
-    linear-gradient(135deg, #1c110c, #263f2a 62%, #1e2f20);
+    linear-gradient(90deg, rgba(20, 13, 8, 0.82), rgba(32, 59, 42, 0.62)),
+    radial-gradient(circle at 76% 24%, rgba(216, 184, 107, 0.32), transparent 31%),
+    radial-gradient(circle at 18% 80%, rgba(118, 81, 58, 0.34), transparent 34%),
+    linear-gradient(135deg, #17100c, #203b2a 62%, #281811);
   color: var(--paper);
 }
 .hero::before {
@@ -226,22 +240,38 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
   min-height: 46px;
-  padding: 0 20px;
+  padding: 0 22px;
   border-radius: 999px;
   text-decoration: none;
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease, background 0.18s ease;
 }
-.btn-primary { background: var(--gold-2); color: var(--ink); }
-.btn-ghost { border: 1px solid rgba(255, 253, 248, 0.4); color: var(--paper); }
+.btn-primary::after {
+  content: "→";
+  margin-left: 10px;
+  font-size: 1rem;
+  line-height: 1;
+}
+.btn-primary {
+  border: 1px solid rgba(255, 253, 248, 0.38);
+  background: linear-gradient(135deg, #e5c878, #b8943f);
+  color: var(--ink);
+}
+.btn-ghost {
+  border: 1px solid rgba(216, 184, 107, 0.48);
+  background: rgba(255, 253, 248, 0.08);
+  color: var(--paper);
+  backdrop-filter: blur(8px);
+}
 .btn-primary,
 .cart-btn,
 .add-btn,
 .confirm-btn,
 .email-btn {
-  box-shadow: 0 10px 24px rgba(184, 148, 63, 0.16);
+  box-shadow: 0 14px 30px rgba(184, 148, 63, 0.22);
 }
 .btn-primary:hover,
 .cart-btn:hover,
@@ -249,13 +279,15 @@ a { color: inherit; }
 .confirm-btn:hover,
 .email-btn:hover {
   filter: brightness(1.04);
+  transform: translateY(-1px);
 }
 
 .trust {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border-bottom: 1px solid var(--line);
-  background: var(--paper);
+  background: rgba(255, 253, 248, 0.82);
+  backdrop-filter: blur(10px);
 }
 .trust-item {
   padding: 18px 22px;
@@ -409,7 +441,19 @@ a { color: inherit; }
 }
 
 .section {
+  position: relative;
   padding: clamp(42px, 7vw, 76px) clamp(16px, 4vw, 48px);
+}
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 18px clamp(12px, 3vw, 32px);
+  z-index: -1;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 8% 20%, rgba(216, 184, 107, 0.12), transparent 26%),
+    radial-gradient(circle at 92% 22%, rgba(32, 59, 42, 0.08), transparent 30%);
+  pointer-events: none;
 }
 .section-head {
   display: flex;
@@ -452,7 +496,8 @@ a { color: inherit; }
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0 18px;
-  background: var(--paper);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), 0 8px 22px rgba(40, 24, 17, 0.04);
+  background: rgba(255, 253, 248, 0.92);
   color: var(--ink);
 }
 .filters {
@@ -464,7 +509,7 @@ a { color: inherit; }
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 10px 14px;
-  background: var(--paper);
+  background: rgba(255, 253, 248, 0.88);
   color: var(--soil);
   font-size: 0.72rem;
   letter-spacing: 0.12em;
@@ -486,9 +531,11 @@ a { color: inherit; }
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background: var(--paper);
+  background: rgba(255, 253, 248, 0.92);
   border: 1px solid var(--line);
-  box-shadow: 0 1px 0 rgba(40, 24, 17, 0.02);
+  border-radius: 8px;
+  box-shadow: 0 12px 34px rgba(40, 24, 17, 0.07), inset 0 1px 0 rgba(255,255,255,0.7);
+  overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .card:hover {
@@ -499,7 +546,9 @@ a { color: inherit; }
   position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: linear-gradient(135deg, #f2eadf, #fffdf8);
+  background:
+    radial-gradient(circle at 50% 38%, rgba(216, 184, 107, 0.18), transparent 42%),
+    linear-gradient(135deg, #f2eadf, #fffdf8);
 }
 .zoom-btn {
   display: block;
@@ -571,28 +620,30 @@ a { color: inherit; }
   top: 12px;
   left: 12px;
   z-index: 2;
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  border: none;
-  background: rgba(255, 253, 248, 0.88);
+  border: 1px solid rgba(184, 148, 63, 0.42);
+  background: rgba(255, 253, 248, 0.92);
+  box-shadow: 0 10px 22px rgba(40, 24, 17, 0.12);
   display: grid;
   place-items: center;
   transition: transform 0.15s ease, background 0.2s ease;
 }
 .like-btn:hover { transform: scale(1.08); }
 .like-btn svg {
-  width: 17px;
-  height: 17px;
-  stroke: var(--soil);
+  width: 19px;
+  height: 19px;
+  stroke: var(--gold);
   stroke-width: 2;
   fill: none;
   transition: fill 0.2s ease, stroke 0.2s ease;
 }
 .like-btn.liked svg {
-  fill: #b8433a;
-  stroke: #b8433a;
+  fill: var(--gold);
+  stroke: var(--gold);
 }
+.like-btn.liked { background: rgba(40, 24, 17, 0.9); }
 .like-btn.liked {
   animation: likepop 0.35s ease;
 }
@@ -646,10 +697,11 @@ a { color: inherit; }
   font-weight: 600;
 }
 .add-btn {
-  border: 0;
+  border: 1px solid rgba(216, 184, 107, 0.36);
   border-radius: 999px;
-  padding: 10px 14px;
-  background: var(--ink);
+  min-height: 42px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #281811, #203b2a);
   color: var(--gold-2);
   font-size: 0.7rem;
   font-weight: 700;
@@ -930,16 +982,35 @@ a { color: inherit; }
 }
 .confirm-btn, .email-btn {
   width: 100%;
-  border: 0;
+  border: 1px solid rgba(255, 253, 248, 0.42);
   border-radius: 999px;
   min-height: 48px;
-  background: var(--gold);
+  background: linear-gradient(135deg, #e5c878, #b8943f);
   color: var(--ink);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+.cart-whatsapp {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(216, 184, 107, 0.36);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #203b2a, #281811);
+  color: var(--gold-2);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 14px 30px rgba(32, 59, 42, 0.18);
+}
+.cart-whatsapp.show { display: flex; }
 .confirm-btn:disabled, .email-btn:disabled {
   background: #d8d0c5;
   color: #8d8278;
@@ -1112,15 +1183,49 @@ a { color: inherit; }
 }
 
 @media (max-width: 760px) {
-  .topbar { font-size: 0.62rem; }
-  .header { min-height: 64px; }
+  body { background-attachment: scroll; }
+  .topbar {
+    padding: 7px 12px;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+  }
+  .header {
+    min-height: 62px;
+    padding: 9px 12px;
+    gap: 10px;
+  }
   .brand-logo-img { width: 44px; height: 44px; }
+  .brand { gap: 9px; min-width: 0; }
+  .brand-name { font-size: 1.02rem; letter-spacing: 0.06em; white-space: nowrap; }
   .hero-logo { margin-bottom: 18px; }
   .brand-sub, .nav a { display: none; }
   .nav { gap: 8px; }
-  .hero { min-height: 590px; align-items: center; }
+  .cart-btn {
+    min-height: 42px;
+    padding: 9px 12px;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+  }
+  .hero {
+    min-height: auto;
+    align-items: center;
+    padding: 54px 18px 58px;
+  }
+  .hero h1 { font-size: clamp(2.7rem, 15vw, 4.25rem); }
+  .hero p { font-size: 0.98rem; line-height: 1.55; }
+  .hero-actions { gap: 10px; }
+  .btn-primary, .btn-ghost {
+    min-height: 48px;
+    padding: 0 18px;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
   .trust { grid-template-columns: repeat(2, 1fr); }
-  .trust-item { border-bottom: 1px solid var(--line); }
+  .trust-item { padding: 14px 12px; border-bottom: 1px solid var(--line); }
+  .trust strong { font-size: 0.66rem; letter-spacing: 0.12em; }
+  .trust span { font-size: 0.76rem; }
+  .section { padding: 38px 12px; }
+  .section::before { inset: 10px 8px; border-radius: 14px; }
   .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .collection-card { min-height: 178px; padding: 14px; }
   .collection-content strong { font-size: 1.3rem; }
@@ -1128,14 +1233,40 @@ a { color: inherit; }
   .featured-row { grid-template-columns: 1fr; }
   .tools { grid-template-columns: 1fr; }
   .section-head { display: block; }
+  .section-title { font-size: clamp(1.85rem, 9vw, 2.45rem); }
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .filter-btn { flex: 0 0 auto; min-height: 42px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .card-body { padding: 12px; }
   .card-name { font-size: 1.1rem; }
   .card-desc, .card-meta { display: none; }
   .card-foot { align-items: stretch; flex-direction: column; }
-  .add-btn { width: 100%; }
+  .price { font-size: 1.18rem; }
+  .add-btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 8px;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+  }
+  .like-btn { width: 36px; height: 36px; top: 8px; left: 8px; }
+  .badge { top: 8px; right: 8px; font-size: 0.56rem; }
   .story-band { grid-template-columns: 1fr; }
   .reel-track { grid-auto-columns: minmax(210px, 76vw); }
+  .cart {
+    width: 100vw;
+    right: -100vw;
+  }
+  .cart-head, .modal-head { padding: 16px; }
+  .cart-items { padding: 14px; }
+  .cart-foot { padding: 16px 16px 22px; }
+  .modal-overlay, .image-modal { padding: 10px; }
+  .modal { width: 100%; border-radius: 8px; }
+  .fab-stack { right: 12px; bottom: 12px; }
 }
 
 .reveal {
@@ -1189,7 +1320,7 @@ a { color: inherit; }
 </style>
 </head>
 <body>
-<div class="topbar">Stock actualizado desde catalogo | Piezas hechas a mano | Envio a todo Chile</div>
+<div class="topbar">Stock actualizado desde catálogo | Piezas hechas a mano | Envío a todo Chile</div>
 
 <header class="header">
   <a class="brand" href="#inicio" aria-label="Inicio Joyas Antuvilu">
@@ -1201,7 +1332,7 @@ a { color: inherit; }
   </a>
   <nav class="nav" aria-label="Navegacion principal">
     <a href="#colecciones">Colecciones</a>
-    <a href="#catalogo">Catalogo</a>
+    <a href="#catalogo">Catálogo</a>
     <a href="#inspiracion">Reels</a>
     <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Instagram</a>
     <button class="cart-btn" type="button" onclick="toggleCart()">
@@ -1216,9 +1347,9 @@ a { color: inherit; }
       <img class="hero-logo" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" width="132" height="132" onerror="this.style.display='none'" />
       <p class="eyebrow">Piedras naturales | Hecho a mano</p>
       <h1>Joyas con fuerza natural</h1>
-      <p>Pulseras y collares creados en el sur de Chile, pensados como piezas de energia, identidad y regalo con sentido.</p>
+      <p>Pulseras y collares creados en el sur de Chile, pensados como piezas de energía, identidad y regalo con sentido.</p>
       <div class="hero-actions">
-        <a class="btn-primary" href="#catalogo">Ver catalogo</a>
+        <a class="btn-primary" href="#catalogo">Ver catálogo</a>
         <a class="btn-ghost" href="#inspiracion">Ver reels</a>
       </div>
     </div>
@@ -1227,7 +1358,7 @@ a { color: inherit; }
   <section class="trust" aria-label="Beneficios de compra">
     <div class="trust-item"><strong>Stock real</strong><span>Solo publicamos piezas con disponibilidad confirmada.</span></div>
     <div class="trust-item"><strong>Fotos claras</strong><span>Imagenes completas, sin cortes en producto.</span></div>
-    <div class="trust-item"><strong>Hecho a mano</strong><span>Piezas unicas creadas en el sur de Chile.</span></div>
+    <div class="trust-item"><strong>Hecho a mano</strong><span>Piezas únicas creadas en el sur de Chile.</span></div>
     <div class="trust-item"><strong>Pedido simple</strong><span>Agrega al carrito y coordina por correo.</span></div>
   </section>
 
@@ -1235,15 +1366,15 @@ a { color: inherit; }
     <div class="section-head">
       <div>
         <p class="section-kicker">Compra por coleccion</p>
-        <h2 class="section-title">Encuentra la energia de tu pieza</h2>
-        <p class="section-copy">Una entrada mas rapida al catalogo: pulseras, collares y regalos con piedras naturales seleccionadas a mano.</p>
+        <h2 class="section-title">Encuentra la energía de tu pieza</h2>
+        <p class="section-copy">Una entrada más rápida al catálogo: pulseras, collares y regalos con piedras naturales seleccionadas a mano.</p>
       </div>
     </div>
     <div class="collection-grid">
       <article class="collection-card dark reveal">
         <button type="button" onclick="selectCollection('pulseras')" aria-label="Ver pulseras"></button>
         <div class="collection-content">
-          <span>Coleccion</span>
+          <span>Colección</span>
           <strong>Pulseras</strong>
           <small>Piedras naturales para uso diario, intencion y regalo.</small>
         </div>
@@ -1251,7 +1382,7 @@ a { color: inherit; }
       <article class="collection-card reveal">
         <button type="button" onclick="selectCollection('collares')" aria-label="Ver collares"></button>
         <div class="collection-content">
-          <span>Coleccion</span>
+          <span>Colección</span>
           <strong>Collares</strong>
           <small>Piezas protagonistas con fuerza visual y significado.</small>
         </div>
@@ -1265,9 +1396,9 @@ a { color: inherit; }
         </div>
       </article>
       <article class="collection-card dark reveal">
-        <button type="button" onclick="selectCollection('todos')" aria-label="Ver catalogo completo"></button>
+        <button type="button" onclick="selectCollection('todos')" aria-label="Ver catálogo completo"></button>
         <div class="collection-content">
-          <span>Catalogo</span>
+          <span>Catálogo</span>
           <strong>Todas las piezas</strong>
           <small>Explora el stock completo conectado a Google Sheets.</small>
         </div>
@@ -1289,17 +1420,17 @@ a { color: inherit; }
   <section class="section" id="catalogo">
     <div class="section-head">
       <div>
-        <p class="section-kicker">Coleccion disponible</p>
+        <p class="section-kicker">Colección disponible</p>
         <h2 class="section-title">Elige tu joya</h2>
-        <p class="section-copy">Pulseras y collares de piedras naturales, cada pieza unica hecha a mano. Stock actualizado en tiempo real.</p>
+        <p class="section-copy">Pulseras y collares de piedras naturales, cada pieza única hecha a mano. Stock actualizado en tiempo real.</p>
       </div>
     </div>
     <div class="tools">
-      <input class="search" id="searchInput" type="search" placeholder="Buscar por nombre, piedra o descripcion..." oninput="renderGrid()" />
+      <input class="search" id="searchInput" type="search" placeholder="Buscar por nombre, piedra o descripción..." oninput="renderGrid()" />
       <div class="filters" id="filters"></div>
     </div>
     <div class="grid" id="grid">
-      <div class="loading">Cargando catalogo...</div>
+      <div class="loading">Cargando catálogo...</div>
     </div>
   </section>
 
@@ -1307,7 +1438,7 @@ a { color: inherit; }
     <div class="story-copy reveal">
       <p class="section-kicker">Origen y proceso</p>
       <h2 class="section-title">Cada piedra tiene una historia que contar.</h2>
-      <p>Creadas en el sur de Chile con piedras naturales seleccionadas a mano. Cada pulsera y collar nace como una pieza unica: con su propia energia, su propio color, su propio relato. Sigenos en Instagram para ver el proceso de cerca.</p>
+      <p>Creadas en el sur de Chile con piedras naturales seleccionadas a mano. Cada pulsera y collar nace como una pieza única: con su propia energía, su propio color, su propio relato. Síguenos en Instagram para ver el proceso de cerca.</p>
       <a class="btn-primary" href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Ver en Instagram</a>
     </div>
     <div class="story-panel" aria-hidden="true">
@@ -1331,16 +1462,17 @@ a { color: inherit; }
 <div class="overlay" id="overlay" onclick="toggleCart()"></div>
 <aside class="cart" id="cartSidebar" aria-label="Carrito de compras">
   <div class="cart-head">
-    <div class="cart-title">Tu seleccion</div>
+    <div class="cart-title">Tu selección</div>
     <button class="icon-btn" type="button" onclick="toggleCart()" aria-label="Cerrar carrito">x</button>
   </div>
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-foot">
     <div class="total-row"><span>Subtotal</span><span id="sub">$0</span></div>
-    <div class="total-row"><span>Envio</span><span>Por coordinar</span></div>
+    <div class="total-row"><span>Envío</span><span>Por coordinar</span></div>
     <div class="total-final"><span>Total</span><span id="tot">$0</span></div>
-    <button class="confirm-btn" id="confirmBtn" type="button" onclick="openModal()" disabled>Solicitar pedido</button>
-    <div class="cart-note">Pedido sujeto a confirmacion de stock, pago y despacho.</div>
+    <a class="cart-whatsapp" id="cartWhatsapp" href="#" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+    <button class="confirm-btn" id="confirmBtn" type="button" onclick="openModal()" disabled>Enviar por correo</button>
+    <div class="cart-note">Pedido sujeto a confirmación de stock, pago y despacho.</div>
   </div>
 </aside>
 
@@ -1351,7 +1483,7 @@ a { color: inherit; }
       <button class="icon-btn" type="button" onclick="closeModal()" aria-label="Cerrar solicitud">x</button>
     </div>
     <div class="modal-body">
-      <div class="modal-warning">Completa tus datos para enviar la solicitud. Joyas Antuvilu confirmara disponibilidad, pago y despacho por correo.</div>
+      <div class="modal-warning">Completa tus datos para enviar la solicitud. Joyas Antuvilu confirmará disponibilidad, pago y despacho por correo.</div>
       <div id="modalItems"></div>
       <div class="modal-total"><span>Total estimado</span><span id="modalTotal"></span></div>
       <form class="order-form" id="orderForm" onsubmit="sendOrder(event)">
@@ -1360,24 +1492,24 @@ a { color: inherit; }
           <input class="order-input" id="customerName" type="text" autocomplete="name" required />
         </div>
         <div>
-          <label class="order-label" for="customerEmail">Correo electronico</label>
+          <label class="order-label" for="customerEmail">Correo electrónico</label>
           <input class="order-input" id="customerEmail" type="email" autocomplete="email" required />
         </div>
         <div>
-          <label class="order-label" for="customerPhone">Telefono / WhatsApp</label>
+          <label class="order-label" for="customerPhone">Teléfono / WhatsApp</label>
           <input class="order-input" id="customerPhone" type="tel" autocomplete="tel" required />
         </div>
         <div>
-          <label class="order-label" for="customerAddress">Comuna o direccion de entrega</label>
+          <label class="order-label" for="customerAddress">Comuna o dirección de entrega</label>
           <input class="order-input" id="customerAddress" type="text" autocomplete="shipping address-line1" />
         </div>
         <div>
-          <label class="order-label" for="customerNote">Observacion opcional</label>
+          <label class="order-label" for="customerNote">Observación opcional</label>
           <textarea class="order-textarea" id="customerNote" placeholder="Ej: retiro, envio, horario de contacto, etc."></textarea>
         </div>
         <button class="email-btn" type="submit">Enviar pedido por correo</button>
       </form>
-      <div class="modal-note">No se publican datos bancarios. El pago se coordina de forma privada despues de confirmar el pedido.</div>
+      <div class="modal-note">No se publican datos bancarios. El pago se coordina de forma privada después de confirmar el pedido.</div>
     </div>
   </div>
 </div>
@@ -1416,7 +1548,7 @@ a { color: inherit; }
     <span class="brand-name">Joyas Antuvilu</span>
   </div>
   <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">@joyasantuvilu</a>
-  <small>© 2025 Joyas Antuvilu · Piedras naturales hechas a mano · Sur de Chile</small>
+  <small>© 2026 Joyas Antuvilu · Piedras naturales hechas a mano · Sur de Chile</small>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -1425,7 +1557,7 @@ a { color: inherit; }
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT_W_pweHUh-PBGF0LF5cV1NLR3lCm6JpNQ9JR-EBOmeg4mjjb4fvNE-R1fSqsQPMTTv947jMXSzx-V/pub?gid=1737483267&single=true&output=csv";
 const STORE_EMAIL = "joyasantuvilu@gmail.com";
 const INSTAGRAM_URL = "https://www.instagram.com/joyasantuvilu";
-const WHATSAPP_NUMBER = ""; // TODO: agrega tu numero, ej: "56912345678"
+const WHATSAPP_NUMBER = ""; // Agrega tu número, ej: "56912345678"
 
 const STATIC_REELS = [
   {
@@ -1597,7 +1729,7 @@ async function loadProducts() {
   } catch (err) {
     console.warn(err);
     PRODUCTS = [];
-    $("grid").innerHTML = '<div class="empty">No pudimos cargar el catalogo en este momento.<br>Intenta recargar la pagina en unos minutos.</div>';
+    $("grid").innerHTML = '<div class="empty">No pudimos cargar el catálogo en este momento.<br>Intenta recargar la página en unos minutos.</div>';
   }
   renderFilters();
   renderFeatured();
@@ -1678,7 +1810,7 @@ function renderGrid() {
   $("grid").innerHTML = list.map(p => {
     const sold = Number(p.stock) === 0;
     const low = Number(p.stock) > 0 && Number(p.stock) <= 3;
-    const badge = sold ? '<span class="badge sold">Agotado</span>' : low ? `<span class="badge">Ultimas ${p.stock}</span>` : "";
+    const badge = sold ? '<span class="badge sold">Agotado</span>' : low ? `<span class="badge">Últimas ${p.stock}</span>` : "";
     return `
       <article class="card reveal">
         <div class="card-media">
@@ -1692,7 +1824,7 @@ function renderGrid() {
           ${p.materials || p.measure ? `<div class="card-meta">${esc([p.materials, p.measure].filter(Boolean).join(" | "))}</div>` : ""}
           <div class="card-foot">
             <span class="price">${fmt(p.price)}</span>
-            <button class="add-btn" id="ab${p.id}" type="button" onclick="addCart(${p.id})" ${sold ? "disabled" : ""}>${sold ? "Agotado" : "Agregar"}</button>
+            <button class="add-btn" id="ab${p.id}" type="button" onclick="addCart(${p.id})" ${sold ? "disabled" : ""}>${sold ? "Agotado" : "Elegir pieza"}</button>
           </div>
         </div>
       </article>`;
@@ -1705,7 +1837,7 @@ function renderFeatured() {
   if (!target) return;
   const picks = PRODUCTS.filter(p => Number(p.stock) > 0).slice(0, 4);
   if (!picks.length) {
-    target.innerHTML = '<div class="empty">Los destacados apareceran cuando cargue el catalogo.</div>';
+    target.innerHTML = '<div class="empty">Los destacados aparecerán cuando cargue el catálogo.</div>';
     return;
   }
   target.innerHTML = picks.map(p => {
@@ -1855,12 +1987,22 @@ function updateCart() {
   const items = Object.values(cart);
   const qty = items.reduce((s, i) => s + i.qty, 0);
   const sub = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const whatsappBtn = $("cartWhatsapp");
   $("cartCount").textContent = qty;
   $("sub").textContent = fmt(sub);
   $("tot").textContent = fmt(sub);
   $("confirmBtn").disabled = items.length === 0;
+  if (whatsappBtn) {
+    if (WHATSAPP_NUMBER && items.length) {
+      whatsappBtn.href = buildWhatsAppUrl();
+      whatsappBtn.classList.add("show");
+    } else {
+      whatsappBtn.href = "#";
+      whatsappBtn.classList.remove("show");
+    }
+  }
   if (!items.length) {
-    $("cartItems").innerHTML = '<div class="cart-empty">Tu carrito esta vacio.<br>Descubre las piezas disponibles.</div>';
+    $("cartItems").innerHTML = '<div class="cart-empty">Tu carrito está vacío.<br>Descubre las piezas disponibles.</div>';
     return;
   }
   $("cartItems").innerHTML = items.map(item => `
@@ -1898,7 +2040,14 @@ function orderBody(data) {
   const items = Object.values(cart);
   const total = items.reduce((s, i) => s + i.price * i.qty, 0);
   const lines = items.map(i => `- ${i.name} | Cantidad: ${i.qty} | Subtotal: ${fmt(i.price * i.qty)}`).join("\n");
-  return `Nuevo pedido recibido desde Joyas Antuvilu.\n\nDATOS DEL CLIENTE\nNombre: ${data.name}\nCorreo: ${data.email}\nTelefono/WhatsApp: ${data.phone}\nComuna/Direccion: ${data.address || "No indicada"}\nObservacion: ${data.note || "Sin observacion"}\n\nDETALLE DEL PEDIDO\n${lines}\n\nTOTAL ESTIMADO: ${fmt(total)}\n\nFecha: ${new Date().toLocaleString("es-CL")}\n\nNota: pedido sujeto a confirmacion de stock, pago y despacho.`;
+  return `Nuevo pedido recibido desde Joyas Antuvilu.\n\nDATOS DEL CLIENTE\nNombre: ${data.name}\nCorreo: ${data.email}\nTeléfono/WhatsApp: ${data.phone}\nComuna/Dirección: ${data.address || "No indicada"}\nObservación: ${data.note || "Sin observación"}\n\nDETALLE DEL PEDIDO\n${lines}\n\nTOTAL ESTIMADO: ${fmt(total)}\n\nFecha: ${new Date().toLocaleString("es-CL")}\n\nNota: pedido sujeto a confirmación de stock, pago y despacho.`;
+}
+function buildWhatsAppUrl() {
+  const items = Object.values(cart);
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const lines = items.map(i => `- ${i.name} x${i.qty}: ${fmt(i.price * i.qty)}`).join("\n");
+  const msg = `Hola Joyas Antuvilu, quiero consultar por este pedido:\n\n${lines}\n\nTotal estimado: ${fmt(total)}\n\nQuedo atento/a para confirmar stock, pago y envío.`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 function sendOrder(ev) {
   ev.preventDefault();
@@ -1910,13 +2059,13 @@ function sendOrder(ev) {
     note: clean($("customerNote").value)
   };
   if (!data.name || !data.email || !data.phone) {
-    showToast("Completa nombre, correo y telefono");
+    showToast("Completa nombre, correo y teléfono");
     return;
   }
   const subject = `Nuevo pedido web - Joyas Antuvilu - ${data.name}`;
   const body = orderBody(data);
   window.location.href = `mailto:${encodeURIComponent(STORE_EMAIL)}?cc=${encodeURIComponent(data.email)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  showToast("Se abrio el correo para enviar el pedido");
+  showToast("Se abrió el correo para enviar el pedido");
 }
 let toastTimer;
 function showToast(msg) {
@@ -1930,6 +2079,7 @@ document.addEventListener("keydown", ev => {
   if (ev.key === "Escape") {
     closeModal();
     closeImageModal();
+    closeReelModal();
     $("cartSidebar").classList.remove("open");
     $("overlay").classList.remove("open");
   }
@@ -1967,14 +2117,14 @@ const gridObserver = new MutationObserver(observeReveals);
 gridObserver.observe($("grid"), {childList: true});
 if ($("featuredRow")) gridObserver.observe($("featuredRow"), {childList: true});
 
-// Boton flotante de WhatsApp: se oculta solo si no hay numero configurado
+// Botón flotante de WhatsApp: se oculta solo si no hay número configurado
 if (WHATSAPP_NUMBER) {
   $("fabWhatsapp").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola! Vi la tienda Joyas Antuvilu y quiero consultar por una pieza.")}`;
 } else {
   $("fabWhatsapp").style.display = "none";
 }
 
-// Boton flotante de volver arriba: aparece tras bajar un poco
+// Botón flotante de volver arriba: aparece tras bajar un poco
 window.addEventListener("scroll", () => {
   $("fabTop").classList.toggle("show", window.scrollY > 600);
 }, {passive: true});
