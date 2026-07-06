@@ -1,0 +1,1148 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Joyas Antuvilu | Joyas con fuerza natural</title>
+<meta name="description" content="Joyas Antuvilu: tienda online de pulseras y collares con piedras naturales, piezas hechas a mano en el sur de Chile." />
+<meta name="theme-color" content="#203b2a" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Joyas Antuvilu | Joyas con fuerza natural" />
+<meta property="og:description" content="Pulseras y collares con piedras naturales, hechas a mano en el sur de Chile." />
+<meta property="og:image" content="https://www.joyasantuvilu.cl/assets/logo-antuvilu.png" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js"></script>
+<style>
+:root {
+  --ink: #261711;
+  --soil: #4d3022;
+  --muted: #7c6d62;
+  --paper: #fffdf8;
+  --cream: #fbf5eb;
+  --sand: #eee2d2;
+  --sage: #203b2a;
+  --gold: #b8943f;
+  --gold-soft: #dcc078;
+  --line: rgba(77,48,34,.14);
+  --shadow: 0 18px 45px rgba(38,23,17,.13);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 4%, rgba(220,192,120,.25), transparent 24%),
+    radial-gradient(circle at 92% 16%, rgba(32,59,42,.17), transparent 32%),
+    linear-gradient(135deg, #fffaf0, #f1e3d0 44%, #fffdf8);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(184,148,63,.11), transparent 24%),
+    radial-gradient(circle at 84% 78%, rgba(32,59,42,.09), transparent 26%),
+    repeating-radial-gradient(circle at 14% 16%, rgba(38,23,17,.025) 0 1px, transparent 1px 8px);
+}
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+.topbar {
+  padding: 8px 14px;
+  text-align: center;
+  background: var(--sage);
+  color: var(--gold-soft);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  min-height: 72px;
+  padding: 12px clamp(14px, 4vw, 46px);
+  background: rgba(251,245,235,.9);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  min-width: 0;
+}
+.brand img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid rgba(184,148,63,.5);
+  padding: 4px;
+}
+.brand strong {
+  display: block;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.28rem;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+.brand span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.nav a {
+  text-decoration: none;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.cart-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  border: 1px solid rgba(220,192,120,.42);
+  border-radius: 999px;
+  padding: 0 15px;
+  background: linear-gradient(135deg, #261711, #203b2a);
+  color: var(--gold-soft);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.cart-count {
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  color: var(--ink);
+  font-size: .72rem;
+}
+.hero {
+  min-height: min(620px, calc(100vh - 112px));
+  display: grid;
+  align-items: end;
+  padding: clamp(46px, 7vw, 86px) clamp(16px, 5vw, 64px);
+  color: var(--paper);
+  background:
+    linear-gradient(90deg, rgba(18,12,8,.86), rgba(32,59,42,.62)),
+    radial-gradient(circle at 74% 22%, rgba(220,192,120,.3), transparent 31%),
+    linear-gradient(135deg, #150f0b, #203b2a 70%);
+}
+.hero img {
+  width: clamp(82px, 14vw, 132px);
+  height: clamp(82px, 14vw, 132px);
+  object-fit: contain;
+  border-radius: 50%;
+  background: var(--paper);
+  padding: 7px;
+  margin-bottom: 22px;
+}
+.eyebrow, .section-kicker {
+  margin: 0 0 12px;
+  color: var(--gold-soft);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  max-width: 780px;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 8vw, 6.1rem);
+  font-weight: 500;
+  line-height: .93;
+}
+.hero p {
+  max-width: 580px;
+  margin: 20px 0 0;
+  color: rgba(255,253,248,.82);
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+.btn, .btn-dark, .btn-light {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 20px;
+  text-decoration: none;
+  border: 1px solid rgba(220,192,120,.4);
+  font-size: .74rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.btn { background: linear-gradient(135deg, #e5ca7d, #b8943f); color: var(--ink); }
+.btn-dark { background: linear-gradient(135deg, #261711, #203b2a); color: var(--gold-soft); }
+.btn-light { background: rgba(255,253,248,.12); color: var(--paper); }
+.trust {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(255,253,248,.82);
+  border-bottom: 1px solid var(--line);
+}
+.trust div {
+  padding: 18px 20px;
+  border-right: 1px solid var(--line);
+}
+.trust div:last-child { border-right: 0; }
+.trust strong {
+  display: block;
+  font-size: .74rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.trust span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: .82rem;
+}
+.section {
+  padding: clamp(34px, 5vw, 62px) clamp(14px, 4vw, 48px);
+}
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+.section-title {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.1rem, 5vw, 3.2rem);
+  font-weight: 500;
+}
+.section-copy {
+  max-width: 580px;
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.search {
+  min-height: 46px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0 17px;
+  background: rgba(255,253,248,.92);
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.filter {
+  min-height: 42px;
+  border: 1px solid rgba(184,148,63,.24);
+  border-radius: 999px;
+  padding: 0 15px;
+  background: linear-gradient(180deg, #fffdf8, #efe3d4);
+  color: var(--soil);
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.filter.active {
+  background: linear-gradient(135deg, #261711, #203b2a);
+  color: var(--gold-soft);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+  gap: 18px;
+}
+.card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255,253,248,.94);
+  box-shadow: 0 12px 34px rgba(38,23,17,.07);
+}
+.media {
+  aspect-ratio: 1;
+  position: relative;
+  background:
+    radial-gradient(circle at 52% 35%, rgba(220,192,120,.18), transparent 44%),
+    linear-gradient(135deg, #f2eadf, #fffdf8);
+}
+.media button {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12px;
+}
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 999px;
+  padding: 6px 9px;
+  background: rgba(38,23,17,.84);
+  color: var(--gold-soft);
+  font-size: .58rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.card-body {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+}
+.cat {
+  color: var(--gold);
+  font-size: .66rem;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.name {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.42rem;
+  line-height: 1.08;
+}
+.desc {
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 1.5;
+}
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.price {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.34rem;
+  font-weight: 700;
+}
+.add {
+  min-height: 40px;
+  border: 1px solid rgba(220,192,120,.38);
+  border-radius: 999px;
+  padding: 0 14px;
+  background: linear-gradient(135deg, #261711, #203b2a);
+  color: var(--gold-soft);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.add:disabled {
+  background: #d7cec2;
+  color: #8b8278;
+}
+.reels {
+  background: linear-gradient(135deg, rgba(38,23,17,.96), rgba(32,59,42,.93));
+  color: var(--paper);
+}
+.reel-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(230px, 280px);
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.reel {
+  position: relative;
+  min-height: 400px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #111;
+  color: var(--paper);
+}
+.reel video, .reel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+.reel div {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px;
+  background: linear-gradient(transparent, rgba(0,0,0,.72));
+}
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 30px clamp(16px, 4vw, 48px);
+  background: var(--ink);
+  color: var(--gold-soft);
+}
+.overlay, .modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 80;
+  background: rgba(18,12,8,.68);
+}
+.overlay.open, .modal.open { display: block; }
+.cart {
+  position: fixed;
+  z-index: 90;
+  top: 0;
+  right: -430px;
+  width: min(430px, 100vw);
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--paper);
+  box-shadow: -20px 0 50px rgba(0,0,0,.18);
+  transition: right .25s ease;
+}
+.cart.open { right: 0; }
+.cart-head, .cart-foot {
+  padding: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.cart-foot { border-top: 1px solid var(--line); border-bottom: 0; }
+.cart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.icon {
+  border: 0;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  background: var(--sand);
+}
+.cart-items {
+  overflow: auto;
+  padding: 16px;
+}
+.cart-item {
+  display: grid;
+  grid-template-columns: 62px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cart-item img {
+  width: 62px;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 10px;
+  background: var(--sand);
+}
+.qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.qty button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper);
+}
+.checkout {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.checkout input, .checkout textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  background: #fffaf3;
+}
+.checkout textarea { min-height: 72px; resize: vertical; }
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+.dialog {
+  position: fixed;
+  inset: 16px;
+  display: grid;
+  place-items: center;
+  z-index: 100;
+  pointer-events: none;
+}
+.dialog-card {
+  width: min(760px, 100%);
+  max-height: 92dvh;
+  overflow: auto;
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--paper);
+  pointer-events: auto;
+}
+.dialog-card img {
+  width: 100%;
+  max-height: 48dvh;
+  object-fit: contain;
+  border-radius: 14px;
+  background: var(--sand);
+}
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 120;
+  transform: translate(-50%, 120%);
+  opacity: 0;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: var(--sage);
+  color: var(--gold-soft);
+  transition: .25s;
+}
+.toast.show { transform: translate(-50%, 0); opacity: 1; }
+.empty, .loading {
+  grid-column: 1 / -1;
+  padding: 42px 16px;
+  text-align: center;
+  color: var(--muted);
+}
+.fab-whatsapp {
+  position: fixed;
+  right: clamp(14px, 3vw, 26px);
+  bottom: clamp(14px, 3vw, 26px);
+  z-index: 70;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #25D366;
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(18,12,8,.28);
+  transition: transform .18s ease;
+}
+.fab-whatsapp:hover { transform: translateY(-2px); }
+.fab-whatsapp[hidden] { display: none; }
+@media (max-width: 760px) {
+  .topbar { font-size: .58rem; }
+  .header { min-height: 62px; padding: 9px 12px; }
+  .brand img { width: 42px; height: 42px; }
+  .brand strong { font-size: 1rem; }
+  .brand span, .nav a { display: none; }
+  .hero {
+    min-height: auto;
+    padding: 34px 16px 40px;
+  }
+  .hero h1 { font-size: clamp(2.55rem, 13vw, 3.6rem); }
+  .trust { grid-template-columns: repeat(2, 1fr); }
+  .trust div { padding: 14px 12px; border-bottom: 1px solid var(--line); }
+  .section { padding: 30px 12px; }
+  .section-head { display: block; }
+  .tools {
+    position: sticky;
+    top: 62px;
+    z-index: 30;
+    grid-template-columns: 1fr;
+    margin: 0 -4px 16px;
+    padding: 8px 4px;
+    background: rgba(251,245,235,.92);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+  }
+  .filters { flex-wrap: nowrap; overflow-x: auto; }
+  .filter { flex: 0 0 auto; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .card { border-radius: 14px; }
+  .card-body { padding: 11px; }
+  .name { font-size: 1.08rem; }
+  .desc { display: none; }
+  .foot { display: grid; }
+  .add { width: 100%; min-height: 42px; padding: 0 8px; font-size: .6rem; }
+  .reel-track { grid-auto-columns: minmax(210px, 76vw); }
+}
+
+.empty strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--soil);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+.empty p {
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+.empty-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+@media (max-width: 760px) {
+  .cart-open { min-height: 38px; padding: 0 12px; font-size: .62rem; }
+  .hero p { font-size: .96rem; }
+  .trust strong { font-size: .64rem; }
+  .trust span { font-size: .74rem; }
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">Joyas hechas a mano | Piedras naturales | Envíos a todo Chile</div>
+<header class="header">
+  <a class="brand" href="#inicio" aria-label="Joyas Antuvilu inicio">
+    <img src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" />
+    <span><strong>Joyas Antuvilu</strong><span>Fuerza natural</span></span>
+  </a>
+  <nav class="nav" aria-label="Navegación">
+    <a href="#catalogo">Catálogo</a>
+    <a href="#reels">Videos</a>
+    <button class="cart-open" type="button" onclick="toggleCart(true)">Carrito <span class="cart-count" id="cartCount">0</span></button>
+  </nav>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div>
+      <img src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" />
+      <p class="eyebrow">Piedras naturales | Hecho a mano</p>
+      <h1>Joyas con fuerza natural</h1>
+      <p>Pulseras, collares y piezas únicas con piedras naturales, creadas a mano en el sur de Chile. Cada diseño se prepara con cuidado, intención y fuerza natural.</p>
+      <div class="actions">
+        <a class="btn" href="#catalogo">Comprar ahora</a>
+        <a class="btn-light" href="#reels">Ver videos</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust" aria-label="Beneficios">
+    <div><strong>Hecho a mano</strong><span>Piezas preparadas con dedicación y detalle.</span></div>
+    <div><strong>Piedras naturales</strong><span>Diseños con hematita, volcánica, calcedonia y más.</span></div>
+    <div><strong>Atención directa</strong><span>Consulta disponibilidad antes de confirmar tu pedido.</span></div>
+    <div><strong>Desde el sur</strong><span>Envíos y coordinación para todo Chile.</span></div>
+  </section>
+
+  <section class="section" id="catalogo">
+    <div class="section-head">
+      <div>
+        <p class="section-kicker">Catálogo</p>
+        <h2 class="section-title">Elige tu pieza</h2>
+        <p class="section-copy">Explora las piezas disponibles. Si el catálogo aparece en preparación, estamos cargando nuevos diseños.</p>
+      </div>
+    </div>
+    <div class="tools">
+      <input class="search" id="searchInput" type="search" placeholder="Buscar por nombre, piedra o categoría..." oninput="renderProducts()" />
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="grid" id="productGrid"><div class="loading">Cargando tienda...</div></div>
+  </section>
+
+  <section class="section reels" id="reels">
+    <div class="section-head">
+      <div>
+        <p class="section-kicker">Videos</p>
+        <h2 class="section-title">Piezas en movimiento</h2>
+        <p class="section-copy">Videos directos, livianos y sin depender de embeds pesados.</p>
+      </div>
+    </div>
+    <div class="reel-track" id="reelTrack"></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <strong>Joyas Antuvilu</strong>
+  <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">@joyasantuvilu</a>
+  <small>Joyas con fuerza natural</small>
+</footer>
+
+<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+<aside class="cart" id="cart" aria-label="Carrito">
+  <div class="cart-head">
+    <strong>Tu pedido</strong>
+    <button class="icon" type="button" onclick="toggleCart(false)" aria-label="Cerrar">x</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot">
+    <div class="total"><span>Total</span><span id="cartTotal">$0</span></div>
+    <form class="checkout" id="checkoutForm">
+      <input id="customerName" required placeholder="Nombre" />
+      <input id="customerEmail" type="email" placeholder="Correo" />
+      <input id="customerPhone" placeholder="Teléfono / WhatsApp" />
+      <textarea id="customerNote" placeholder="Nota opcional: envío, retiro, horario, etc."></textarea>
+      <button class="btn-dark" type="submit">Enviar pedido</button>
+    </form>
+  </div>
+</aside>
+
+<div class="modal" id="productModal" onclick="closeProductModal()">
+  <div class="dialog">
+    <div class="dialog-card" onclick="event.stopPropagation()">
+      <button class="icon" type="button" onclick="closeProductModal()" aria-label="Cerrar">x</button>
+      <img id="modalImg" src="" alt="" />
+      <span class="cat" id="modalCat"></span>
+      <h2 class="section-title" id="modalName"></h2>
+      <strong class="price" id="modalPrice"></strong>
+      <p class="section-copy" id="modalDesc"></p>
+      <div id="modalMeta" class="section-copy"></div>
+      <button class="btn-dark" id="modalAdd" type="button">Agregar al carrito</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<a class="fab-whatsapp" id="fabWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp" hidden>
+  <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3c1.5.8 3.1 1.3 4.9 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.1c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.1.8.8-3-.2-.3C4 14.7 3.5 13.4 3.5 12c0-4.7 3.8-8.5 8.5-8.5s8.5 3.8 8.5 8.5-3.8 8.5-8.5 8.5zm4.6-6.3c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8.9-.1.2-.3.2-.6.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.4-.4.1-.1.2-.2.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.5.6.2 1 .4 1.3.5.5.2 1 .1 1.4-.1.4-.2 1.3-.5 1.5-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.4-.3z"/></svg>
+</a>
+
+<script>
+const cfg = window.STORE_CONFIG || {};
+const isConfigured = Boolean(cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase);
+const db = isConfigured ? window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey) : null;
+const money = new Intl.NumberFormat("es-CL", {style: "currency", currency: cfg.currency || "CLP", maximumFractionDigits: 0});
+
+const demoProducts = [
+  {
+    id: "demo-1",
+    name: "Pulsera Jaguar",
+    slug: "pulsera-jaguar",
+    category: "Pulseras",
+    category_slug: "pulseras",
+    price: 7000,
+    description: "Hematita y piedra volcánica con dije jaguar. Energía firme, protectora y cotidiana.",
+    materials: "Hematita, piedra volcánica, acero inoxidable",
+    measure: "16 cm + extensor",
+    stock: 2,
+    status: "active",
+    image_url: "assets/logo-antuvilu.png"
+  },
+  {
+    id: "demo-2",
+    name: "Pulsera Corazón",
+    slug: "pulsera-corazon",
+    category: "Pulseras",
+    category_slug: "pulseras",
+    price: 7000,
+    description: "Pieza suave para regalo, con piedra natural y detalle de corazón.",
+    materials: "Hematita, calcedonia amarilla, acero inoxidable",
+    measure: "16 cm + extensor",
+    stock: 2,
+    status: "active",
+    image_url: "assets/logo-antuvilu.png"
+  },
+  {
+    id: "demo-3",
+    name: "Collar Energía Natural",
+    slug: "collar-energia-natural",
+    category: "Collares",
+    category_slug: "collares",
+    price: 12000,
+    description: "Collar artesanal para uso diario, pensado como pieza de presencia y significado.",
+    materials: "Piedras naturales seleccionadas",
+    measure: "45 cm aprox.",
+    stock: 1,
+    status: "active",
+    image_url: "assets/logo-antuvilu.png"
+  }
+];
+
+const localVideos = [
+  {title: "Piedras en luz natural", description: "Detalle real de las piezas.", url: "assets/videos/antuvilu-reel-01.mp4", thumb_url: "assets/videos/antuvilu-reel-01.jpg"},
+  {title: "Brillo y movimiento", description: "Texturas y color.", url: "assets/videos/antuvilu-reel-02.mp4", thumb_url: "assets/videos/antuvilu-reel-02.jpg"}
+];
+
+let products = [];
+let categories = [];
+let videos = localVideos;
+let currentCategory = "todos";
+let cart = readCart();
+let storeSettings = {};
+let catalogState = "loading";
+
+function esc(v) {
+  return String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function fmt(n) { return money.format(Number(n || 0)); }
+function slug(v) {
+  return String(v || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 2400);
+}
+function readCart() {
+  try { return JSON.parse(localStorage.getItem("antuvilu_cart") || "{}"); }
+  catch (_) { return {}; }
+}
+function saveCart() {
+  localStorage.setItem("antuvilu_cart", JSON.stringify(cart));
+}
+function productCategoryName(p) {
+  return p.category || p.categories?.name || "Otros";
+}
+function productCategorySlug(p) {
+  return p.category_slug || p.categories?.slug || slug(productCategoryName(p));
+}
+function buildCategoriesFromProducts(list) {
+  const map = new Map();
+  list.forEach(p => {
+    const s = productCategorySlug(p);
+    if (!map.has(s)) map.set(s, {slug: s, name: productCategoryName(p)});
+  });
+  return Array.from(map.values());
+}
+function catalogEmptyHtml(kind = "empty") {
+  const whatsapp = (storeSettings.whatsapp || cfg.whatsappNumber || "").replace(/[^0-9]/g, "");
+  const contactHref = whatsapp
+    ? `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hola, vi Joyas Antuvilu y quiero consultar por las piezas disponibles.")}`
+    : `mailto:${storeEmail()}?subject=Consulta Joyas Antuvilu`;
+  const contactText = whatsapp ? "Consultar por WhatsApp" : "Consultar por correo";
+  const title = kind === "error" ? "Catálogo temporalmente no disponible" : "Catálogo en preparación";
+  const copy = kind === "error"
+    ? "La tienda pública cargó correctamente, pero no pudo leer los productos desde Supabase. Revisa la configuración o vuelve a intentar más tarde."
+    : "Estamos cargando nuevas piezas al catálogo. Mientras tanto, puedes escribir para consultar disponibilidad o revisar los videos de la colección.";
+  return `<div class="empty"><strong>${title}</strong><p>${copy}</p><div class="empty-actions"><a class="btn-dark" href="${esc(contactHref)}" target="_blank" rel="noopener">${contactText}</a><a class="btn" href="#reels">Ver videos</a></div></div>`;
+}
+
+async function loadStore() {
+  applyStoreSettings({});
+  videos = localVideos;
+  renderVideos();
+
+  if (!db) {
+    catalogState = "demo";
+    products = demoProducts;
+    categories = buildCategoriesFromProducts(products);
+    renderAll();
+    return;
+  }
+
+  try {
+    const [catRes, prodRes, videoRes, settingsRes] = await Promise.all([
+      db.from("categories").select("id,name,slug,sort_order").eq("active", true).order("sort_order"),
+      db.from("products").select("*, categories(name,slug)").in("status", ["active", "sold_out"]).order("featured", {ascending: false}).order("created_at", {ascending: false}),
+      db.from("store_videos").select("*").eq("active", true).order("sort_order"),
+      db.from("store_settings").select("value").eq("key", "store_public").maybeSingle()
+    ]);
+
+    if (settingsRes?.data?.value) applyStoreSettings(settingsRes.data.value);
+
+    if (catRes.error || prodRes.error) {
+      console.error("Supabase public load error", catRes.error || prodRes.error);
+      catalogState = "error";
+      products = [];
+      categories = [];
+      videos = (videoRes.data && videoRes.data.length) ? videoRes.data : localVideos;
+      renderAll();
+      return;
+    }
+
+    products = prodRes.data || [];
+    categories = (catRes.data && catRes.data.length) ? catRes.data : buildCategoriesFromProducts(products);
+    videos = (videoRes.data && videoRes.data.length) ? videoRes.data : localVideos;
+    catalogState = products.length ? "ready" : "empty";
+    renderAll();
+  } catch (err) {
+    console.error("Store load failed", err);
+    catalogState = "error";
+    products = [];
+    categories = [];
+    videos = localVideos;
+    renderAll();
+  }
+}
+
+function applyStoreSettings(value) {
+  storeSettings = value || {};
+  const whatsapp = (storeSettings.whatsapp || cfg.whatsappNumber || "").replace(/[^0-9]/g, "");
+  const waBtn = document.getElementById("fabWhatsapp");
+  if (waBtn) {
+    if (whatsapp) {
+      waBtn.href = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hola, vi Joyas Antuvilu y quiero consultar por una pieza.")}`;
+      waBtn.hidden = false;
+    } else {
+      waBtn.hidden = true;
+    }
+  }
+}
+function storeEmail() {
+  return storeSettings.email || cfg.storeEmail || "joyasantuvilu@gmail.com";
+}
+
+function renderAll() {
+  renderFilters();
+  renderProducts();
+  renderVideos();
+  updateCart();
+}
+function renderFilters() {
+  const items = [{slug: "todos", name: "Todos"}, ...categories];
+  document.getElementById("filters").innerHTML = items.map(c => `
+    <button class="filter ${currentCategory === c.slug ? "active" : ""}" type="button" onclick="setCategory('${esc(c.slug)}')">${esc(c.name)}</button>
+  `).join("");
+}
+function setCategory(value) {
+  currentCategory = value;
+  renderFilters();
+  renderProducts();
+}
+function filteredProducts() {
+  const q = slug(document.getElementById("searchInput").value);
+  return products.filter(p => {
+    const catOk = currentCategory === "todos" || productCategorySlug(p) === currentCategory;
+    const hay = slug([p.name, productCategoryName(p), p.description, p.materials, p.measure].join(" "));
+    return catOk && (!q || hay.includes(q));
+  });
+}
+function renderProducts() {
+  const grid = document.getElementById("productGrid");
+  if (catalogState === "loading") {
+    grid.innerHTML = '<div class="loading">Cargando catálogo...</div>';
+    return;
+  }
+  if (catalogState === "empty") {
+    grid.innerHTML = catalogEmptyHtml("empty");
+    return;
+  }
+  if (catalogState === "error") {
+    grid.innerHTML = catalogEmptyHtml("error");
+    return;
+  }
+
+  const list = filteredProducts();
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty"><strong>Sin resultados</strong><p>No hay productos para esta búsqueda. Prueba con otra categoría o palabra.</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map(p => {
+    const sold = Number(p.stock) <= 0 || p.status === "sold_out";
+    const low = !sold && Number(p.stock) <= Number(p.low_stock_threshold || 2);
+    return `
+      <article class="card">
+        <div class="media">
+          <button type="button" onclick="openProductModal('${esc(p.id)}')" aria-label="Ver ${esc(p.name)}">
+            <img src="${esc(p.image_url || 'assets/logo-antuvilu.png')}" alt="${esc(p.name)}" loading="lazy" />
+          </button>
+          ${sold ? '<span class="badge">Agotado</span>' : low ? '<span class="badge">Últimas</span>' : ''}
+        </div>
+        <div class="card-body">
+          <span class="cat">${esc(productCategoryName(p))}</span>
+          <h3 class="name">${esc(p.name)}</h3>
+          <div class="desc">${esc(p.description || "Pieza artesanal disponible.")}</div>
+          <div class="foot">
+            <span class="price">${fmt(p.price)}</span>
+            <button class="add" type="button" onclick="addToCart('${esc(p.id)}')" ${sold ? "disabled" : ""}>${sold ? "Agotado" : "Agregar"}</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+function renderVideos() {
+  const track = document.getElementById("reelTrack");
+  if (!track) return;
+  const list = (videos && videos.length) ? videos : localVideos;
+  track.innerHTML = list.map(v => `
+    <article class="reel">
+      <video src="${esc(v.url)}" poster="${esc(v.thumb_url || "")}" autoplay muted loop playsinline preload="metadata"></video>
+      <div><strong>${esc(v.title)}</strong><br><span>${esc(v.description || "")}</span></div>
+    </article>
+  `).join("");
+}
+function getProduct(id) {
+  return products.find(p => String(p.id) === String(id));
+}
+function openProductModal(id) {
+  const p = getProduct(id);
+  if (!p) return;
+  document.getElementById("modalImg").src = p.image_url || "assets/logo-antuvilu.png";
+  document.getElementById("modalImg").alt = p.name;
+  document.getElementById("modalCat").textContent = productCategoryName(p);
+  document.getElementById("modalName").textContent = p.name;
+  document.getElementById("modalPrice").textContent = fmt(p.price);
+  document.getElementById("modalDesc").textContent = p.description || "Pieza artesanal disponible.";
+  document.getElementById("modalMeta").textContent = [p.materials, p.measure, Number(p.stock) > 0 ? `Stock: ${p.stock}` : "Agotado"].filter(Boolean).join(" | ");
+  const btn = document.getElementById("modalAdd");
+  btn.onclick = () => addToCart(id);
+  btn.disabled = Number(p.stock) <= 0 || p.status === "sold_out";
+  document.getElementById("productModal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeProductModal() {
+  document.getElementById("productModal").classList.remove("open");
+  document.body.style.overflow = "";
+}
+function addToCart(id) {
+  const p = getProduct(id);
+  if (!p || Number(p.stock) <= 0 || p.status === "sold_out") return;
+  const qty = cart[id]?.quantity || 0;
+  if (qty >= Number(p.stock)) {
+    toast("Stock máximo alcanzado");
+    return;
+  }
+  cart[id] = {id: p.id, name: p.name, price: Number(p.price || 0), image_url: p.image_url, quantity: qty + 1};
+  saveCart();
+  updateCart();
+  toast("Agregado al carrito");
+}
+function changeQty(id, delta) {
+  if (!cart[id]) return;
+  const p = getProduct(id);
+  const next = cart[id].quantity + delta;
+  if (next <= 0) delete cart[id];
+  else if (p && next > Number(p.stock)) toast("Stock máximo alcanzado");
+  else cart[id].quantity = next;
+  saveCart();
+  updateCart();
+}
+function updateCart() {
+  const items = Object.values(cart);
+  document.getElementById("cartCount").textContent = items.reduce((s, i) => s + i.quantity, 0);
+  document.getElementById("cartTotal").textContent = fmt(items.reduce((s, i) => s + i.price * i.quantity, 0));
+  document.getElementById("cartItems").innerHTML = items.length ? items.map(i => `
+    <div class="cart-item">
+      <img src="${esc(i.image_url || 'assets/logo-antuvilu.png')}" alt="${esc(i.name)}" />
+      <div>
+        <strong>${esc(i.name)}</strong><br>
+        <span>${fmt(i.price)}</span>
+        <div class="qty">
+          <button type="button" onclick="changeQty('${esc(i.id)}', -1)">-</button>
+          <span>${i.quantity}</span>
+          <button type="button" onclick="changeQty('${esc(i.id)}', 1)">+</button>
+        </div>
+      </div>
+      <button class="icon" type="button" onclick="changeQty('${esc(i.id)}', -999)">x</button>
+    </div>
+  `).join("") : '<div class="empty">Tu carrito está vacío.</div>';
+}
+function toggleCart(open) {
+  document.getElementById("cart").classList.toggle("open", open);
+  document.getElementById("overlay").classList.toggle("open", open);
+}
+async function submitOrder(event) {
+  event.preventDefault();
+  const items = Object.values(cart);
+  if (!items.length) {
+    toast("Agrega una pieza primero");
+    return;
+  }
+  const order = {
+    customer_name: document.getElementById("customerName").value.trim(),
+    customer_email: document.getElementById("customerEmail").value.trim(),
+    customer_phone: document.getElementById("customerPhone").value.trim(),
+    customer_note: document.getElementById("customerNote").value.trim(),
+    subtotal: items.reduce((s, i) => s + i.price * i.quantity, 0),
+    status: "new"
+  };
+  if (!order.customer_name) return;
+
+  if (!db || catalogState === "demo") {
+    const body = items.map(i => `${i.quantity} x ${i.name} - ${fmt(i.price * i.quantity)}`).join("%0A");
+    window.location.href = `mailto:${storeEmail()}?subject=Pedido Joyas Antuvilu&body=${body}`;
+    return;
+  }
+
+  const {data: savedOrder, error: orderError} = await db.from("orders").insert(order).select().single();
+  if (orderError) {
+    console.error(orderError);
+    toast("No se pudo crear el pedido");
+    return;
+  }
+  const rows = items.map(i => ({
+    order_id: savedOrder.id,
+    product_id: String(i.id).startsWith("demo-") ? null : i.id,
+    product_name: i.name,
+    product_snapshot: i,
+    quantity: i.quantity,
+    unit_price: i.price,
+    line_total: i.price * i.quantity
+  }));
+  const {error: itemError} = await db.from("order_items").insert(rows);
+  if (itemError) {
+    console.error(itemError);
+    toast("Pedido creado, pero falta revisar ítems");
+    return;
+  }
+  cart = {};
+  saveCart();
+  updateCart();
+  event.target.reset();
+  toggleCart(false);
+  toast("Pedido recibido: " + savedOrder.order_number);
+}
+
+document.getElementById("checkoutForm").addEventListener("submit", submitOrder);
+loadStore();
+</script>
+</body>
+</html>

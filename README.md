@@ -1,87 +1,86 @@
-# Antuvilu Store Base v1
+# Joyas Antuvilu — Tienda online administrable
 
-Base profesional para vender tiendas online boutique de baja escala.
+Versión corregida para publicar y seguir trabajando con Supabase.
 
-Incluye:
+## Archivos principales
 
-- Tienda publica (`index.html`)
-- Panel administrador (`admin.html`)
-- Configuracion Supabase (`assets/js/config.js`)
-- Esquema de base de datos con seguridad (`database/supabase_schema.sql`)
-- Logo y videos demo de Joyas Antuvilu
+- `index.html`: tienda pública.
+- `admin.html`: panel privado.
+- `assets/js/config.js`: conexión pública a Supabase.
+- `supabase_schema.sql`: tablas, funciones y políticas RLS.
+- `supabase_seed_productos_prueba.sql`: datos opcionales de prueba.
+- `assets/logo-antuvilu.png`: logo.
+- `assets/videos/`: videos locales livianos.
 
-## Categoria comercial
+## Qué se corrigió en esta versión
 
-Producto: **Tienda Online Boutique**
+- La tienda pública ya no queda en blanco si Supabase está vacío.
+- Los videos locales se muestran aunque la tabla `store_videos` no tenga datos.
+- Si no hay productos, se muestra un estado profesional: “Catálogo en preparación”.
+- Se retiraron textos técnicos de la portada pública.
+- El enlace visible a `admin.html` se retiró del menú público.
+- El panel admin muestra errores de login más claros.
+- Se corrigieron textos y tildes principales.
+- El README ahora apunta al archivo SQL correcto: `supabase_schema.sql`.
 
-Para joyas, ropa, accesorios, artesania, cosmetica, decoracion y productos de stock acotado.
+## Cómo subir a GitHub / Vercel
 
-## Que resuelve
+1. Descomprime este ZIP.
+2. Sube todo el contenido a la raíz del repositorio `joyasantuvilu`.
+3. Confirma que exista:
+   - `index.html`
+   - `admin.html`
+   - `assets/js/config.js`
+   - `supabase_schema.sql`
+4. Haz commit en `main`.
+5. Vercel debería desplegar automáticamente.
 
-- Catalogo de productos
-- Filtros y buscador
-- Ficha de producto
-- Carrito
-- Pedido manual
-- Login admin
-- Productos administrables
-- Stock en base de datos
-- Pedidos guardados
-- Confirmacion de pedido con descuento de stock
-- Historial de movimientos de inventario
-- Base lista para pagos online futuros
+## Instalación Supabase
 
-## Instalacion Supabase
-
-1. Crear proyecto en Supabase.
-2. Abrir SQL Editor.
-3. Ejecutar `database/supabase_schema.sql`.
-4. En Authentication, crear el usuario administrador con correo y contrasena.
-5. Copiar el `user_id` del usuario creado.
-6. En SQL Editor ejecutar:
+1. En Supabase, abre el proyecto `joyas-antuvilu`.
+2. Abre SQL Editor.
+3. Ejecuta `supabase_schema.sql` con rol `postgres`.
+4. En Authentication > Users, crea el usuario administrador con **Create user**, no Invite.
+5. Activa **Auto confirm user**.
+6. Copia el `user_id` del usuario.
+7. En SQL Editor, con rol `postgres`, ejecuta:
 
 ```sql
 insert into public.admin_profiles(user_id, full_name, role, active)
-values ('PEGAR_USER_ID_AQUI', 'Administrador', 'owner', true);
+values ('PEGAR_USER_ID_AQUI', 'Administrador', 'owner', true)
+on conflict (user_id) do update
+set full_name = 'Administrador', role = 'owner', active = true;
 ```
 
-7. Ir a Project Settings > API.
-8. Copiar:
-   - Project URL
-   - anon public key
-9. Pegar esos datos en `assets/js/config.js`.
+## Configuración
 
-Importante: nunca pegar la `service_role key` en archivos frontend.
+En `assets/js/config.js` deben estar:
 
-## Flujo de pedido recomendado
+```js
+window.STORE_CONFIG = {
+  supabaseUrl: "https://vxjjquvfmpqqemjhdhch.supabase.co",
+  supabaseAnonKey: "sb_publishable_...",
+  storeName: "Joyas Antuvilu",
+  storeEmail: "joyasantuvilu@gmail.com",
+  whatsappNumber: "",
+  instagramUrl: "https://www.instagram.com/joyasantuvilu",
+  currency: "CLP"
+};
+```
+
+No pongas nunca la `service_role key` o `secret key` en archivos frontend.
+
+## Flujo de pedido
 
 1. Cliente agrega productos al carrito.
-2. Cliente envia pedido.
-3. Pedido queda como `new`.
-4. Administrador revisa disponibilidad y pago manual.
-5. Administrador presiona `Confirmar`.
+2. Cliente envía pedido.
+3. El pedido queda como `new`.
+4. El administrador revisa disponibilidad y pago manual.
+5. El administrador presiona `Confirmar`.
 6. Supabase descuenta stock y registra movimiento.
 
-Asi evitamos descontar stock cuando un cliente aun no paga.
+Así evitamos descontar stock antes de que el pedido esté confirmado.
 
-## Pagos online futuros
+## Próximo paso recomendado
 
-La base esta preparada para sumar:
-
-- Webpay
-- Flow
-- Mercado Pago
-
-Recomendacion: agregar pagos en una segunda etapa con una funcion backend, no directamente desde el HTML.
-
-## Producto vendible
-
-Rangos sugeridos:
-
-- Web presencia: $150.000 - $220.000
-- Catalogo premium: $280.000 - $450.000
-- Tienda online boutique: $450.000 - $750.000
-- Tienda pro / sistema: $800.000+
-
-Esta base corresponde a **Tienda Online Boutique**.
-
+Entrar a `admin.html`, crear 3 productos reales y verificar que aparezcan en la tienda pública.
