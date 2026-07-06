@@ -1,1016 +1,177 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Joyas Antuvilu | Tienda online boutique</title>
-<meta name="description" content="Joyas Antuvilu: tienda online de pulseras y collares con piedras naturales, piezas hechas a mano en el sur de Chile." />
-<meta name="theme-color" content="#203b2a" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Joyas Antuvilu | Joyas con fuerza natural" />
-<meta property="og:description" content="Pulseras y collares con piedras naturales, hechas a mano en el sur de Chile." />
-<meta property="og:image" content="https://www.joyasantuvilu.cl/assets/logo-antuvilu.png" />
-<link rel="preconnect" href="https://cdn.jsdelivr.net" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/config.js"></script>
-<style>
-:root {
-  --ink: #261711;
-  --soil: #4d3022;
-  --muted: #7c6d62;
-  --paper: #fffdf8;
-  --cream: #fbf5eb;
-  --sand: #eee2d2;
-  --sage: #203b2a;
-  --gold: #b8943f;
-  --gold-soft: #dcc078;
-  --line: rgba(77,48,34,.14);
-  --shadow: 0 18px 45px rgba(38,23,17,.13);
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: var(--ink);
-  background:
-    radial-gradient(circle at 12% 4%, rgba(220,192,120,.25), transparent 24%),
-    radial-gradient(circle at 92% 16%, rgba(32,59,42,.17), transparent 32%),
-    linear-gradient(135deg, #fffaf0, #f1e3d0 44%, #fffdf8);
-}
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(184,148,63,.11), transparent 24%),
-    radial-gradient(circle at 84% 78%, rgba(32,59,42,.09), transparent 26%),
-    repeating-radial-gradient(circle at 14% 16%, rgba(38,23,17,.025) 0 1px, transparent 1px 8px);
-}
-button, input, textarea { font: inherit; }
-button { cursor: pointer; }
-a { color: inherit; }
-.topbar {
-  padding: 8px 14px;
-  text-align: center;
-  background: var(--sage);
-  color: var(--gold-soft);
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  min-height: 72px;
-  padding: 12px clamp(14px, 4vw, 46px);
-  background: rgba(251,245,235,.9);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(14px);
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  min-width: 0;
-}
-.brand img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: var(--paper);
-  border: 1px solid rgba(184,148,63,.5);
-  padding: 4px;
-}
-.brand strong {
-  display: block;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.28rem;
-  letter-spacing: .08em;
-  white-space: nowrap;
-}
-.brand span {
-  display: block;
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: .62rem;
-  font-weight: 800;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.nav a {
-  text-decoration: none;
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-}
-.cart-open {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 42px;
-  border: 1px solid rgba(220,192,120,.42);
-  border-radius: 999px;
-  padding: 0 15px;
-  background: linear-gradient(135deg, #261711, #203b2a);
-  color: var(--gold-soft);
-  font-size: .72rem;
-  font-weight: 900;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-.cart-count {
-  display: grid;
-  place-items: center;
-  min-width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--gold-soft);
-  color: var(--ink);
-  font-size: .72rem;
-}
-.hero {
-  min-height: min(620px, calc(100vh - 112px));
-  display: grid;
-  align-items: end;
-  padding: clamp(46px, 7vw, 86px) clamp(16px, 5vw, 64px);
-  color: var(--paper);
-  background:
-    linear-gradient(90deg, rgba(18,12,8,.86), rgba(32,59,42,.62)),
-    radial-gradient(circle at 74% 22%, rgba(220,192,120,.3), transparent 31%),
-    linear-gradient(135deg, #150f0b, #203b2a 70%);
-}
-.hero img {
-  width: clamp(82px, 14vw, 132px);
-  height: clamp(82px, 14vw, 132px);
-  object-fit: contain;
-  border-radius: 50%;
-  background: var(--paper);
-  padding: 7px;
-  margin-bottom: 22px;
-}
-.eyebrow, .section-kicker {
-  margin: 0 0 12px;
-  color: var(--gold-soft);
-  font-size: .72rem;
-  font-weight: 900;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-}
-.hero h1 {
-  max-width: 780px;
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(3rem, 8vw, 6.1rem);
-  font-weight: 500;
-  line-height: .93;
-}
-.hero p {
-  max-width: 580px;
-  margin: 20px 0 0;
-  color: rgba(255,253,248,.82);
-  font-size: 1.08rem;
-  line-height: 1.7;
-}
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 28px;
-}
-.btn, .btn-dark, .btn-light {
-  min-height: 46px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  padding: 0 20px;
-  text-decoration: none;
-  border: 1px solid rgba(220,192,120,.4);
-  font-size: .74rem;
-  font-weight: 900;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-}
-.btn { background: linear-gradient(135deg, #e5ca7d, #b8943f); color: var(--ink); }
-.btn-dark { background: linear-gradient(135deg, #261711, #203b2a); color: var(--gold-soft); }
-.btn-light { background: rgba(255,253,248,.12); color: var(--paper); }
-.trust {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background: rgba(255,253,248,.82);
-  border-bottom: 1px solid var(--line);
-}
-.trust div {
-  padding: 18px 20px;
-  border-right: 1px solid var(--line);
-}
-.trust div:last-child { border-right: 0; }
-.trust strong {
-  display: block;
-  font-size: .74rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-.trust span {
-  display: block;
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: .82rem;
-}
-.section {
-  padding: clamp(34px, 5vw, 62px) clamp(14px, 4vw, 48px);
-}
-.section-head {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 22px;
-  margin-bottom: 22px;
-}
-.section-title {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.1rem, 5vw, 3.2rem);
-  font-weight: 500;
-}
-.section-copy {
-  max-width: 580px;
-  margin: 8px 0 0;
-  color: var(--muted);
-  line-height: 1.65;
-}
-.tools {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.search {
-  min-height: 46px;
-  width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0 17px;
-  background: rgba(255,253,248,.92);
-}
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.filter {
-  min-height: 42px;
-  border: 1px solid rgba(184,148,63,.24);
-  border-radius: 999px;
-  padding: 0 15px;
-  background: linear-gradient(180deg, #fffdf8, #efe3d4);
-  color: var(--soil);
-  font-size: .7rem;
-  font-weight: 900;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-.filter.active {
-  background: linear-gradient(135deg, #261711, #203b2a);
-  color: var(--gold-soft);
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
-  gap: 18px;
-}
-.card {
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: rgba(255,253,248,.94);
-  box-shadow: 0 12px 34px rgba(38,23,17,.07);
-}
-.media {
-  aspect-ratio: 1;
-  position: relative;
-  background:
-    radial-gradient(circle at 52% 35%, rgba(220,192,120,.18), transparent 44%),
-    linear-gradient(135deg, #f2eadf, #fffdf8);
-}
-.media button {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  padding: 0;
-  background: transparent;
-}
-.media img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 12px;
-}
-.badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border-radius: 999px;
-  padding: 6px 9px;
-  background: rgba(38,23,17,.84);
-  color: var(--gold-soft);
-  font-size: .58rem;
-  font-weight: 900;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-.card-body {
-  display: grid;
-  gap: 8px;
-  padding: 16px;
-}
-.cat {
-  color: var(--gold);
-  font-size: .66rem;
-  font-weight: 900;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-.name {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.42rem;
-  line-height: 1.08;
-}
-.desc {
-  color: var(--muted);
-  font-size: .88rem;
-  line-height: 1.5;
-}
-.foot {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding-top: 10px;
-  border-top: 1px solid var(--line);
-}
-.price {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.34rem;
-  font-weight: 700;
-}
-.add {
-  min-height: 40px;
-  border: 1px solid rgba(220,192,120,.38);
-  border-radius: 999px;
-  padding: 0 14px;
-  background: linear-gradient(135deg, #261711, #203b2a);
-  color: var(--gold-soft);
-  font-size: .68rem;
-  font-weight: 900;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-.add:disabled {
-  background: #d7cec2;
-  color: #8b8278;
-}
-.reels {
-  background: linear-gradient(135deg, rgba(38,23,17,.96), rgba(32,59,42,.93));
-  color: var(--paper);
-}
-.reel-track {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(230px, 280px);
-  gap: 14px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-}
-.reel {
-  position: relative;
-  min-height: 400px;
-  overflow: hidden;
-  border-radius: 18px;
-  background: #111;
-  color: var(--paper);
-}
-.reel video, .reel img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  inset: 0;
-}
-.reel div {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 18px;
-  background: linear-gradient(transparent, rgba(0,0,0,.72));
-}
-.footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 30px clamp(16px, 4vw, 48px);
-  background: var(--ink);
-  color: var(--gold-soft);
-}
-.overlay, .modal {
-  position: fixed;
-  inset: 0;
-  display: none;
-  z-index: 80;
-  background: rgba(18,12,8,.68);
-}
-.overlay.open, .modal.open { display: block; }
-.cart {
-  position: fixed;
-  z-index: 90;
-  top: 0;
-  right: -430px;
-  width: min(430px, 100vw);
-  height: 100dvh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  background: var(--paper);
-  box-shadow: -20px 0 50px rgba(0,0,0,.18);
-  transition: right .25s ease;
-}
-.cart.open { right: 0; }
-.cart-head, .cart-foot {
-  padding: 18px;
-  border-bottom: 1px solid var(--line);
-}
-.cart-foot { border-top: 1px solid var(--line); border-bottom: 0; }
-.cart-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.icon {
-  border: 0;
-  border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  background: var(--sand);
-}
-.cart-items {
-  overflow: auto;
-  padding: 16px;
-}
-.cart-item {
-  display: grid;
-  grid-template-columns: 62px 1fr auto;
-  gap: 10px;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-}
-.cart-item img {
-  width: 62px;
-  aspect-ratio: 1;
-  object-fit: contain;
-  border-radius: 10px;
-  background: var(--sand);
-}
-.qty {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-}
-.qty button {
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: var(--paper);
-}
-.checkout {
-  display: grid;
-  gap: 10px;
-  margin-top: 14px;
-}
-.checkout input, .checkout textarea {
-  width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px;
-  background: #fffaf3;
-}
-.checkout textarea { min-height: 72px; resize: vertical; }
-.total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-}
-.dialog {
-  position: fixed;
-  inset: 16px;
-  display: grid;
-  place-items: center;
-  z-index: 100;
-  pointer-events: none;
-}
-.dialog-card {
-  width: min(760px, 100%);
-  max-height: 92dvh;
-  overflow: auto;
-  display: grid;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 18px;
-  background: var(--paper);
-  pointer-events: auto;
-}
-.dialog-card img {
-  width: 100%;
-  max-height: 48dvh;
-  object-fit: contain;
-  border-radius: 14px;
-  background: var(--sand);
-}
-.toast {
-  position: fixed;
-  left: 50%;
-  bottom: 18px;
-  z-index: 120;
-  transform: translate(-50%, 120%);
-  opacity: 0;
-  padding: 12px 16px;
-  border-radius: 999px;
-  background: var(--sage);
-  color: var(--gold-soft);
-  transition: .25s;
-}
-.toast.show { transform: translate(-50%, 0); opacity: 1; }
-.empty, .loading {
-  grid-column: 1 / -1;
-  padding: 42px 16px;
-  text-align: center;
-  color: var(--muted);
-}
-@media (max-width: 760px) {
-  .topbar { font-size: .58rem; }
-  .header { min-height: 62px; padding: 9px 12px; }
-  .brand img { width: 42px; height: 42px; }
-  .brand strong { font-size: 1rem; }
-  .brand span, .nav a { display: none; }
-  .hero {
-    min-height: auto;
-    padding: 34px 16px 40px;
-  }
-  .hero h1 { font-size: clamp(2.55rem, 13vw, 3.6rem); }
-  .trust { grid-template-columns: repeat(2, 1fr); }
-  .trust div { padding: 14px 12px; border-bottom: 1px solid var(--line); }
-  .section { padding: 30px 12px; }
-  .section-head { display: block; }
-  .tools {
-    position: sticky;
-    top: 62px;
-    z-index: 30;
-    grid-template-columns: 1fr;
-    margin: 0 -4px 16px;
-    padding: 8px 4px;
-    background: rgba(251,245,235,.92);
-    border-bottom: 1px solid var(--line);
-    backdrop-filter: blur(10px);
-  }
-  .filters { flex-wrap: nowrap; overflow-x: auto; }
-  .filter { flex: 0 0 auto; }
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .card { border-radius: 14px; }
-  .card-body { padding: 11px; }
-  .name { font-size: 1.08rem; }
-  .desc { display: none; }
-  .foot { display: grid; }
-  .add { width: 100%; min-height: 42px; padding: 0 8px; font-size: .6rem; }
-  .reel-track { grid-auto-columns: minmax(210px, 76vw); }
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Joyas Antuvilu | Sitio en construccion</title>
+  <meta name="description" content="Joyas Antuvilu esta preparando su nueva tienda online." />
+  <style>
+    :root {
+      --green: #14291d;
+      --green-2: #203f2d;
+      --gold: #c7a34a;
+      --cream: #f7f1e4;
+      --ink: #2a1b16;
+      --muted: rgba(247, 241, 228, .74);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--cream);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(199, 163, 74, .18), transparent 32rem),
+        radial-gradient(circle at 82% 22%, rgba(247, 241, 228, .10), transparent 28rem),
+        linear-gradient(135deg, #0d0b08 0%, var(--green) 52%, var(--green-2) 100%);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    main {
+      width: min(920px, 100%);
+      min-height: min(720px, calc(100vh - 48px));
+      display: grid;
+      align-content: center;
+      gap: 32px;
+      position: relative;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .logo {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--cream);
+      border: 8px solid rgba(247, 241, 228, .92);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .35);
+    }
+    .brand strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.35rem, 4vw, 2rem);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .brand span {
+      color: var(--muted);
+      font-size: .78rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+    .panel {
+      border: 1px solid rgba(247, 241, 228, .18);
+      background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border-radius: 24px;
+      padding: clamp(28px, 6vw, 64px);
+      box-shadow: 0 30px 120px rgba(0, 0, 0, .38);
+      backdrop-filter: blur(14px);
+    }
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--gold);
+      font-weight: 800;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      font-size: .76rem;
+    }
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
+      font-size: clamp(3rem, 12vw, 7rem);
+      line-height: .92;
+      text-wrap: balance;
+    }
+    .copy {
+      max-width: 620px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2.4vw, 1.25rem);
+      line-height: 1.75;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      border: 1px solid rgba(247, 241, 228, .26);
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, #ecd178, var(--gold));
+      color: var(--ink);
+      box-shadow: 0 18px 45px rgba(199, 163, 74, .24);
+      border: 0;
+    }
+    .btn.secondary {
+      background: rgba(247, 241, 228, .08);
+    }
+    footer {
+      color: rgba(247, 241, 228, .58);
+      font-size: .9rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 640px) {
+      body { padding: 18px; }
+      main { min-height: calc(100vh - 36px); gap: 22px; }
+      .brand { align-items: flex-start; }
+      .logo { width: 64px; height: 64px; border-width: 6px; }
+      .panel { border-radius: 18px; }
+      .actions { display: grid; }
+      .btn { width: 100%; }
+    }
+  </style>
 </head>
 <body>
-<div class="topbar">Tienda online base v1 | Stock real y pedidos administrables</div>
-<header class="header">
-  <a class="brand" href="#inicio" aria-label="Joyas Antuvilu inicio">
-    <img src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" />
-    <span><strong>Joyas Antuvilu</strong><span>Fuerza natural</span></span>
-  </a>
-  <nav class="nav" aria-label="Navegacion">
-    <a href="#catalogo">Catalogo</a>
-    <a href="#reels">Videos</a>
-    <a href="admin.html">Admin</a>
-    <button class="cart-open" type="button" onclick="toggleCart(true)">Carrito <span class="cart-count" id="cartCount">0</span></button>
-  </nav>
-</header>
+  <main>
+    <header class="brand" aria-label="Joyas Antuvilu">
+      <img class="logo" src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" />
+      <div>
+        <strong>Joyas Antuvilu</strong>
+        <span>Fuerza natural</span>
+      </div>
+    </header>
 
-<main id="inicio">
-  <section class="hero">
-    <div>
-      <img src="assets/logo-antuvilu.png" alt="Logo Joyas Antuvilu" />
-      <p class="eyebrow">Piedras naturales | Hecho a mano</p>
-      <h1>Joyas con fuerza natural</h1>
-      <p>Una tienda boutique preparada para catalogo, stock real, pedidos y panel privado. La estetica cambia por cliente; el motor queda estandarizado.</p>
+    <section class="panel">
+      <p class="eyebrow">Nueva tienda online</p>
+      <h1>Sitio en construccion</h1>
+      <p class="copy">
+        Estamos preparando una experiencia mas clara, elegante y conectada a stock real.
+        Muy pronto podras revisar el catalogo, piezas disponibles y novedades de Joyas Antuvilu.
+      </p>
       <div class="actions">
-        <a class="btn" href="#catalogo">Comprar ahora</a>
-        <a class="btn-light" href="#reels">Ver videos</a>
+        <a class="btn primary" href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Ver Instagram</a>
+        <a class="btn secondary" href="mailto:joyasantuvilu@gmail.com">Contactar</a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="trust" aria-label="Beneficios">
-    <div><strong>Stock real</strong><span>Inventario conectado a base de datos.</span></div>
-    <div><strong>Pedidos</strong><span>Solicitud guardada y lista para confirmar.</span></div>
-    <div><strong>Admin</strong><span>Panel privado para productos y ventas.</span></div>
-    <div><strong>Pagos futuros</strong><span>Base lista para Webpay, Flow o Mercado Pago.</span></div>
-  </section>
-
-  <section class="section" id="catalogo">
-    <div class="section-head">
-      <div>
-        <p class="section-kicker">Catalogo</p>
-        <h2 class="section-title">Elige tu pieza</h2>
-        <p class="section-copy">Productos desde Supabase cuando este configurado. Mientras tanto, esta vista usa datos demo para revisar el flujo completo.</p>
-      </div>
-    </div>
-    <div class="tools">
-      <input class="search" id="searchInput" type="search" placeholder="Buscar por nombre, piedra o categoria..." oninput="renderProducts()" />
-      <div class="filters" id="filters"></div>
-    </div>
-    <div class="grid" id="productGrid"><div class="loading">Cargando tienda...</div></div>
-  </section>
-
-  <section class="section reels" id="reels">
-    <div class="section-head">
-      <div>
-        <p class="section-kicker">Videos</p>
-        <h2 class="section-title">Piezas en movimiento</h2>
-        <p class="section-copy">Videos directos, livianos y sin depender de embeds pesados.</p>
-      </div>
-    </div>
-    <div class="reel-track" id="reelTrack"></div>
-  </section>
-</main>
-
-<footer class="footer">
-  <strong>Joyas Antuvilu</strong>
-  <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">@joyasantuvilu</a>
-  <small>Tienda online boutique base v1</small>
-</footer>
-
-<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
-<aside class="cart" id="cart" aria-label="Carrito">
-  <div class="cart-head">
-    <strong>Tu pedido</strong>
-    <button class="icon" type="button" onclick="toggleCart(false)" aria-label="Cerrar">x</button>
-  </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-foot">
-    <div class="total"><span>Total</span><span id="cartTotal">$0</span></div>
-    <form class="checkout" id="checkoutForm">
-      <input id="customerName" required placeholder="Nombre" />
-      <input id="customerEmail" type="email" placeholder="Correo" />
-      <input id="customerPhone" placeholder="Telefono / WhatsApp" />
-      <textarea id="customerNote" placeholder="Nota opcional: envio, retiro, horario, etc."></textarea>
-      <button class="btn-dark" type="submit">Enviar pedido</button>
-    </form>
-  </div>
-</aside>
-
-<div class="modal" id="productModal" onclick="closeProductModal()">
-  <div class="dialog">
-    <div class="dialog-card" onclick="event.stopPropagation()">
-      <button class="icon" type="button" onclick="closeProductModal()" aria-label="Cerrar">x</button>
-      <img id="modalImg" src="" alt="" />
-      <span class="cat" id="modalCat"></span>
-      <h2 class="section-title" id="modalName"></h2>
-      <strong class="price" id="modalPrice"></strong>
-      <p class="section-copy" id="modalDesc"></p>
-      <div id="modalMeta" class="section-copy"></div>
-      <button class="btn-dark" id="modalAdd" type="button">Agregar al carrito</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-const cfg = window.STORE_CONFIG || {};
-const isConfigured = Boolean(cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase);
-const db = isConfigured ? window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey) : null;
-const money = new Intl.NumberFormat("es-CL", {style: "currency", currency: cfg.currency || "CLP", maximumFractionDigits: 0});
-
-const demoProducts = [
-  {
-    id: "demo-1",
-    name: "Pulsera Jaguar",
-    slug: "pulsera-jaguar",
-    category: "Pulseras",
-    category_slug: "pulseras",
-    price: 7000,
-    description: "Hematita y piedra volcanica con dije jaguar. Energia firme, protectora y cotidiana.",
-    materials: "Hematita, piedra volcanica, mostacillas doradas",
-    measure: "Ajustable",
-    stock: 2,
-    status: "active",
-    image_url: "assets/logo-antuvilu.png"
-  },
-  {
-    id: "demo-2",
-    name: "Pulsera Corazon",
-    slug: "pulsera-corazon",
-    category: "Pulseras",
-    category_slug: "pulseras",
-    price: 7000,
-    description: "Pieza suave para regalo, con piedra natural y detalle de corazon.",
-    materials: "Hematita, calcedonia amarilla",
-    measure: "Ajustable",
-    stock: 2,
-    status: "active",
-    image_url: "assets/logo-antuvilu.png"
-  },
-  {
-    id: "demo-3",
-    name: "Collar Energia Natural",
-    slug: "collar-energia-natural",
-    category: "Collares",
-    category_slug: "collares",
-    price: 12000,
-    description: "Collar artesanal para uso diario, pensado como pieza de presencia y significado.",
-    materials: "Piedras naturales seleccionadas",
-    measure: "45 cm aprox.",
-    stock: 1,
-    status: "active",
-    image_url: "assets/logo-antuvilu.png"
-  }
-];
-
-const demoVideos = [
-  {title: "Piedras en luz natural", description: "Detalle real de las piezas.", url: "assets/videos/antuvilu-reel-01.mp4", thumb_url: "assets/videos/antuvilu-reel-01.jpg"},
-  {title: "Brillo y movimiento", description: "Texturas y color.", url: "assets/videos/antuvilu-reel-02.mp4", thumb_url: "assets/videos/antuvilu-reel-02.jpg"}
-];
-
-let products = [];
-let categories = [];
-let videos = [];
-let currentCategory = "todos";
-let cart = readCart();
-
-function esc(v) {
-  return String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function fmt(n) { return money.format(Number(n || 0)); }
-function slug(v) {
-  return String(v || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
-function toast(msg) {
-  const el = document.getElementById("toast");
-  el.textContent = msg;
-  el.classList.add("show");
-  setTimeout(() => el.classList.remove("show"), 2400);
-}
-function readCart() {
-  try { return JSON.parse(localStorage.getItem("store_cart") || "{}"); }
-  catch (_) { return {}; }
-}
-function saveCart() {
-  localStorage.setItem("store_cart", JSON.stringify(cart));
-}
-function productCategoryName(p) {
-  return p.category || p.categories?.name || "Otros";
-}
-function productCategorySlug(p) {
-  return p.category_slug || p.categories?.slug || slug(productCategoryName(p));
-}
-
-async function loadStore() {
-  if (!db) {
-    products = demoProducts;
-    categories = [...new Set(products.map(p => productCategorySlug(p)))].map(s => ({slug: s, name: products.find(p => productCategorySlug(p) === s)?.category || s}));
-    videos = demoVideos;
-    renderAll();
-    return;
-  }
-  const [{data: catData, error: catError}, {data: prodData, error: prodError}, {data: videoData}] = await Promise.all([
-    db.from("categories").select("id,name,slug,sort_order").eq("active", true).order("sort_order"),
-    db.from("products").select("*, categories(name,slug)").in("status", ["active", "sold_out"]).order("featured", {ascending: false}).order("created_at", {ascending: false}),
-    db.from("store_videos").select("*").eq("active", true).order("sort_order")
-  ]);
-  if (catError || prodError) {
-    document.getElementById("productGrid").innerHTML = '<div class="empty">No se pudo cargar la tienda. Revisa la configuracion de Supabase.</div>';
-    return;
-  }
-  categories = catData || [];
-  products = prodData || [];
-  videos = (videoData && videoData.length) ? videoData : demoVideos;
-  renderAll();
-}
-
-function renderAll() {
-  renderFilters();
-  renderProducts();
-  renderVideos();
-  updateCart();
-}
-function renderFilters() {
-  const items = [{slug: "todos", name: "Todos"}, ...categories];
-  document.getElementById("filters").innerHTML = items.map(c => `
-    <button class="filter ${currentCategory === c.slug ? "active" : ""}" type="button" onclick="setCategory('${esc(c.slug)}')">${esc(c.name)}</button>
-  `).join("");
-}
-function setCategory(value) {
-  currentCategory = value;
-  renderFilters();
-  renderProducts();
-}
-function filteredProducts() {
-  const q = slug(document.getElementById("searchInput").value);
-  return products.filter(p => {
-    const catOk = currentCategory === "todos" || productCategorySlug(p) === currentCategory;
-    const hay = slug([p.name, productCategoryName(p), p.description, p.materials, p.measure].join(" "));
-    return catOk && (!q || hay.includes(q));
-  });
-}
-function renderProducts() {
-  const list = filteredProducts();
-  const grid = document.getElementById("productGrid");
-  if (!list.length) {
-    grid.innerHTML = '<div class="empty">No hay productos para esta busqueda.</div>';
-    return;
-  }
-  grid.innerHTML = list.map(p => {
-    const sold = Number(p.stock) <= 0 || p.status === "sold_out";
-    const low = !sold && Number(p.stock) <= 2;
-    return `
-      <article class="card">
-        <div class="media">
-          <button type="button" onclick="openProductModal('${esc(p.id)}')" aria-label="Ver ${esc(p.name)}">
-            <img src="${esc(p.image_url || 'assets/logo-antuvilu.png')}" alt="${esc(p.name)}" loading="lazy" />
-          </button>
-          ${sold ? '<span class="badge">Agotado</span>' : low ? '<span class="badge">Ultimas</span>' : ''}
-        </div>
-        <div class="card-body">
-          <span class="cat">${esc(productCategoryName(p))}</span>
-          <h3 class="name">${esc(p.name)}</h3>
-          <div class="desc">${esc(p.description || "Pieza artesanal disponible.")}</div>
-          <div class="foot">
-            <span class="price">${fmt(p.price)}</span>
-            <button class="add" type="button" onclick="addToCart('${esc(p.id)}')" ${sold ? "disabled" : ""}>${sold ? "Agotado" : "Agregar"}</button>
-          </div>
-        </div>
-      </article>
-    `;
-  }).join("");
-}
-function renderVideos() {
-  document.getElementById("reelTrack").innerHTML = videos.map(v => `
-    <article class="reel">
-      <video src="${esc(v.url)}" poster="${esc(v.thumb_url || "")}" autoplay muted loop playsinline preload="metadata"></video>
-      <div><strong>${esc(v.title)}</strong><br><span>${esc(v.description || "")}</span></div>
-    </article>
-  `).join("");
-}
-function getProduct(id) {
-  return products.find(p => String(p.id) === String(id));
-}
-function openProductModal(id) {
-  const p = getProduct(id);
-  if (!p) return;
-  document.getElementById("modalImg").src = p.image_url || "assets/logo-antuvilu.png";
-  document.getElementById("modalImg").alt = p.name;
-  document.getElementById("modalCat").textContent = productCategoryName(p);
-  document.getElementById("modalName").textContent = p.name;
-  document.getElementById("modalPrice").textContent = fmt(p.price);
-  document.getElementById("modalDesc").textContent = p.description || "Pieza artesanal disponible.";
-  document.getElementById("modalMeta").textContent = [p.materials, p.measure, Number(p.stock) > 0 ? `Stock: ${p.stock}` : "Agotado"].filter(Boolean).join(" | ");
-  const btn = document.getElementById("modalAdd");
-  btn.onclick = () => addToCart(id);
-  btn.disabled = Number(p.stock) <= 0 || p.status === "sold_out";
-  document.getElementById("productModal").classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-function closeProductModal() {
-  document.getElementById("productModal").classList.remove("open");
-  document.body.style.overflow = "";
-}
-function addToCart(id) {
-  const p = getProduct(id);
-  if (!p || Number(p.stock) <= 0) return;
-  const qty = cart[id]?.quantity || 0;
-  if (qty >= Number(p.stock)) {
-    toast("Stock maximo alcanzado");
-    return;
-  }
-  cart[id] = {id: p.id, name: p.name, price: Number(p.price || 0), image_url: p.image_url, quantity: qty + 1};
-  saveCart();
-  updateCart();
-  toast("Agregado al carrito");
-}
-function changeQty(id, delta) {
-  if (!cart[id]) return;
-  const p = getProduct(id);
-  const next = cart[id].quantity + delta;
-  if (next <= 0) delete cart[id];
-  else if (p && next > Number(p.stock)) toast("Stock maximo alcanzado");
-  else cart[id].quantity = next;
-  saveCart();
-  updateCart();
-}
-function updateCart() {
-  const items = Object.values(cart);
-  document.getElementById("cartCount").textContent = items.reduce((s, i) => s + i.quantity, 0);
-  document.getElementById("cartTotal").textContent = fmt(items.reduce((s, i) => s + i.price * i.quantity, 0));
-  document.getElementById("cartItems").innerHTML = items.length ? items.map(i => `
-    <div class="cart-item">
-      <img src="${esc(i.image_url || 'assets/logo-antuvilu.png')}" alt="${esc(i.name)}" />
-      <div>
-        <strong>${esc(i.name)}</strong><br>
-        <span>${fmt(i.price)}</span>
-        <div class="qty">
-          <button type="button" onclick="changeQty('${esc(i.id)}', -1)">-</button>
-          <span>${i.quantity}</span>
-          <button type="button" onclick="changeQty('${esc(i.id)}', 1)">+</button>
-        </div>
-      </div>
-      <button class="icon" type="button" onclick="changeQty('${esc(i.id)}', -999)">x</button>
-    </div>
-  `).join("") : '<div class="empty">Tu carrito esta vacio.</div>';
-}
-function toggleCart(open) {
-  document.getElementById("cart").classList.toggle("open", open);
-  document.getElementById("overlay").classList.toggle("open", open);
-}
-async function submitOrder(event) {
-  event.preventDefault();
-  const items = Object.values(cart);
-  if (!items.length) {
-    toast("Agrega una pieza primero");
-    return;
-  }
-  const order = {
-    customer_name: document.getElementById("customerName").value.trim(),
-    customer_email: document.getElementById("customerEmail").value.trim(),
-    customer_phone: document.getElementById("customerPhone").value.trim(),
-    customer_note: document.getElementById("customerNote").value.trim(),
-    subtotal: items.reduce((s, i) => s + i.price * i.quantity, 0),
-    status: "new"
-  };
-  if (!order.customer_name) return;
-  if (!db) {
-    const body = items.map(i => `${i.quantity} x ${i.name} - ${fmt(i.price * i.quantity)}`).join("%0A");
-    window.location.href = `mailto:${cfg.storeEmail}?subject=Pedido Joyas Antuvilu&body=${body}`;
-    return;
-  }
-  const {data: savedOrder, error: orderError} = await db.from("orders").insert(order).select().single();
-  if (orderError) {
-    toast("No se pudo crear el pedido");
-    return;
-  }
-  const rows = items.map(i => ({
-    order_id: savedOrder.id,
-    product_id: String(i.id).startsWith("demo-") ? null : i.id,
-    product_name: i.name,
-    product_snapshot: i,
-    quantity: i.quantity,
-    unit_price: i.price,
-    line_total: i.price * i.quantity
-  }));
-  const {error: itemError} = await db.from("order_items").insert(rows);
-  if (itemError) {
-    toast("Pedido creado, pero falta revisar items");
-    return;
-  }
-  cart = {};
-  saveCart();
-  updateCart();
-  event.target.reset();
-  toggleCart(false);
-  toast("Pedido recibido: " + savedOrder.order_number);
-}
-
-document.getElementById("checkoutForm").addEventListener("submit", submitOrder);
-loadStore();
-</script>
+    <footer>
+      <span>Joyas Antuvilu</span>
+      <span>Piedras naturales | Hecho a mano | Sur de Chile</span>
+    </footer>
+  </main>
 </body>
 </html>
