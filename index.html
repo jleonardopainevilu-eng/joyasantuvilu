@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Joyas Antuvilu | Joyas con fuerza natural</title>
+<!-- Fusion v2: Panel Admin visible + favoritos + catálogo demo si Supabase falla -->
 <meta name="description" content="Joyas Antuvilu: pulseras y collares de piedras naturales, piezas únicas hechas a mano en el sur de Chile. Joyas con fuerza natural." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://www.joyasantuvilu.cl/" />
@@ -147,11 +148,14 @@ a { color: inherit; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(184,148,63,.34);
+  border: 1px solid rgba(184,148,63,.42);
   border-radius: 999px;
-  padding: 0 13px;
-  background: rgba(255,253,248,.54);
+  padding: 0 14px;
+  background: rgba(255,253,248,.78);
+  color: var(--ink);
+  box-shadow: 0 8px 22px rgba(40,24,17,.08);
 }
+.admin-link::before { content: "⚙"; margin-right: 6px; font-size: .82rem; }
 .cart-open {
   display: inline-flex;
   align-items: center;
@@ -649,6 +653,7 @@ a { color: inherit; }
   .brand strong { font-size: 1rem; }
   .brand span, .nav a:not(.admin-link) { display: none; }
   .admin-link { display: inline-flex; min-height: 38px; padding: 0 11px; font-size: .62rem; }
+  .admin-link::before { margin-right: 4px; }
   .hero {
     min-height: auto;
     padding: 34px 16px 40px;
@@ -722,7 +727,7 @@ a { color: inherit; }
     <a href="#catalogo">Catálogo</a>
     <a href="#reels">Videos</a>
     <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Instagram</a>
-    <a class="admin-link" href="admin.html" aria-label="Entrar al panel administrador">Panel</a>
+    <a class="admin-link" href="admin.html" aria-label="Entrar al panel administrador">Panel Admin</a>
     <button class="cart-open" type="button" onclick="toggleCart(true)">Carrito <span class="cart-count" id="cartCount">0</span></button>
   </nav>
 </header>
@@ -753,7 +758,7 @@ a { color: inherit; }
       <div>
         <p class="section-kicker">Catálogo</p>
         <h2 class="section-title">Elige tu pieza</h2>
-        <p class="section-copy">Explora las piezas disponibles. Si el catálogo aparece en preparación, estamos cargando nuevos diseños.</p>
+        <p class="section-copy">Explora las piezas disponibles. Si Supabase aún no tiene productos reales, verás ejemplos temporales para revisar el diseño.</p>
       </div>
     </div>
     <div class="tools">
@@ -986,10 +991,11 @@ async function loadStore() {
 
     if (catRes.error || prodRes.error) {
       console.error("Supabase public load error", catRes.error || prodRes.error);
-      catalogState = "error";
-      products = [];
-      categories = [];
+      catalogState = "demo";
+      products = demoProducts;
+      categories = buildCategoriesFromProducts(products);
       videos = (videoRes.data && videoRes.data.length) ? videoRes.data : localVideos;
+      toast("Mostrando catálogo de ejemplo mientras se revisa Supabase");
       renderAll();
       return;
     }
@@ -1001,10 +1007,11 @@ async function loadStore() {
     renderAll();
   } catch (err) {
     console.error("Store load failed", err);
-    catalogState = "error";
-    products = [];
-    categories = [];
+    catalogState = "demo";
+    products = demoProducts;
+    categories = buildCategoriesFromProducts(products);
     videos = localVideos;
+    toast("Mostrando catálogo de ejemplo mientras se revisa Supabase");
     renderAll();
   }
 }
