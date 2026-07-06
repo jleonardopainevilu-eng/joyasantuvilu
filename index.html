@@ -812,19 +812,44 @@ async function loadStore() {
     renderAll();
     return;
   }
-  const [{data: catData, error: catError}, {data: prodData, error: prodError}, {data: videoData}] = await Promise.all([
-    db.from("categories").select("id,name,slug,sort_order").eq("active", true).order("sort_order"),
-    db.from("products").select("*, categories(name,slug)").in("status", ["active", "sold_out"]).order("featured", {ascending: false}).order("created_at", {ascending: false}),
-    db.from("store_videos").select("*").eq("active", true).order("sort_order")
-  ]);
+  let catData = [];
+  let prodData = [];
+  let videoData = [];
+  let catError = null;
+  let prodError = null;
+  let videoError = null;
+  try {
+    const responses = await Promise.all([
+      db.from("categories").select("id,name,slug,sort_order").eq("active", true).order("sort_order"),
+      db.from("products").select("*, categories(name,slug)").in("status", ["active", "sold_out"]).order("featured", {ascending: false}).order("created_at", {ascending: false}),
+      db.from("store_videos").select("*").eq("active", true).order("sort_order")
+    ]);
+    catData = responses[0].data || [];
+    catError = responses[0].error;
+    prodData = responses[1].data || [];
+    prodError = responses[1].error;
+    videoData = responses[2].data || [];
+    videoError = responses[2].error;
+  } catch (error) {
+    catError = error;
+    prodError = error;
+    videoError = error;
+  }
   if (catError || prodError) {
-    document.getElementById("productGrid").innerHTML = '<div class="empty">No se pudo cargar la tienda. Revisa la configuracion de Supabase.</div>';
+    products = demoProducts;
+    categories = [...new Set(products.map(p => productCategorySlug(p)))].map(s => ({slug: s, name: products.find(p => productCategorySlug(p) === s)?.category || s}));
+    videos = demoVideos;
+    renderAll();
+    document.getElementById("productGrid").insertAdjacentHTML("afterbegin", '<div class="empty">Vista demo: Supabase aun no entrega productos publicos. Revisa policies, tablas o carga productos desde el panel.</div>');
     return;
   }
-  categories = catData || [];
-  products = prodData || [];
-  videos = (videoData && videoData.length) ? videoData : demoVideos;
+  products = prodData.length ? prodData : demoProducts;
+  categories = catData.length ? catData : [...new Set(products.map(p => productCategorySlug(p)))].map(s => ({slug: s, name: products.find(p => productCategorySlug(p) === s)?.category || s}));
+  videos = (!videoError && videoData.length) ? videoData : demoVideos;
   renderAll();
+  if (!prodData.length) {
+    document.getElementById("productGrid").insertAdjacentHTML("afterbegin", '<div class="empty">Vista demo: carga productos reales desde el panel admin para reemplazar estos ejemplos.</div>');
+  }
 }
 
 function renderAll() {
