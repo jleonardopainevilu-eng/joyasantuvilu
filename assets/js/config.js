@@ -1,9 +1,6 @@
-// Store Base v1 configuration.
-// The anon key is safe to expose when Row Level Security is enabled.
-// Never place a Supabase service_role key in frontend files.
 window.STORE_CONFIG = {
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  supabaseUrl: "https://vxjjquvfmpqqemjhdhch.supabase.co",
+  supabaseAnonKey: "sb_publishable_OPQEdsgVVAAdUI-EgNPpVw_7RR2lg1t",
   storeName: "Joyas Antuvilu",
   storeEmail: "joyasantuvilu@gmail.com",
   whatsappNumber: "",
