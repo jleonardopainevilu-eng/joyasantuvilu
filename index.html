@@ -4,12 +4,34 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Joyas Antuvilu | Joyas con fuerza natural</title>
-<meta name="description" content="Joyas Antuvilu: tienda online de pulseras y collares con piedras naturales, piezas hechas a mano en el sur de Chile." />
+<meta name="description" content="Joyas Antuvilu: pulseras y collares de piedras naturales, piezas únicas hechas a mano en el sur de Chile. Joyas con fuerza natural." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://www.joyasantuvilu.cl/" />
 <meta name="theme-color" content="#203b2a" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Joyas Antuvilu | Joyas con fuerza natural" />
 <meta property="og:description" content="Pulseras y collares con piedras naturales, hechas a mano en el sur de Chile." />
 <meta property="og:image" content="https://www.joyasantuvilu.cl/assets/logo-antuvilu.png" />
+<meta property="og:url" content="https://www.joyasantuvilu.cl/" />
+<meta property="og:locale" content="es_CL" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Joyas Antuvilu | Joyas con fuerza natural" />
+<meta name="twitter:description" content="Pulseras y collares con piedras naturales, hechas a mano en el sur de Chile." />
+<meta name="twitter:image" content="https://www.joyasantuvilu.cl/assets/logo-antuvilu.png" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "JewelryStore",
+  "name": "Joyas Antuvilu",
+  "description": "Pulseras y collares de piedras naturales, piezas únicas hechas a mano en el sur de Chile.",
+  "url": "https://www.joyasantuvilu.cl/",
+  "logo": "https://www.joyasantuvilu.cl/assets/logo-antuvilu.png",
+  "email": "joyasantuvilu@gmail.com",
+  "sameAs": ["https://www.instagram.com/joyasantuvilu"],
+  "address": {"@type": "PostalAddress", "addressCountry": "CL"},
+  "priceRange": "$$"
+}
+</script>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
@@ -119,6 +141,16 @@ a { color: inherit; }
   font-weight: 800;
   letter-spacing: .13em;
   text-transform: uppercase;
+}
+.admin-link {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(184,148,63,.34);
+  border-radius: 999px;
+  padding: 0 13px;
+  background: rgba(255,253,248,.54);
 }
 .cart-open {
   display: inline-flex;
@@ -336,6 +368,28 @@ a { color: inherit; }
   letter-spacing: .12em;
   text-transform: uppercase;
 }
+.like-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(184,148,63,.28);
+  border-radius: 50%;
+  background: rgba(255,253,248,.88);
+  color: rgba(77,48,34,.72);
+  box-shadow: 0 8px 24px rgba(38,23,17,.12);
+  backdrop-filter: blur(10px);
+  transition: transform .18s ease, color .18s ease, background .18s ease;
+}
+.like-btn:hover { transform: scale(1.07); }
+.like-btn svg { width: 21px; height: 21px; stroke: currentColor; fill: transparent; stroke-width: 2.2; }
+.like-btn.liked { color: #b93248; background: rgba(255,253,248,.96); animation: likepop .35s ease; }
+.like-btn.liked svg { fill: currentColor; }
+@keyframes likepop { 0% { transform: scale(.86); } 58% { transform: scale(1.16); } 100% { transform: scale(1); } }
 .card-body {
   display: grid;
   gap: 8px;
@@ -593,7 +647,8 @@ a { color: inherit; }
   .header { min-height: 62px; padding: 9px 12px; }
   .brand img { width: 42px; height: 42px; }
   .brand strong { font-size: 1rem; }
-  .brand span, .nav a { display: none; }
+  .brand span, .nav a:not(.admin-link) { display: none; }
+  .admin-link { display: inline-flex; min-height: 38px; padding: 0 11px; font-size: .62rem; }
   .hero {
     min-height: auto;
     padding: 34px 16px 40px;
@@ -648,6 +703,7 @@ a { color: inherit; }
 }
 @media (max-width: 760px) {
   .cart-open { min-height: 38px; padding: 0 12px; font-size: .62rem; }
+  .like-btn { width: 36px; height: 36px; top: 8px; left: 8px; }
   .hero p { font-size: .96rem; }
   .trust strong { font-size: .64rem; }
   .trust span { font-size: .74rem; }
@@ -665,6 +721,8 @@ a { color: inherit; }
   <nav class="nav" aria-label="Navegación">
     <a href="#catalogo">Catálogo</a>
     <a href="#reels">Videos</a>
+    <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Instagram</a>
+    <a class="admin-link" href="admin.html" aria-label="Entrar al panel administrador">Panel</a>
     <button class="cart-open" type="button" onclick="toggleCart(true)">Carrito <span class="cart-count" id="cartCount">0</span></button>
   </nav>
 </header>
@@ -746,7 +804,10 @@ a { color: inherit; }
   <div class="dialog">
     <div class="dialog-card" onclick="event.stopPropagation()">
       <button class="icon" type="button" onclick="closeProductModal()" aria-label="Cerrar">x</button>
-      <img id="modalImg" src="" alt="" />
+      <div style="position:relative">
+        <img id="modalImg" src="" alt="" />
+        <button class="like-btn" id="modalLike" type="button" aria-label="Agregar a favoritos"></button>
+      </div>
       <span class="cat" id="modalCat"></span>
       <h2 class="section-title" id="modalName"></h2>
       <strong class="price" id="modalPrice"></strong>
@@ -846,6 +907,32 @@ function readCart() {
 }
 function saveCart() {
   localStorage.setItem("antuvilu_cart", JSON.stringify(cart));
+}
+function getLikes() {
+  try { return JSON.parse(localStorage.getItem("antuvilu_likes") || "[]"); }
+  catch (_) { return []; }
+}
+function saveLikes(likes) {
+  localStorage.setItem("antuvilu_likes", JSON.stringify(likes));
+}
+function isLiked(id) {
+  return getLikes().map(String).includes(String(id));
+}
+function heartSvg() {
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.1-4.35-9.35-8.37C.76 9.25 2.63 5.4 6.24 5.02 8.3 4.8 10.15 5.79 12 7.8c1.85-2.01 3.7-3 5.76-2.78 3.61.38 5.48 4.23 3.59 7.61C19.1 16.65 12 21 12 21z"/></svg>';
+}
+function toggleLike(id, btn) {
+  let likes = getLikes();
+  const key = String(id);
+  const liked = likes.map(String).includes(key);
+  likes = liked ? likes.filter(x => String(x) !== key) : [...likes, key];
+  saveLikes(likes);
+  document.querySelectorAll(`[data-like-id="${CSS.escape(key)}"]`).forEach(el => {
+    el.classList.toggle("liked", !liked);
+    el.setAttribute("aria-pressed", String(!liked));
+    el.setAttribute("aria-label", !liked ? "Quitar de favoritos" : "Agregar a favoritos");
+  });
+  if (!liked) toast("Agregado a favoritos");
 }
 function productCategoryName(p) {
   return p.category || p.categories?.name || "Otros";
@@ -987,9 +1074,11 @@ function renderProducts() {
   grid.innerHTML = list.map(p => {
     const sold = Number(p.stock) <= 0 || p.status === "sold_out";
     const low = !sold && Number(p.stock) <= Number(p.low_stock_threshold || 2);
+    const liked = isLiked(p.id);
     return `
       <article class="card">
         <div class="media">
+          <button class="like-btn ${liked ? "liked" : ""}" data-like-id="${esc(p.id)}" type="button" onclick="toggleLike('${esc(p.id)}', this)" aria-label="${liked ? "Quitar de favoritos" : "Agregar a favoritos"}" aria-pressed="${liked}">${heartSvg()}</button>
           <button type="button" onclick="openProductModal('${esc(p.id)}')" aria-label="Ver ${esc(p.name)}">
             <img src="${esc(p.image_url || 'assets/logo-antuvilu.png')}" alt="${esc(p.name)}" loading="lazy" />
           </button>
@@ -1032,6 +1121,14 @@ function openProductModal(id) {
   document.getElementById("modalPrice").textContent = fmt(p.price);
   document.getElementById("modalDesc").textContent = p.description || "Pieza artesanal disponible.";
   document.getElementById("modalMeta").textContent = [p.materials, p.measure, Number(p.stock) > 0 ? `Stock: ${p.stock}` : "Agotado"].filter(Boolean).join(" | ");
+  const like = document.getElementById("modalLike");
+  const liked = isLiked(id);
+  like.innerHTML = heartSvg();
+  like.dataset.likeId = String(id);
+  like.classList.toggle("liked", liked);
+  like.setAttribute("aria-pressed", String(liked));
+  like.setAttribute("aria-label", liked ? "Quitar de favoritos" : "Agregar a favoritos");
+  like.onclick = (event) => { event.stopPropagation(); toggleLike(id, like); };
   const btn = document.getElementById("modalAdd");
   btn.onclick = () => addToCart(id);
   btn.disabled = Number(p.stock) <= 0 || p.status === "sold_out";
@@ -1142,6 +1239,12 @@ async function submitOrder(event) {
 }
 
 document.getElementById("checkoutForm").addEventListener("submit", submitOrder);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeProductModal();
+    toggleCart(false);
+  }
+});
 loadStore();
 </script>
 </body>
