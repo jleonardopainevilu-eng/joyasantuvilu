@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Panel | Joyas Antuvilu</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#281811;--soil:#4b2d20;--gold:#b8943f;--gold2:#d8b86b;--cream:#fcf8f1;--paper:#fffdf8;--sand:#eee4d6;--sage:#203b2a;--muted:#817064;--line:rgba(75,45,32,.14);--danger:#9b2f25;--ok:#2d6a3d;--shadow:0 20px 60px rgba(40,24,17,.14);--radius:18px
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Jost,system-ui,sans-serif;color:var(--ink);background:linear-gradient(135deg,#fffaf1,#f1e5d8 45%,#fffdf8)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}.hidden{display:none!important}
+.login-shell{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 20% 10%,rgba(216,184,107,.22),transparent 25%),radial-gradient(circle at 82% 80%,rgba(32,59,42,.14),transparent 30%)}
+.login-card{width:min(520px,100%);background:rgba(255,253,248,.92);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:32px;backdrop-filter:blur(12px)}
+.logo{width:82px;height:82px;object-fit:contain;border-radius:999px;background:var(--paper);border:1px solid rgba(184,148,63,.35);padding:6px;display:block;margin:0 auto 14px}.login-card h1{font-family:"Cormorant Garamond",serif;text-align:center;font-size:clamp(2.4rem,6vw,3.3rem);line-height:1;margin:0 0 18px;font-weight:500}.note{background:rgba(216,184,107,.16);border:1px solid rgba(184,148,63,.18);border-radius:14px;padding:14px 16px;color:var(--soil);line-height:1.55;margin-bottom:22px}.field{margin-bottom:14px}.field label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--soil);margin-bottom:8px}.field input,.field textarea,.field select{width:100%;border:1px solid rgba(75,45,32,.18);border-radius:14px;padding:14px 15px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(184,148,63,.7);box-shadow:0 0 0 3px rgba(184,148,63,.13)}
+.btn{border:0;border-radius:999px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:var(--ink);font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:14px 20px}.btn.dark{background:var(--ink);color:var(--gold2)}.btn.ghost{background:transparent;border:1px solid rgba(75,45,32,.18);color:var(--soil)}.btn.small{padding:9px 13px;font-size:.72rem}.btn.full{width:100%}.msg{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:.9rem;line-height:1.45}.msg.error{background:rgba(155,47,37,.1);color:var(--danger)}.msg.ok{background:rgba(45,106,61,.1);color:var(--ok)}
+.app{min-height:100vh;display:grid;grid-template-columns:270px 1fr;background:#f8f1e7}.sidebar{background:linear-gradient(180deg,#1e3324,#281811);color:var(--paper);padding:28px 18px;position:sticky;top:0;height:100vh}.side-brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}.side-brand img{width:54px;height:54px;object-fit:contain;border-radius:999px;background:var(--paper);padding:4px}.side-brand strong{font-family:"Cormorant Garamond",serif;font-size:1.25rem;letter-spacing:.1em;line-height:.95;color:var(--gold2)}.side-brand span{display:block;font-size:.63rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,253,248,.65);margin-top:4px}.nav{display:grid;gap:8px}.nav button{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:13px 14px;text-align:left;background:rgba(255,255,255,.04);color:rgba(255,253,248,.78);font-weight:700}.nav button.active{background:var(--gold2);color:var(--ink)}.main{padding:42px clamp(22px,4vw,54px)}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}.top h2{font-family:"Cormorant Garamond",serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:500;margin:0}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.card{background:rgba(255,253,248,.86);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 32px rgba(40,24,17,.06);padding:22px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:16px}.stat small{display:block;color:var(--muted);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin-bottom:10px}.stat strong{font-size:2rem}.section{display:none}.section.active{display:block}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{padding:13px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:.9rem}.table th{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form-grid .wide{grid-column:1/-1}.muted{color:var(--muted)}.pill{display:inline-flex;padding:5px 10px;border-radius:999px;background:rgba(184,148,63,.13);font-size:.75rem;font-weight:700}.empty{text-align:center;padding:34px;color:var(--muted)}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.grid,.form-grid{grid-template-columns:1fr}.main{padding:26px 18px}.top{align-items:flex-start;flex-direction:column}.table{min-width:620px}}
+</style>
+</head>
+<body>
+
+<section id="loginShell" class="login-shell">
+  <form id="loginForm" class="login-card" autocomplete="off" novalidate>
+    <img class="logo" src="assets/logo-antuvilu.png" alt="Joyas Antuvilu" />
+    <h1>Panel Admin</h1>
+    <div class="note">Acceso privado para administración de la tienda.</div>
+    <div class="field">
+      <label for="accessUser">Correo</label>
+      <input id="accessUser" name="antuvilu_access_user_v5" type="text" inputmode="email" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Correo de acceso" required />
+    </div>
+    <div class="field">
+      <label for="accessKey">Contraseña</label>
+      <input id="accessKey" name="antuvilu_access_key_v5" type="password" autocomplete="new-password" placeholder="Contraseña" required />
+    </div>
+    <button class="btn full" type="submit">Entrar</button>
+    <div id="loginMsg" class="msg hidden"></div>
+  </form>
+</section>
+
+<section id="app" class="app hidden">
+  <aside class="sidebar">
+    <div class="side-brand">
+      <img src="assets/logo-antuvilu.png" alt="Joyas Antuvilu" />
+      <div><strong>JOYAS<br>ANTUVILU</strong><span>Panel privado</span></div>
+    </div>
+    <nav class="nav" aria-label="Panel">
+      <button class="active" data-section="dashboard">Dashboard</button>
+      <button data-section="orders">Pedidos</button>
+      <button data-section="products">Productos</button>
+      <button data-section="stock">Stock</button>
+      <button data-section="settings">Configuración</button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <h2 id="pageTitle">Dashboard</h2>
+      <div class="actions">
+        <a class="btn ghost small" href="/" target="_blank" rel="noopener">Ver tienda</a>
+        <button id="logoutBtn" class="btn dark small" type="button">Cerrar sesión</button>
+      </div>
+    </div>
+
+    <section id="dashboard" class="section active">
+      <div class="grid">
+        <div class="card stat"><small>Productos</small><strong id="statProducts">0</strong></div>
+        <div class="card stat"><small>Pedidos nuevos</small><strong id="statOrders">0</strong></div>
+        <div class="card stat"><small>Stock bajo</small><strong id="statLowStock">0</strong></div>
+        <div class="card stat"><small>Ventas confirmadas</small><strong id="statSales">$0</strong></div>
+      </div>
+      <div class="card">
+        <h3>Próximos pasos</h3>
+        <p class="muted">Carga productos, revisa pedidos y confirma ventas para descontar stock. Más adelante se puede conectar pago online.</p>
+      </div>
+    </section>
+
+    <section id="orders" class="section">
+      <div class="card table-wrap">
+        <table class="table">
+          <thead><tr><th>Fecha</th><th>Cliente</th><th>Estado</th><th>Total</th><th>Contacto</th></tr></thead>
+          <tbody id="ordersBody"><tr><td colspan="5" class="empty">Sin pedidos todavía.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="products" class="section">
+      <div class="card" style="margin-bottom:16px">
+        <h3>Agregar producto</h3>
+        <form id="productForm" class="form-grid">
+          <div class="field"><label>Nombre</label><input id="pName" required placeholder="Ej: Pulsera Jaguar" /></div>
+          <div class="field"><label>Categoría</label><select id="pCategory"></select></div>
+          <div class="field"><label>Precio</label><input id="pPrice" type="number" min="0" step="1" required placeholder="7000" /></div>
+          <div class="field"><label>Stock</label><input id="pStock" type="number" min="0" step="1" required placeholder="1" /></div>
+          <div class="field"><label>SKU</label><input id="pSku" placeholder="ANT-PUL-001" /></div>
+          <div class="field"><label>Imagen</label><input id="pImage" placeholder="assets/logo-antuvilu.png o URL" /></div>
+          <div class="field wide"><label>Descripción</label><textarea id="pDescription" placeholder="Descripción breve del producto"></textarea></div>
+          <div class="wide"><button class="btn" type="submit">Guardar producto</button><span id="productMsg" class="muted" style="margin-left:12px"></span></div>
+        </form>
+      </div>
+      <div class="card table-wrap">
+        <table class="table">
+          <thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th></tr></thead>
+          <tbody id="productsBody"><tr><td colspan="5" class="empty">Sin productos cargados.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="stock" class="section">
+      <div class="card table-wrap">
+        <table class="table">
+          <thead><tr><th>Producto</th><th>SKU</th><th>Stock</th><th>Estado</th></tr></thead>
+          <tbody id="stockBody"><tr><td colspan="4" class="empty">Sin stock cargado.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="settings" class="section">
+      <div class="card">
+        <h3>Configuración</h3>
+        <p class="muted">La configuración pública se lee desde <strong>assets/js/config.js</strong>. No publiques claves secretas. Usa solo la publishable key de Supabase.</p>
+        <p><span class="pill">Sesión activa</span></p>
+      </div>
+    </section>
+  </main>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js"></script>
+<script>
+(() => {
+  const cfg = window.STORE_CONFIG || {};
+  const state = { sb: null, products: [], categories: [], orders: [] };
+  const $ = (id) => document.getElementById(id);
+  const money = (n) => new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(Number(n || 0));
+  const slugify = (text) => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+
+  function showMsg(type, text){
+    const el = $('loginMsg');
+    el.className = 'msg ' + type;
+    el.textContent = text;
+    el.classList.remove('hidden');
+  }
+  function clearLoginFields(){
+    const u = $('accessUser');
+    const p = $('accessKey');
+    if (u) u.value = '';
+    if (p) p.value = '';
+    setTimeout(() => { if (u) u.value = ''; if (p) p.value = ''; }, 120);
+    setTimeout(() => { if (u) u.value = ''; if (p) p.value = ''; }, 500);
+  }
+  async function initClient(){
+    if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.supabase){
+      showMsg('error','La configuración del panel no está disponible. Revisa assets/js/config.js.');
+      return null;
+    }
+    state.sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+    });
+    try { await state.sb.auth.signOut(); } catch (_) {}
+    return state.sb;
+  }
+  async function login(email, password){
+    const sb = state.sb || await initClient();
+    if (!sb) return;
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error || !data?.user){
+      showMsg('error','No se pudo ingresar. Revisa los datos e intenta nuevamente.');
+      return;
+    }
+    const { data: profile, error: profileError } = await sb
+      .from('admin_profiles')
+      .select('user_id, role, active')
+      .eq('user_id', data.user.id)
+      .eq('active', true)
+      .maybeSingle();
+    if (profileError || !profile){
+      await sb.auth.signOut();
+      showMsg('error','Este usuario no tiene acceso administrativo.');
+      return;
+    }
+    $('loginShell').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    await loadAll();
+  }
+  async function loadAll(){
+    await Promise.all([loadCategories(), loadProducts(), loadOrders()]);
+    renderStats();
+  }
+  async function loadCategories(){
+    const { data, error } = await state.sb.from('categories').select('id,name,slug,active').eq('active', true).order('sort_order', { ascending: true });
+    state.categories = error ? [] : (data || []);
+    const sel = $('pCategory');
+    sel.innerHTML = '';
+    if (!state.categories.length){
+      sel.innerHTML = '<option value="">Sin categorías</option>';
+      return;
+    }
+    state.categories.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = c.name;
+      sel.appendChild(opt);
+    });
+  }
+  async function loadProducts(){
+    const { data, error } = await state.sb.from('products').select('id,name,sku,price,stock,status,category_id,categories(name)').order('created_at', { ascending: false });
+    state.products = error ? [] : (data || []);
+    renderProducts();
+    renderStock();
+  }
+  async function loadOrders(){
+    const { data, error } = await state.sb.from('orders').select('id,customer_name,customer_email,customer_phone,status,total,created_at').order('created_at', { ascending: false }).limit(50);
+    state.orders = error ? [] : (data || []);
+    renderOrders();
+  }
+  function renderStats(){
+    $('statProducts').textContent = state.products.length;
+    $('statOrders').textContent = state.orders.filter(o => ['new','pending','pendiente'].includes(String(o.status || '').toLowerCase())).length;
+    $('statLowStock').textContent = state.products.filter(p => Number(p.stock || 0) <= 1).length;
+    const sales = state.orders.filter(o => ['confirmed','confirmado','paid','pagado'].includes(String(o.status || '').toLowerCase())).reduce((sum,o)=>sum+Number(o.total||0),0);
+    $('statSales').textContent = money(sales);
+  }
+  function renderProducts(){
+    const body = $('productsBody');
+    if (!state.products.length){ body.innerHTML = '<tr><td colspan="5" class="empty">Sin productos cargados.</td></tr>'; return; }
+    body.innerHTML = state.products.map(p => `<tr><td><strong>${p.name || '-'}</strong><br><span class="muted">${p.sku || ''}</span></td><td>${p.categories?.name || '-'}</td><td>${money(p.price)}</td><td>${p.stock ?? 0}</td><td><span class="pill">${p.status || 'active'}</span></td></tr>`).join('');
+  }
+  function renderStock(){
+    const body = $('stockBody');
+    if (!state.products.length){ body.innerHTML = '<tr><td colspan="4" class="empty">Sin stock cargado.</td></tr>'; return; }
+    body.innerHTML = state.products.map(p => `<tr><td>${p.name || '-'}</td><td>${p.sku || '-'}</td><td>${p.stock ?? 0}</td><td>${Number(p.stock || 0) <= 1 ? '<span class="pill">Stock bajo</span>' : '<span class="pill">Disponible</span>'}</td></tr>`).join('');
+  }
+  function renderOrders(){
+    const body = $('ordersBody');
+    if (!state.orders.length){ body.innerHTML = '<tr><td colspan="5" class="empty">Sin pedidos todavía.</td></tr>'; return; }
+    body.innerHTML = state.orders.map(o => `<tr><td>${new Date(o.created_at).toLocaleDateString('es-CL')}</td><td>${o.customer_name || '-'}</td><td><span class="pill">${o.status || 'nuevo'}</span></td><td>${money(o.total)}</td><td>${o.customer_email || o.customer_phone || '-'}</td></tr>`).join('');
+  }
+
+  $('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    $('loginMsg').classList.add('hidden');
+    const email = $('accessUser').value.trim();
+    const password = $('accessKey').value;
+    if (!email || !password){ showMsg('error','Completa correo y contraseña.'); return; }
+    await login(email, password);
+  });
+
+  $('logoutBtn').addEventListener('click', async () => {
+    try { await state.sb?.auth.signOut(); } catch (_) {}
+    $('app').classList.add('hidden');
+    $('loginShell').classList.remove('hidden');
+    clearLoginFields();
+  });
+
+  document.querySelectorAll('.nav button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      $(btn.dataset.section).classList.add('active');
+      $('pageTitle').textContent = btn.textContent.trim();
+    });
+  });
+
+  $('productForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = $('productMsg');
+    msg.textContent = 'Guardando...';
+    const name = $('pName').value.trim();
+    const payload = {
+      name,
+      slug: slugify(name),
+      sku: $('pSku').value.trim() || null,
+      category_id: $('pCategory').value || null,
+      price: Number($('pPrice').value || 0),
+      stock: Number($('pStock').value || 0),
+      description: $('pDescription').value.trim() || null,
+      image_url: $('pImage').value.trim() || 'assets/logo-antuvilu.png',
+      status: 'active',
+      featured: false
+    };
+    const { error } = await state.sb.from('products').insert(payload);
+    if (error){ msg.textContent = 'No se pudo guardar. Revisa permisos o campos.'; return; }
+    e.target.reset();
+    msg.textContent = 'Producto guardado.';
+    await loadProducts();
+    renderStats();
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    clearLoginFields();
+    await initClient();
+    clearLoginFields();
+  });
+})();
+</script>
+</body>
+</html>
