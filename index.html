@@ -899,6 +899,27 @@ function esc(v) {
   return String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 function fmt(n) { return money.format(Number(n || 0)); }
+function driveFileId(url) {
+  const v = String(url || "");
+  const m = v.match(/\/file\/d\/([^/]+)/) || v.match(/[?&]id=([^&]+)/);
+  return m ? m[1] : "";
+}
+function normalizeImageUrl(value) {
+  let v = String(value || "").trim();
+  v = v.replace(/\s+(o|ó)\s+url\s*$/i, "").trim();
+  v = v.replace(/\s+o\s+https?:\/\/.*$/i, "").trim();
+  v = v.replace(/^\/+/, "");
+  if (!v || v.toLowerCase() === "url" || v.toLowerCase() === "imagen") return null;
+  if (v.includes("drive.google.com")) {
+    const id = driveFileId(v);
+    if (id) return `https://lh3.googleusercontent.com/d/${id}`;
+  }
+  return v;
+}
+function imageSrc(value) {
+  const v = normalizeImageUrl(value);
+  return v || "assets/logo-antuvilu.png";
+}
 function slug(v) {
   return String(v || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
