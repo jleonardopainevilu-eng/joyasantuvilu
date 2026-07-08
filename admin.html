@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Admin | Joyas Antuvilu</title>
-<!-- Entrega final: panel cliente con productos, imágenes, categorías, stock, pedidos, configuración, recuperación y cambio de contraseña -->
+<!-- Entrega final V8: panel cliente con productos, imágenes, reportes descargables, categorías, stock, pedidos, configuración, recuperación y cambio de contraseña -->
 <!-- V5: productos con editar visible, vista previa de imagen y limpieza de URL -->
 <!-- V4: login limpio, sin correo prellenado ni mensajes técnicos -->
 <!-- Fusion v3: login seguro, sin sesión persistente y hidden corregido -->
@@ -106,11 +106,20 @@ button { cursor: pointer; }
 }
 .top {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
+.top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.top .btn, .box-head .btn, .export-row .btn { white-space: nowrap; }
 h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
 h1 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); }
 h2 { margin: 0 0 14px; font-size: 1.8rem; }
@@ -427,6 +436,8 @@ th {
 
 @media (max-width: 900px) {
   .shell { grid-template-columns: 1fr; }
+  .top { align-items: stretch; }
+  .top-actions { justify-content: flex-start; }
   .side {
     position: static;
     height: auto;
@@ -503,7 +514,9 @@ th {
         <h1 id="panelTitle">Dashboard</h1>
         <p id="sessionEmail"></p>
       </div>
-      <a class="btn light" href="index.html" target="_blank" rel="noopener">Ver tienda ↗</a>
+      <div class="top-actions">
+        <a class="btn light" href="index.html" target="_blank" rel="noopener">Ver tienda ↗</a>
+      </div>
     </div>
 
     <section class="panel active" id="dashboard">
@@ -516,12 +529,19 @@ th {
       <div class="box">
         <h2>Resumen</h2>
         <p>Panel listo para administrar productos, pedidos y stock de Joyas Antuvilu.</p>
+        <div class="export-row" aria-label="Informes descargables">
+          <button class="btn light" type="button" onclick="exportStockReport()">Descargar stock Excel</button>
+          <button class="btn light" type="button" onclick="exportProductsReport()">Descargar productos</button>
+          <button class="btn light" type="button" onclick="exportOrdersReport()">Descargar pedidos</button>
+          <button class="btn light" type="button" onclick="exportMovementsReport()">Descargar movimientos</button>
+        </div>
+        <p class="export-note">Los informes se descargan en CSV compatible con Excel. Sirven para respaldo, inventario y revisión de ventas.</p>
       </div>
     </section>
 
     <section class="panel" id="orders">
       <div class="box">
-        <h2>Pedidos</h2>
+        <div class="box-head"><h2>Pedidos</h2><button class="btn light" type="button" onclick="exportOrdersReport()">Descargar pedidos</button></div>
         <div class="table-wrap"><table id="ordersTable"></table></div>
       </div>
     </section>
@@ -564,7 +584,7 @@ th {
         </form>
       </div>
       <div class="box">
-        <h2>Productos</h2>
+        <div class="box-head"><h2>Productos</h2><button class="btn light" type="button" onclick="exportProductsReport()">Descargar productos</button></div>
         <div id="productsList" class="product-list"></div>
       </div>
     </section>
@@ -598,7 +618,7 @@ th {
 
     <section class="panel" id="stock">
       <div class="box">
-        <h2>Movimiento de stock</h2>
+        <div class="box-head"><h2>Movimiento de stock</h2><button class="btn light" type="button" onclick="exportStockReport()">Descargar stock</button></div>
         <form id="stockForm" class="grid-form">
           <label class="wide">Producto <select id="stockProduct"></select></label>
           <label>Tipo
@@ -616,7 +636,7 @@ th {
         </form>
       </div>
       <div class="box">
-        <h2>Historial</h2>
+        <div class="box-head"><h2>Historial</h2><button class="btn light" type="button" onclick="exportMovementsReport()">Descargar movimientos</button></div>
         <div class="table-wrap"><table id="movementsTable"></table></div>
       </div>
     </section>
@@ -890,6 +910,86 @@ function fillCategorySelects() {
   document.getElementById("productCategory").innerHTML = options;
   document.getElementById("stockProduct").innerHTML = products.map(p => `<option value="${esc(p.id)}">${esc(p.name)} (${p.stock})</option>`).join("");
 }
+
+function csvValue(value) {
+  const text = String(value ?? "").replace(/\r?\n/g, " ").trim();
+  return `"${text.replace(/"/g, '""')}"`;
+}
+function downloadCsv(filename, headers, rows) {
+  const lines = [headers.map(csvValue).join(";"), ...rows.map(row => headers.map(h => csvValue(row[h])).join(";"))];
+  const blob = new Blob(["\ufeff" + lines.join("\n")], {type: "text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast("Informe descargado");
+}
+function reportDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+function statusText(status) {
+  return status === "active" ? "Activo" : status === "sold_out" ? "Agotado" : status === "draft" ? "Borrador" : status === "archived" ? "Archivado" : (status || "");
+}
+function exportStockReport() {
+  const headers = ["Producto", "SKU", "Categoria", "Stock", "Estado", "Precio", "Stock bajo", "Imagen"];
+  const rows = products.map(p => ({
+    Producto: p.name || "",
+    SKU: p.sku || p.slug || "",
+    Categoria: p.categories?.name || "Sin categoría",
+    Stock: Number(p.stock || 0),
+    Estado: statusText(p.status),
+    Precio: Number(p.price || 0),
+    "Stock bajo": Number(p.stock || 0) <= Number(p.low_stock_threshold || 2) ? "Sí" : "No",
+    Imagen: normalizeImageUrl(p.image_url) || ""
+  }));
+  downloadCsv(`joyas-antuvilu-stock-${reportDate()}.csv`, headers, rows);
+}
+function exportProductsReport() {
+  const headers = ["Producto", "SKU", "Categoria", "Precio", "Stock", "Estado", "Materiales", "Medida", "Descripcion", "Imagen"];
+  const rows = products.map(p => ({
+    Producto: p.name || "",
+    SKU: p.sku || p.slug || "",
+    Categoria: p.categories?.name || "Sin categoría",
+    Precio: Number(p.price || 0),
+    Stock: Number(p.stock || 0),
+    Estado: statusText(p.status),
+    Materiales: p.materials || "",
+    Medida: p.measure || "",
+    Descripcion: p.description || "",
+    Imagen: normalizeImageUrl(p.image_url) || ""
+  }));
+  downloadCsv(`joyas-antuvilu-productos-${reportDate()}.csv`, headers, rows);
+}
+function exportOrdersReport() {
+  const headers = ["Pedido", "Fecha", "Cliente", "Correo", "Telefono", "Productos", "Total", "Estado"];
+  const rows = orders.map(o => ({
+    Pedido: o.order_number || o.id || "",
+    Fecha: o.created_at ? new Date(o.created_at).toLocaleString("es-CL") : "",
+    Cliente: o.customer_name || "",
+    Correo: o.customer_email || "",
+    Telefono: o.customer_phone || "",
+    Productos: (o.order_items || []).map(i => `${i.quantity} x ${i.product_name}`).join(" | "),
+    Total: Number(o.subtotal || 0),
+    Estado: o.status || ""
+  }));
+  downloadCsv(`joyas-antuvilu-pedidos-${reportDate()}.csv`, headers, rows);
+}
+function exportMovementsReport() {
+  const headers = ["Fecha", "Producto", "Tipo", "Cantidad", "Motivo"];
+  const rows = movements.map(m => ({
+    Fecha: m.created_at ? new Date(m.created_at).toLocaleString("es-CL") : "",
+    Producto: m.products?.name || "",
+    Tipo: m.type || "",
+    Cantidad: Number(m.quantity || 0),
+    Motivo: m.reason || ""
+  }));
+  downloadCsv(`joyas-antuvilu-movimientos-${reportDate()}.csv`, headers, rows);
+}
+
 function renderDashboard() {
   document.getElementById("metricProducts").textContent = products.length;
   document.getElementById("metricOrders").textContent = orders.filter(o => o.status === "new").length;
