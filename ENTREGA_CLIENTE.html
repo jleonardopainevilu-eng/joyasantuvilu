@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Entrega Cliente | Joyas Antuvilu</title>
+<meta name="robots" content="noindex,nofollow" />
+<style>
+:root{--ink:#261711;--soil:#4d3022;--gold:#b8943f;--paper:#fffdf8;--cream:#fbf5eb;--sage:#203b2a;--line:rgba(77,48,34,.16)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:linear-gradient(135deg,#fffaf0,#f0dfc8)}
+.wrap{width:min(960px,92vw);margin:0 auto;padding:42px 0}.hero{border:1px solid var(--line);border-radius:24px;background:rgba(255,253,248,.94);padding:32px;box-shadow:0 18px 55px rgba(38,23,17,.10)}
+h1,h2{font-family:Georgia,serif;font-weight:500}h1{font-size:clamp(2.2rem,6vw,4.4rem);margin:0 0 8px}p{line-height:1.55;color:#6f5f52}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:22px}.card{border:1px solid var(--line);border-radius:18px;background:var(--paper);padding:20px}.pill{display:inline-flex;border-radius:999px;padding:7px 12px;background:var(--sage);color:#dcc078;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:999px;padding:0 18px;background:var(--ink);color:#dcc078;text-decoration:none;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem}.btn.gold{background:linear-gradient(135deg,#e2c979,#b8943f);color:var(--ink)}ul{padding-left:18px;line-height:1.7;color:#6f5f52}.footer{margin-top:24px;color:#6f5f52;font-size:.9rem}@media(max-width:720px){.grid{grid-template-columns:1fr}.hero{padding:22px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="hero">
+    <span class="pill">Entrega oficial</span>
+    <h1>Joyas Antuvilu</h1>
+    <p>La tienda queda preparada con catálogo público, carrito de solicitud, favoritos, videos, panel administrador, stock, pedidos y configuración segura.</p>
+    <p><a class="btn gold" href="index.html">Ver tienda</a> <a class="btn" href="admin.html">Entrar al panel</a></p>
+  </section>
+  <section class="grid">
+    <article class="card"><h2>Acceso administrador</h2><p>Ruta del panel:</p><p><strong>/admin.html</strong></p><p>El correo y contraseña se administran desde Supabase Auth. No compartir la clave por canales públicos.</p></article>
+    <article class="card"><h2>Uso diario</h2><ul><li>Crear o editar productos.</li><li>Subir imagen o pegar URL directa.</li><li>Revisar pedidos nuevos.</li><li>Confirmar pedido para descontar stock.</li><li>Actualizar stock manualmente.</li></ul></article>
+    <article class="card"><h2>Seguridad</h2><ul><li>Cambiar contraseña al entregar el sitio.</li><li>Usar correo administrador único.</li><li>Cerrar sesión al terminar.</li><li>No publicar claves secretas de Supabase.</li></ul></article>
+    <article class="card"><h2>Imágenes</h2><p>Para carga directa desde el panel, ejecutar primero <strong>supabase_storage_setup.sql</strong>. Como respaldo, se puede pegar una URL pública o una ruta del sitio.</p></article>
+  </section>
+  <p class="footer">Documento interno de entrega. No está enlazado desde la tienda pública.</p>
+</main>
+</body>
+</html>
