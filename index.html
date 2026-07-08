@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Joyas Antuvilu | Joyas con fuerza natural</title>
 <!-- V6: catálogo público estable + imágenes normalizadas + textos finales -->
-<!-- Fusion v2: Panel Admin visible + favoritos + catálogo demo si Supabase falla -->
+<!-- Entrega final: tienda pública, favoritos discretos, catálogo estable, carrito, videos, cómo comprar y panel visible -->
 <meta name="description" content="Joyas Antuvilu: pulseras y collares de piedras naturales, piezas únicas hechas a mano en el sur de Chile. Joyas con fuerza natural." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://www.joyasantuvilu.cl/" />
@@ -381,19 +381,19 @@ a { color: inherit; }
   top: 10px;
   left: 10px;
   z-index: 3;
-  width: 38px;
-  height: 38px;
+  width: 24px;
+  height: 24px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(184,148,63,.3);
+  border: 1px solid rgba(184,148,63,.24);
   border-radius: 50%;
-  background: rgba(255,253,248,.96);
-  color: rgba(77,48,34,.72);
-  box-shadow: 0 4px 12px rgba(38,23,17,.16);
+  background: rgba(255,253,248,.88);
+  color: rgba(77,48,34,.55);
+  box-shadow: 0 3px 8px rgba(38,23,17,.12);
   transition: transform .18s ease, color .18s ease, background .18s ease;
 }
 .like-btn:hover { transform: scale(1.07); }
-.like-btn svg { width: 21px; height: 21px; stroke: currentColor; fill: transparent; stroke-width: 2.2; }
+.like-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: transparent; stroke-width: 2.2; }
 .like-btn.liked { color: #b93248; background: rgba(255,253,248,.96); animation: likepop .35s ease; }
 .like-btn.liked svg { fill: currentColor; }
 @keyframes likepop { 0% { transform: scale(.86); } 58% { transform: scale(1.16); } 100% { transform: scale(1); } }
@@ -484,6 +484,43 @@ a { color: inherit; }
   padding: 18px;
   background: linear-gradient(transparent, rgba(0,0,0,.72));
 }
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.how-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  background: rgba(255,253,248,.92);
+  box-shadow: 0 12px 30px rgba(38,23,17,.06);
+}
+.how-card span {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--gold-soft);
+  font-size: .76rem;
+  font-weight: 900;
+}
+.how-card h3 {
+  margin: 0 0 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.28rem;
+}
+.how-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.48;
+}
+
 .footer {
   display: flex;
   flex-wrap: wrap;
@@ -578,6 +615,7 @@ a { color: inherit; }
   background: #fffaf3;
 }
 .checkout textarea { min-height: 72px; resize: vertical; }
+.checkout-note { margin: 9px 0 0; color: var(--muted); font-size: .78rem; line-height: 1.4; }
 .total {
   display: flex;
   justify-content: space-between;
@@ -711,7 +749,7 @@ a { color: inherit; }
 }
 @media (max-width: 760px) {
   .cart-open { min-height: 38px; padding: 0 12px; font-size: .62rem; }
-  .like-btn { width: 36px; height: 36px; top: 8px; left: 8px; }
+  .like-btn { width: 23px; height: 23px; top: 8px; left: 8px; }
   .hero p { font-size: .96rem; }
   .trust strong { font-size: .64rem; }
   .trust span { font-size: .74rem; }
@@ -729,8 +767,9 @@ a { color: inherit; }
   <nav class="nav" aria-label="Navegación">
     <a href="#catalogo">Catálogo</a>
     <a href="#reels">Videos</a>
+    <a href="#como-comprar">Cómo comprar</a>
     <a href="https://www.instagram.com/joyasantuvilu" target="_blank" rel="noopener">Instagram</a>
-    <a class="admin-link" href="admin.html" aria-label="Entrar al panel administrador">Panel Admin</a>
+    <a class="admin-link" href="admin.html" aria-label="Entrar al panel administrador">Panel</a>
     <button class="cart-open" type="button" onclick="toggleCart(true)">Carrito <span class="cart-count" id="cartCount">0</span></button>
   </nav>
 </header>
@@ -771,6 +810,23 @@ a { color: inherit; }
     <div class="grid" id="productGrid"><div class="loading">Cargando tienda...</div></div>
   </section>
 
+
+  <section class="section" id="como-comprar">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow dark">Proceso</span>
+        <h2 class="section-title">Cómo comprar</h2>
+        <p class="section-copy">El pedido queda registrado y luego se confirma disponibilidad, pago y envío directamente con la tienda.</p>
+      </div>
+    </div>
+    <div class="how-grid">
+      <article class="how-card"><span>1</span><h3>Elige tu pieza</h3><p>Revisa el catálogo, marca favoritos o agrega productos al carrito.</p></article>
+      <article class="how-card"><span>2</span><h3>Envía tu solicitud</h3><p>Completa tus datos para que la tienda reciba el pedido y pueda contactarte.</p></article>
+      <article class="how-card"><span>3</span><h3>Confirma disponibilidad</h3><p>Se revisa stock, forma de pago y datos de entrega antes de preparar la joya.</p></article>
+      <article class="how-card"><span>4</span><h3>Recibe tu compra</h3><p>Coordinamos retiro o envío a todo Chile según disponibilidad.</p></article>
+    </div>
+  </section>
+
   <section class="section reels" id="reels">
     <div class="section-head">
       <div>
@@ -804,6 +860,7 @@ a { color: inherit; }
       <input id="customerPhone" placeholder="Teléfono / WhatsApp" />
       <textarea id="customerNote" placeholder="Nota opcional: envío, retiro, horario, etc."></textarea>
       <button class="btn-dark" type="submit">Enviar pedido</button>
+      <p class="checkout-note" id="checkoutNote">Pedido sujeto a confirmación de disponibilidad, pago y envío.</p>
     </form>
   </div>
 </aside>
@@ -985,7 +1042,7 @@ function catalogEmptyHtml(kind = "empty") {
   const contactText = whatsapp ? "Consultar por WhatsApp" : "Consultar por correo";
   const title = kind === "error" ? "Catálogo temporalmente no disponible" : "Catálogo en preparación";
   const copy = kind === "error"
-    ? "La tienda pública cargó correctamente, pero no pudo leer los productos desde Supabase. Revisa la configuración o vuelve a intentar más tarde."
+    ? "Estamos actualizando las piezas disponibles. Puedes consultar directamente por disponibilidad o revisar los videos de la colección."
     : "Estamos cargando nuevas piezas al catálogo. Mientras tanto, puedes escribir para consultar disponibilidad o revisar los videos de la colección.";
   return `<div class="empty"><strong>${title}</strong><p>${copy}</p><div class="empty-actions"><a class="btn-dark" href="${esc(contactHref)}" target="_blank" rel="noopener">${contactText}</a><a class="btn" href="#reels">Ver videos</a></div></div>`;
 }
@@ -1019,7 +1076,7 @@ async function loadStore() {
       products = demoProducts;
       categories = buildCategoriesFromProducts(products);
       videos = (videoRes.data && videoRes.data.length) ? videoRes.data : localVideos;
-      toast("Mostrando catálogo de ejemplo mientras se revisa Supabase");
+      toast("Catálogo de respaldo disponible temporalmente");
       renderAll();
       return;
     }
@@ -1035,7 +1092,7 @@ async function loadStore() {
     products = demoProducts;
     categories = buildCategoriesFromProducts(products);
     videos = localVideos;
-    toast("Mostrando catálogo de ejemplo mientras se revisa Supabase");
+    toast("Catálogo de respaldo disponible temporalmente");
     renderAll();
   }
 }
@@ -1051,6 +1108,12 @@ function applyStoreSettings(value) {
     } else {
       waBtn.hidden = true;
     }
+  }
+  const note = document.getElementById("checkoutNote");
+  if (note) note.textContent = storeSettings.checkout_note || "Pedido sujeto a confirmación de disponibilidad, pago y envío.";
+  const ig = storeSettings.instagram || cfg.instagramUrl;
+  if (ig) {
+    document.querySelectorAll('a[href*="instagram.com/joyasantuvilu"]').forEach(a => a.href = ig);
   }
 }
 function storeEmail() {
