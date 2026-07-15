@@ -606,6 +606,29 @@ a { color: inherit; }
   border-radius: 50%;
   background: var(--paper);
 }
+.transfer-box {
+  margin-top: 6px;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--sand);
+  border: 1px solid var(--line);
+}
+.transfer-box strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: .78rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--soil);
+}
+.transfer-box pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: .92rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
 .checkout {
   display: grid;
   gap: 10px;
@@ -888,6 +911,22 @@ a { color: inherit; }
   </div>
 </div>
 
+<div class="modal" id="orderConfirmModal" onclick="closeOrderConfirm()">
+  <div class="dialog">
+    <div class="dialog-card" onclick="event.stopPropagation()">
+      <button class="icon" type="button" onclick="closeOrderConfirm()" aria-label="Cerrar">x</button>
+      <span class="cat">Pedido recibido</span>
+      <h2 class="section-title" id="confirmOrderNumber"></h2>
+      <p class="section-copy">Te vamos a escribir por WhatsApp para confirmar disponibilidad, pago y envío. Si no se abrió solo, toca el botón de abajo.</p>
+      <a class="btn-dark" id="confirmWhatsappBtn" href="#" target="_blank" rel="noopener">Abrir WhatsApp</a>
+      <div id="confirmBankBox" class="transfer-box" hidden>
+        <strong>Datos para transferencia</strong>
+        <pre id="confirmBankDetails"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <a class="fab-whatsapp" id="fabWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp" hidden>
@@ -993,8 +1032,24 @@ function toast(msg) {
   setTimeout(() => el.classList.remove("show"), 2400);
 }
 function readCart() {
-  try { return JSON.parse(localStorage.getItem("antuvilu_cart") || "{}"); }
-  catch (_) { return {}; }
+  let raw;
+  try { raw = JSON.parse(localStorage.getItem("antuvilu_cart") || "{}"); }
+  catch (_) { raw = {}; }
+  const clean = {};
+  let changed = false;
+  Object.entries(raw || {}).forEach(([id, item]) => {
+    const qty = Number(item?.quantity);
+    const price = Number(item?.price);
+    if (!item || !Number.isFinite(qty) || qty <= 0 || !Number.isFinite(price)) {
+      changed = true;
+      return;
+    }
+    clean[id] = {id: item.id ?? id, name: item.name || "Producto", price, image_url: item.image_url || "", quantity: qty};
+  });
+  if (changed) {
+    try { localStorage.setItem("antuvilu_cart", JSON.stringify(clean)); } catch (_) {}
+  }
+  return clean;
 }
 function saveCart() {
   localStorage.setItem("antuvilu_cart", JSON.stringify(cart));
@@ -1254,7 +1309,7 @@ function addToCart(id) {
 function changeQty(id, delta) {
   if (!cart[id]) return;
   const p = getProduct(id);
-  const next = cart[id].quantity + delta;
+  const next = (Number(cart[id].quantity) || 0) + delta;
   if (next <= 0) delete cart[id];
   else if (p && next > Number(p.stock)) toast("Stock máximo alcanzado");
   else cart[id].quantity = next;
@@ -1263,8 +1318,8 @@ function changeQty(id, delta) {
 }
 function updateCart() {
   const items = Object.values(cart);
-  document.getElementById("cartCount").textContent = items.reduce((s, i) => s + i.quantity, 0);
-  document.getElementById("cartTotal").textContent = fmt(items.reduce((s, i) => s + i.price * i.quantity, 0));
+  document.getElementById("cartCount").textContent = items.reduce((s, i) => s + (Number(i.quantity) || 0), 0);
+  document.getElementById("cartTotal").textContent = fmt(items.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 0), 0));
   document.getElementById("cartItems").innerHTML = items.length ? items.map(i => `
     <div class="cart-item">
       <img src="${esc(imageSrc(i.image_url))}" alt="${esc(i.name)}" onerror="this.onerror=null;this.src='assets/logo-antuvilu.png'" />
@@ -1285,6 +1340,34 @@ function toggleCart(open) {
   document.getElementById("cart").classList.toggle("open", open);
   document.getElementById("overlay").classList.toggle("open", open);
 }
+function openOrderConfirm(orderNumber, items, total) {
+  document.getElementById("confirmOrderNumber").textContent = orderNumber;
+  const whatsapp = (storeSettings.whatsapp || cfg.whatsappNumber || "").replace(/[^0-9]/g, "");
+  const lines = items.map(i => `- ${i.quantity} x ${i.name} (${fmt(i.price * i.quantity)})`).join("\n");
+  const message = `Hola! Acabo de enviar mi pedido ${orderNumber} desde la web.\n\n${lines}\n\nTotal: ${fmt(total)}\n\nQuedo atenta a los datos para coordinar el pago y envío.`;
+  const waBtn = document.getElementById("confirmWhatsappBtn");
+  if (whatsapp) {
+    const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
+    waBtn.href = url;
+    waBtn.hidden = false;
+    window.open(url, "_blank");
+  } else {
+    waBtn.hidden = true;
+  }
+  const bankBox = document.getElementById("confirmBankBox");
+  const bankText = (storeSettings.bank_details || "").trim();
+  if (bankText) {
+    document.getElementById("confirmBankDetails").textContent = bankText;
+    bankBox.hidden = false;
+  } else {
+    bankBox.hidden = true;
+  }
+  document.getElementById("orderConfirmModal").classList.add("open");
+}
+function closeOrderConfirm() {
+  document.getElementById("orderConfirmModal").classList.remove("open");
+}
+
 async function submitOrder(event) {
   event.preventDefault();
   const items = Object.values(cart);
@@ -1297,14 +1380,19 @@ async function submitOrder(event) {
     customer_email: document.getElementById("customerEmail").value.trim(),
     customer_phone: document.getElementById("customerPhone").value.trim(),
     customer_note: document.getElementById("customerNote").value.trim(),
-    subtotal: items.reduce((s, i) => s + i.price * i.quantity, 0),
+    subtotal: items.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 0), 0),
     status: "new"
   };
   if (!order.customer_name) return;
 
   if (!db || catalogState === "demo") {
-    const body = items.map(i => `${i.quantity} x ${i.name} - ${fmt(i.price * i.quantity)}`).join("%0A");
-    window.location.href = `mailto:${storeEmail()}?subject=Pedido Joyas Antuvilu&body=${body}`;
+    const demoOrderNumber = "PENDIENTE-" + Date.now().toString().slice(-6);
+    cart = {};
+    saveCart();
+    updateCart();
+    event.target.reset();
+    toggleCart(false);
+    openOrderConfirm(demoOrderNumber, items, order.subtotal);
     return;
   }
 
@@ -1334,13 +1422,14 @@ async function submitOrder(event) {
   updateCart();
   event.target.reset();
   toggleCart(false);
-  toast("Pedido recibido: " + savedOrder.order_number);
+  openOrderConfirm(savedOrder.order_number, items, order.subtotal);
 }
 
 document.getElementById("checkoutForm").addEventListener("submit", submitOrder);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeProductModal();
+    closeOrderConfirm();
     toggleCart(false);
   }
 });
