@@ -182,6 +182,9 @@ textarea { min-height: 82px; resize: vertical; }
 .wide { grid-column: span 2; }
 .full { grid-column: 1 / -1; }
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 42px;
   border: 1px solid rgba(220,192,120,.38);
   border-radius: 999px;
@@ -192,6 +195,9 @@ textarea { min-height: 82px; resize: vertical; }
   font-weight: 900;
   letter-spacing: .1em;
   text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  cursor: pointer;
 }
 .btn.gold {
   background: linear-gradient(135deg, #e5ca7d, #b8943f);
@@ -651,6 +657,8 @@ th {
           <label class="wide">WhatsApp <input id="setWhatsapp" placeholder="56912345678" /></label>
           <label class="wide">Instagram <input id="setInstagram" placeholder="https://www.instagram.com/joyasantuvilu" /></label>
           <label class="wide">Mensaje de compra <textarea id="setCheckoutNote" placeholder="Indica cómo se confirma el pedido, pago y envío."></textarea></label>
+          <label class="wide">Datos de transferencia <textarea id="setBankDetails" placeholder="Banco Estado&#10;Cuenta Rut / Vista&#10;N° cuenta: 00000000&#10;Nombre: Joyas Antuvilu&#10;RUT: 00.000.000-0"></textarea></label>
+          <p class="form-note" style="margin-top:-8px">Se muestra a la clienta recién después de enviar su pedido, junto al número de pedido. Deja vacío para no mostrar nada.</p>
           <label class="wide">Texto de envío <textarea id="setShippingText" placeholder="Envíos a todo Chile previa coordinación."></textarea></label>
           <label>Estado tienda
             <select id="setStoreStatus">
@@ -1191,6 +1199,7 @@ function fillSettings(value) {
   document.getElementById("setWhatsapp").value = value.whatsapp || cfg.whatsappNumber || "";
   document.getElementById("setInstagram").value = value.instagram || cfg.instagramUrl || "";
   document.getElementById("setCheckoutNote").value = value.checkout_note || "El pedido queda sujeto a confirmación de disponibilidad, pago y datos de envío.";
+  document.getElementById("setBankDetails").value = value.bank_details || "";
   document.getElementById("setShippingText").value = value.shipping_text || "Envíos a todo Chile previa coordinación.";
   document.getElementById("setStoreStatus").value = value.store_status || "open";
 }
@@ -1202,6 +1211,7 @@ async function saveSettings(event) {
     whatsapp: document.getElementById("setWhatsapp").value.trim(),
     instagram: document.getElementById("setInstagram").value.trim(),
     checkout_note: document.getElementById("setCheckoutNote").value.trim(),
+    bank_details: document.getElementById("setBankDetails").value.trim(),
     shipping_text: document.getElementById("setShippingText").value.trim(),
     store_status: document.getElementById("setStoreStatus").value,
     currency: cfg.currency || "CLP"
