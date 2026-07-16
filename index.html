@@ -1368,61 +1368,108 @@ function closeOrderConfirm() {
   document.getElementById("orderConfirmModal").classList.remove("open");
 }
 
+function makeOrderNumber() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  const t = String(Date.now()).slice(-6);
+  return `ANT-${y}${m}${d}-${t}`;
+}
+function makeOrderId() {
+  if (window.crypto && typeof window.crypto.randomUUID === "function") {
+    return window.crypto.randomUUID();
+  }
+  return "10000000-1000-4000-8000-" + String(Date.now()).slice(-12).padStart(12, "0");
+}
+function isUuid(value) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ""));
+}
 async function submitOrder(event) {
   event.preventDefault();
+  const form = event.target;
+  const submitBtn = form.querySelector('button[type="submit"]');
   const items = Object.values(cart);
   if (!items.length) {
     toast("Agrega una pieza primero");
     return;
   }
+  const orderId = makeOrderId();
+  const orderNumber = makeOrderNumber();
   const order = {
+    id: orderId,
+    order_number: orderNumber,
     customer_name: document.getElementById("customerName").value.trim(),
     customer_email: document.getElementById("customerEmail").value.trim(),
     customer_phone: document.getElementById("customerPhone").value.trim(),
     customer_note: document.getElementById("customerNote").value.trim(),
     subtotal: items.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 0), 0),
-    status: "new"
+    status: "new",
+    shipping_method: "coordinar",
+    payment_method: "manual"
   };
-  if (!order.customer_name) return;
+  if (!order.customer_name) {
+    toast("Ingresa tu nombre");
+    return;
+  }
 
   if (!db || catalogState === "demo") {
-    const demoOrderNumber = "PENDIENTE-" + Date.now().toString().slice(-6);
     cart = {};
     saveCart();
     updateCart();
-    event.target.reset();
+    form.reset();
     toggleCart(false);
-    openOrderConfirm(demoOrderNumber, items, order.subtotal);
+    openOrderConfirm(orderNumber, items, order.subtotal);
     return;
   }
 
-  const {data: savedOrder, error: orderError} = await db.from("orders").insert(order).select().single();
-  if (orderError) {
-    console.error(orderError);
-    toast("No se pudo crear el pedido");
-    return;
+  try {
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "ENVIANDO...";
+    }
+
+    // Importante: no usamos .select() al insertar el pedido público.
+    // La política RLS permite insertar pedidos anónimos, pero no leerlos.
+    // Por eso el ID y número de pedido se generan antes en el navegador.
+    const {error: orderError} = await db.from("orders").insert(order);
+    if (orderError) throw orderError;
+
+    const rows = items.map(i => ({
+      order_id: orderId,
+      product_id: isUuid(i.id) ? i.id : null,
+      product_name: i.name,
+      product_snapshot: {
+        id: i.id,
+        name: i.name,
+        sku: i.sku || "",
+        price: Number(i.price) || 0,
+        image_url: i.image_url || "",
+        category: i.category || i.category_name || ""
+      },
+      quantity: Number(i.quantity) || 1,
+      unit_price: Number(i.price) || 0,
+      line_total: (Number(i.price) || 0) * (Number(i.quantity) || 1)
+    }));
+    const {error: itemError} = await db.from("order_items").insert(rows);
+    if (itemError) throw itemError;
+
+    cart = {};
+    saveCart();
+    updateCart();
+    form.reset();
+    toggleCart(false);
+    openOrderConfirm(orderNumber, items, order.subtotal);
+    toast("Pedido enviado");
+  } catch (error) {
+    console.error("Error al enviar pedido", error);
+    toast("No se pudo enviar el pedido");
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Enviar pedido";
+    }
   }
-  const rows = items.map(i => ({
-    order_id: savedOrder.id,
-    product_id: String(i.id).startsWith("demo-") ? null : i.id,
-    product_name: i.name,
-    product_snapshot: i,
-    quantity: i.quantity,
-    unit_price: i.price,
-    line_total: i.price * i.quantity
-  }));
-  const {error: itemError} = await db.from("order_items").insert(rows);
-  if (itemError) {
-    console.error(itemError);
-    toast("Pedido creado, pero falta revisar ítems");
-    return;
-  }
-  cart = {};
-  saveCart();
-  updateCart();
-  event.target.reset();
-  toggleCart(false);
-  openOrderConfirm(savedOrder.order_number, items, order.subtotal);
 }
 
 document.getElementById("checkoutForm").addEventListener("submit", submitOrder);
