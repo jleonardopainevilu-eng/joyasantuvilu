@@ -1354,14 +1354,7 @@ function openOrderConfirm(orderNumber, items, total) {
   } else {
     waBtn.hidden = true;
   }
-  const bankBox = document.getElementById("confirmBankBox");
-  const bankText = (storeSettings.bank_details || "").trim();
-  if (bankText) {
-    document.getElementById("confirmBankDetails").textContent = bankText;
-    bankBox.hidden = false;
-  } else {
-    bankBox.hidden = true;
-  }
+  document.getElementById("confirmBankBox").hidden = true;
   document.getElementById("orderConfirmModal").classList.add("open");
 }
 function closeOrderConfirm() {
